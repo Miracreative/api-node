@@ -15,9 +15,13 @@ class BaseController {
     }
 
     async getAllKnowledge(req, res) {
-        const knowledge = await db.query(`SELECT * FROM knowledge`,)
-        res.json(knowledge.rows)
-    
+        try {   
+            const knowledge = await db.query(`SELECT * FROM knowledge`,)
+            res.json(knowledge.rows)
+        } catch(e) {
+            console.log(e)
+        }
+      
     } 
 
     async getOneKnowledge(req, res) {

@@ -28,8 +28,7 @@ create TABLE news(
 create TABLE users(
     id SERIAL PRIMARY KEY,
     email VARCHAR(255),
-    password VARCHAR(255),
-    role VARCHAR(255)
+    password VARCHAR(255),role VARCHAR(255)
 );
 
 create TABLE knowledge(
@@ -38,4 +37,12 @@ create TABLE knowledge(
     file_name VARCHAR(255),
     title VARCHAR(255),
     content VARCHAR(255)
+); 
+
+create TABLE reset(
+    id SERIAL PRIMARY KEY,
+    resetToken VARCHAR(255),
+    resetTokenExp VARCHAR(255),
+    user_id INTEGER,
+    FOREIGN KEY (user_id) REFERENCES users (id)
 );
