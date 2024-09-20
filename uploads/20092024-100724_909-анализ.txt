@@ -1,0 +1,87 @@
+users.add_child
+{"_parts": [["photo", [Object]], ["userId", 43], ["command", "users.add_child"], ["plan", 0], ["gender", 1], ["name", "fsd"], ["lastName", "sdfsdf"], ["age", "2008-09-04"], 
+["nickName", ""], ["weight", "23"], ["height", 123], ["heroes", [Array]], ["food", [Array]], ["activities", [Array]], ["allergens", [Array]], ["startDay", "2024-09-17"], ["deliveryTime", 0], ["email", "dsd@df.jk"], ["area", "Mountain View Unnamed Road  , 94043, A, tru|Mountain View Unnamed Road  , 94043, A, true"], ["promocode", ""], ["paymentMethod", 0]]}
+ TypeError: fetch('https://admin-tummies.cre(...){return console.error(e);}).done is not a function (it is undefined), js engine: hermes
+ LOG  {"_bodyBlob": {"_data": {"__collector": [Object], "blobId": "a5cc14fd-2af4-4602-9bcb-fcc387cc81a6", "offset": 0, "size": 43}}, "_bodyInit": {"_data": {"__collector": [Object], "blobId": "a5cc14fd-2af4-4602-9bcb-fcc387cc81a6", "offset": 0, "size": 43}}, "bodyUsed": false, "headers": {"map": {"access-control-allow-headers": "*", "access-control-allow-origin": "*", "cache-control": "no-store, no-cache, must-revalidate", "connection": "Keep-Alive", "content-length": "43", "content-type": "application/json", "date": "Wed, 04 Sep 2024 09:03:33 GMT", "expires": "Thu, 19 Nov 1981 08:52:00 GMT", "keep-alive": "timeout=5, max=100", "pragma": "no-cache", "server": "Apache/2.4.41 (Ubuntu)"}}, "ok": true, "status": 200, "statusText": "", "type": "default", "url": "https://admin-tummies.creativecom.org/Tummies/mainCommand.php"}
+ ERROR  [TypeError: Cannot read property 'json' of undefined]
+
+
+
+ {"command":"users.get_delivery_addresses","childId":"35"}
+[SyntaxError: JSON Parse error: Unexpected character: <]
+
+однако, детки поназаписывались, у Никиты видно было, потом и ко мне пришли)
+
+
+"command": "users.get_parent_total",
+не приходит фото, а Никите приходит
+
+
+получение данных о плане 
+  const getPlan = (параметры) => {
+        request(undefined, {
+                "command": "users.get_child_plan",
+                "id": `${childID}`
+              }).then(res => 
+                console.log(res)
+			plan
+              )
+              .catch(error => {
+                console.error(error)
+              })
+      }
+
+пауза
+  const getPlan = (параметры) => {
+        request(undefined, {
+                "command": "users.get_child_pause",
+                "id": `${childID}`
+		"startPause": 
+		"endpause"
+              }).then(res => 
+                console.log(res)
+              )
+              .catch(error => {
+                console.error(error)
+              })
+      }
+
+
+отмена
+  const getPlan = (параметры) => {
+        request(undefined, {
+                "command": "users.get_child_сancel",
+                "id": `${childID}`
+		"startPause": 
+		"endpause"
+              }).then(res => 
+                console.log(res)
+              )
+              .catch(error => {
+                console.error(error)
+              })
+      }
+
+users.get_parent_total
+не возвращает аватар родителя
+
+
+{"command":"users.child_data_change","id":"35","weight":"45","height":"168","age":"2008-09-03","name":"Irina123","activities":"1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0"}
+ LOG  {"Content-Type": "application/json"}
+ ERROR  [SyntaxError: JSON Parse error: Unexpected character: D]
+
+нужна команда для установки фото ребенка
+'command', 'users.child_photo_change'
+
+
+ LOG  {"command":"users.change_child_allergens","id":"35","allergens":"1,0,0,1,0,0,0,0,0,0"}
+ LOG  {"Content-Type": "application/json"}
+ ERROR  [SyntaxError: JSON Parse error: Unexpected character: D]
+
+{"command":"users.favourite_dishes","id":"35"} - ничего не приходит в ответ
+ LOG  {"Content-Type": "application/json"}
+
+
+
+
+

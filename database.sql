@@ -36,7 +36,7 @@ create TABLE knowledge(
     file VARCHAR(255),
     file_name VARCHAR(255),
     title VARCHAR(255),
-    content VARCHAR(255)
+    content text
 ); 
 
 create TABLE reset(
