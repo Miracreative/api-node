@@ -22,8 +22,9 @@ create TABLE news(
     imagesSrc text Array,
     title VARCHAR(255),
     descr VARCHAR(255),
-    content VARCHAR(255)
+    content VARCHAR(255) 
 );
+-- Настя, измени поле
 
 create TABLE users(
     id SERIAL PRIMARY KEY,
@@ -45,4 +46,31 @@ create TABLE reset(
     resetTokenExp VARCHAR(255),
     user_id INTEGER,
     FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+create TABLE goods(
+    id SERIAL PRIMARY KEY,
+    imageUrl VARCHAR(255),
+    material VARCHAR(255),
+    goodsPersonalImages text Array,
+    goodsIndustrialImages text Array,
+    parameter integer Array,
+    mainParameter integer Array,
+    article VARCHAR(255),
+    advantages text Array,
+    thickness VARCHAR(255),
+    volume VARCHAR(255),
+    pcs VARCHAR(255),
+    baseType VARCHAR(255),
+    color VARCHAR(255),
+    heatResistance integer Array,
+    name VARCHAR(255),
+    description VARCHAR(255),
+    type VARCHAR(255),
+    size VARCHAR(255),
+    brand VARCHAR(255),
+    linerType VARCHAR(255),
+    pdfUrl VARCHAR(255),
+    typeGlue VARCHAR(255),
+    dencity VARCHAR(255)
 );

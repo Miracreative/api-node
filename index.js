@@ -10,6 +10,7 @@ const sertificateRouter = require('./routes/sertificate.routes.js')
 const newsRouter = require('./routes/news.routes.js')
 const authRouter = require('./routes/auth.routes.js')
 const baseRouter = require('./routes/base.routes.js')
+const goodsRouter = require('./routes/goods.routes.js')
 
 
 
@@ -30,5 +31,6 @@ app.use('/api', sertificateRouter)
 app.use('/api', newsRouter)
 app.use('/api/auth', authRouter)
 app.use('/api', baseRouter)
+app.use('/api', goodsRouter)
 app.listen(PORT, () => console.log(PORT))
 
