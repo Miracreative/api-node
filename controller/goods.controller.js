@@ -1,27 +1,20 @@
 const db = require('../db');
-const errorHandler = require('../utils/errorHandler')
+const errorHandler = require('../utils/errorHandler');
+
+const keys = require('../config/keys')
 
 class GoodsController {
     async createGood(req, res) {
         const { material, parameter, mainParameter, article, thinkness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, typeGlue} = req.body;
      
         const personalImages = req.files.goodsPersonalImages;
-        // if (!personalImages) {
-        //     res.status(400)
-        //     throw new Error('Пожалуйста, загрузите картинки')
-        // } необязательное поле
-
 
         let goodsPersonalImages = [];
         personalImages.map((file, index) => {
-            goodsPersonalImages.push(`${file.destination}${file.filename}`)
+            goodsPersonalImages.push(`${keys.url_name}${file.destination}${file.filename}`)
         })
         
         const industrialImages = req.files.goodsIndustrialImages;
-        // if (!industrialImages) {
-        //     res.status(400)
-        //     throw new Error('Пожалуйста, загрузите картинки')
-        // } необязательное поле
 
         let goodsIndustrialImages = [];
         industrialImages.map((file, index) => {
@@ -122,17 +115,68 @@ class GoodsController {
     async sortGoodsOnMainParameters(req, res) {
         const {main} = req.body;
         try {
-            const goods = await db.query(`SELECT * FROM goods`)
-        // console.log(goods.rows)
+        const goods = await db.query(`SELECT * FROM goods`)
+        let searchIndexes = []
+        const getIndexesArray = () => {
             goods.rows.forEach((row, i) => {
                 for(let j=0; j < row.mainparameter.length; j++) {
                     row.mainparameter[j] == main[j]
                     if((row.mainparameter[j] == main[j]) && (main[j] == 1)) {
-                        
-                        return console.log(i)
+                       return searchIndexes.push(i)
                     } 
                 }
             })
+        }
+        getIndexesArray()
+
+        let filteredGoods = [];
+        const getFilteredGoods = () => {
+            searchIndexes.forEach((index) => {
+                filteredGoods.push(goods.rows[index])
+            })
+        }
+        getFilteredGoods()
+
+            if(filteredGoods.length > 0) {
+                res.json(filteredGoods)
+            } else {
+                res.json({message: "Ничего не найдено по Вашему запросу"})
+            }
+        } catch(e) {
+            errorHandler(res, e)
+        }
+        
+    }
+    async sortGoodsOnAllParameters(req, res) {
+        const {parameters} = req.body;
+        try {
+        const goods = await db.query(`SELECT * FROM goods`)
+        let searchIndexes = []
+        const getIndexesArray = () => {
+            goods.rows.forEach((row, i) => {
+                for(let j=0; j < row.parameter.length; j++) {
+                    row.parameter[j] == parameters[j]
+                    if((row.parameter[j] == parameters[j]) && (parameters[j] == 1)) {
+                       return searchIndexes.push(i)
+                    } 
+                }
+            })
+        }
+        getIndexesArray()
+
+        let filteredGoods = [];
+        const getFilteredGoods = () => {
+            searchIndexes.forEach((index) => {
+                filteredGoods.push(goods.rows[index])
+            })
+        }
+        getFilteredGoods()
+
+            if(filteredGoods.length > 0) {
+                res.json(filteredGoods)
+            } else {
+                res.json({message: "Ничего не найдено по Вашему запросу"})
+            }
         } catch(e) {
             errorHandler(res, e)
         }

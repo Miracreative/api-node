@@ -12,6 +12,7 @@ goodsRouter.get('/goods/:id', goodsController.getOneGood)
 goodsRouter.put('/goods', upload.fields([{name: 'goodsPersonalImages', maxCount: 10}, {name: 'goodsIndustrialImages', maxCount: 10}, {name: 'imageUrl', maxCount: 1}, {name: 'pdfUrl', maxCount: 1}]), goodsController.updateGoods)
 goodsRouter.delete('/goods', goodsController.deleteGood)
 goodsRouter.get('/goods-main', goodsController.sortGoodsOnMainParameters)
+goodsRouter.get('/goods-parameters', goodsController.sortGoodsOnAllParameters)
 
 module.exports = goodsRouter;  
 
