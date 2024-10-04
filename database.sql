@@ -28,8 +28,10 @@ create TABLE news(
 
 create TABLE users(
     id SERIAL PRIMARY KEY,
+    name VARCHAR(255), 
     email VARCHAR(255),
-    password VARCHAR(255),role VARCHAR(255)
+    password VARCHAR(255),
+    role VARCHAR(255)
 );
 
 create TABLE knowledge(
@@ -48,7 +50,7 @@ create TABLE reset(
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-create TABLE goods(
+create TABLE goods( 
     id SERIAL PRIMARY KEY,
     imageUrl VARCHAR(255),
     material VARCHAR(255),
@@ -60,10 +62,10 @@ create TABLE goods(
     advantages text Array,
     thickness VARCHAR(255),
     volume VARCHAR(255),
-    pcs VARCHAR(255),
+    pcs VARCHAR(255), 
     baseType VARCHAR(255),
     color VARCHAR(255),
-    heatResistance integer Array,
+    heatResistance VARCHAR(255),
     name VARCHAR(255),
     description VARCHAR(255),
     type VARCHAR(255),

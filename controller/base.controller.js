@@ -1,4 +1,6 @@
 const db = require('../db');
+const keys = require('./../config/keys');
+const fs = require('fs');
 const errorHandler = require('../utils/errorHandler')
 
 class BaseController {
@@ -7,8 +9,7 @@ class BaseController {
      
         const file = `${req.file.destination}${req.file.filename}`;
         if (!file) {
-            res.status(400)
-            throw new Error('Пожалуйста, загрузите файл')
+           return res.status(400).json({message: 'Пожалуйста, загрузите файл'})
         }
         try {
             const file_name = `${req.file.filename.split('-')[2]}`
@@ -72,6 +73,13 @@ class BaseController {
            
         } else {
             try {
+
+                const knowledgeFile = await db.query(`SELECT * FROM knowledge where id = $1`, [id])
+           
+                fs.unlink(`${keys.del_url}${knowledgeFile.rows[0].file}`,function(err){
+                    if(err) return console.log(err);
+                    console.log('file deleted successfully');
+                }); 
                 const file = `${req.file.destination}${req.file.filename}`; 
                 const file_name = `${req.file.filename.split('-')[2]}`
                 const knowledge = await db.query(`UPDATE knowledge SET file = $1, file_name = $2, title = $3, content = $4 where id = $5 RETURNING *`, [file, file_name, title, content, id])
@@ -85,12 +93,17 @@ class BaseController {
     async deleteKnowledge(req, res) {
         const {id} = req.body;
         try {
+            const knowledgeFile = await db.query(`SELECT * FROM knowledge where id = $1`, [id])
+           
+            fs.unlink(`${keys.del_url}${knowledgeFile.rows[0].file}`,function(err){
+                if(err) return console.log(err);
+                console.log('file deleted successfully');
+            }); 
             const knowledge = await db.query(`DELETE FROM knowledge where id = $1`, [id])
-            res.json(knowledge.rows[0])
+            return res.json(knowledge.rows[0])
         } catch (e) {
             errorHandler(res, e)
         }
-     
     }
 }
 

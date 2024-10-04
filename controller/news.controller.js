@@ -6,13 +6,13 @@ class NewsController {
         const {title, descr, content} = req.body;
      
         const files = req.files;
-        if (!files) {
-            res.status(400)
-            throw new Error('Пожалуйста, загрузите картинки')
+        console.log(files)
+        if (!files.length) {
+            return res.status(400).json({message: 'Пожалуйста, загрузите картинки'})
         }
 
         let imagesSrc = [];
-        files.map((file, index) => {
+        files.map((file, index) => { 
             imagesSrc.push(`${file.destination}${file.filename}`)
         })
         try {
@@ -21,7 +21,7 @@ class NewsController {
         } catch(e) {
             errorHandler(res, e)
         }
-        
+         
     }
     async getAllNews(req, res) {
         try {

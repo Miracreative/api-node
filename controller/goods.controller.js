@@ -1,17 +1,17 @@
 const db = require('../db');
 const errorHandler = require('../utils/errorHandler');
 
-const keys = require('../config/keys')
+// const keys = require('../config/keys')
 
 class GoodsController {
     async createGood(req, res) {
-        const { material, parameter, mainParameter, article, thinkness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, typeGlue} = req.body;
+        const { material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, typeGlue, advantages} = req.body;
      
         const personalImages = req.files.goodsPersonalImages;
 
         let goodsPersonalImages = [];
         personalImages.map((file, index) => {
-            goodsPersonalImages.push(`${keys.url_name}${file.destination}${file.filename}`)
+            goodsPersonalImages.push(`${file.destination}${file.filename}`)
         })
         
         const industrialImages = req.files.goodsIndustrialImages;
@@ -23,20 +23,18 @@ class GoodsController {
         
         const imageUrl = `${req.files.imageUrl[0].destination}${req.files.imageUrl[0].filename}`;
         if (!imageUrl) {
-            res.status(400)
-            throw new Error('Пожалуйста, загрузите картинку')
-        }
+            return res.status(400).json({message: "Пожалуйста, загрузите картинку"})
+        } 
 
         const pdfUrl = `${req.files.pdfUrl[0].destination}${req.files.pdfUrl[0].filename}`;
         if (!pdfUrl) {
-            res.status(400)
-            throw new Error('Пожалуйста, загрузите файл')
+            return res.status(400).json({message: "Пожалуйста, загрузите файл"})
         }
 
         try {
-            const newGood = await db.query(`INSERT INTO goods (material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, goodsPersonalImages, goodsIndustrialImages, imageUrl, pdfUrl, typeGlue) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22) RETURNING *`, [material, parameter, mainParameter, article, thinkness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, goodsPersonalImages, goodsIndustrialImages, imageUrl, pdfUrl, typeGlue])
+            const newGood = await db.query(`INSERT INTO goods (material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, goodsPersonalImages, goodsIndustrialImages, imageUrl, pdfUrl, typeGlue) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23) RETURNING *`, [material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, goodsPersonalImages, goodsIndustrialImages, imageUrl, pdfUrl, typeGlue, advantages])
 
-            res.json(newGood.rows[0])
+            return res.json(newGood.rows[0])
 
         } catch(e) {
             errorHandler(res, e)
@@ -63,11 +61,11 @@ class GoodsController {
         
     }
     async updateGoods(req, res) { 
-        const {material, parameter, mainParameter, article, thinkness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, typeGlue, id} = req.body;
+        const {material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, typeGlue, id} = req.body;
      
         const files = req.files;
         if (!files?.[0]) {
-            const goods = await db.query(`UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18 where id = $19 RETURNING *`, [ material, parameter, mainParameter, article, thinkness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, typeGlue, id])
+            const goods = await db.query(`UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19 where id = $20 RETURNING *`, [ material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, typeGlue, advantages, id])
             res.json(goods.rows[0])
         } else {
             const personalImages = req.files.goodsPersonalImages;
@@ -94,7 +92,7 @@ class GoodsController {
             const pdfUrl = `${req.files?.pdfUrl?.[0]?.destination}${req.files?.pdfUrl?.[0]?.filename}`;
             if(pdfUrl) {
                 try {
-                    const goods = await db.query(`UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, pdfUrl = $18, typeGlue = $19 where id = $20 RETURNING *`, [ material, parameter, mainParameter, article, thinkness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, pdfUrl, typeGlue, id])
+                    const goods = await db.query(`UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, pdfUrl = $18, typeGlue = $19, advantages = $20 where id = $21 RETURNING *`, [ material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, pdfUrl, typeGlue, advantages, id])
                     res.json(goods.rows[0])
                 } catch (e) {
                     errorHandler(res, e)
@@ -181,7 +179,7 @@ class GoodsController {
             errorHandler(res, e)
         }
         
-    }
+    } 
 }
 
 module.exports = new GoodsController();

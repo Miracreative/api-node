@@ -7,10 +7,9 @@ const mailer = require('../utils/nodemailer')
 const errorHandler = require('../utils/errorHandler')
 
 const db = require('../db');
-const { validationResult } = require('express-validator/');
 
 class AuthController {
-    async login(req, res) {
+    async login(req, res) {   
         const {email, password} = req.body;
         const candidate = await db.query(`SELECT * FROM users WHERE email = $1::text`, [email]);
         if(candidate.rowCount !== 0) {
@@ -21,32 +20,27 @@ class AuthController {
                     email: candidate.rows[0].email,
                     role: candidate.rows[0].email
                 }, keys.jwt, {expiresIn: 60 * 60}) // 60 секунд * 60 минут
-                res.json({token: `Bearer ${token}`})
+                return res.json({token: `Bearer ${token}`})
             } else {
-                res.status(401).json({message: 'Пароли не совпали'})
+               return res.status(401).json({message: 'Пароли не совпали'})
             }
         } else {
-            res.status(404).json({message: 'Пользователя нет, ошибка'})
+           return res.status(404).json({message: 'Пользователя нет, ошибка'})
         }
     } 
 
     async register(req, res) {
         const salt = bcrypt.genSaltSync(10);
-        const password = bcrypt.hashSync(req.body.password, salt)
-        const {email} = req.body;
-        const role = "admin"
+        const password = bcrypt.hashSync(req.body.data.admin.password, salt)
+        const {name, email, role} = req.body.data.admin;
 
         const candidate = await db.query(`SELECT * FROM users WHERE email = $1::text`, [email]);
-        
+         
         if(candidate.rowCount !== 0) {
-            res.status(409).json({message: 'Email already exists'})
+            res.status(409).json({message: 'Email уже существует'})
         } else {
-            const errors = validationResult(req)
-            if(errors.errors.length) {
-                return res.status(400).json({message: 'Ошибка валидации', errors: errors})
-            }
             try {
-                const newUser = await db.query(`INSERT INTO users (email, password, role) values ($1, $2, $3) RETURNING *`, [email, password, role])
+                const newUser = await db.query(`INSERT INTO users (name, email, password, role) values ($1, $2, $3, $4) RETURNING *`, [name, email, password, role])
                 res.status(201).json(newUser.rows[0])
 
                 const message = {
@@ -54,6 +48,7 @@ class AuthController {
                     subject: 'Вас зарегистрированы в качестве администратора',
                     html: `
                         <h1>Ваши данные:</h1>
+                         <p>имя: <b>${name}</b>,</p>
                         <p>login: <b>${email}</b>,</p>
                         <p>пароль: <b>${req.body.password}/b></p>
 
@@ -63,7 +58,7 @@ class AuthController {
 
                 mailer(message)
             } catch(e) {
-                errorHandler(res, e)
+                return res.status(500).json({message: 'Упс! Что-то пошло не так'});
             }
              
         }
@@ -140,23 +135,30 @@ class AuthController {
         
     }
 
+    async getAllUsers(req, res) {
+ 
+        try {
+            const users = await db.query(`SELECT * FROM users`);
+            return res.status(200).json(users.rows)
+            
+        } catch(e) {
+            errorHandler(res, e)
+        }
+             
+    }
+
     async updateUser(req, res) {
  
         const salt = bcrypt.genSaltSync(10);
         const password = bcrypt.hashSync(req.body.password, salt)
-        const {id, email, role} = req.body;
+        const {id, name, email, role} = req.body;
     
         const candidate = await db.query(`SELECT * FROM users WHERE id = $1::int`, [id]);
-        console.log(candidate)
         if(candidate.rowCount == 0) {
             res.status(409).json({message: 'Пользователя нет'})
         } else {
-            const errors = validationResult(req)
-            if(errors.errors.length) {
-                return res.status(400).json({message: 'Ошибка валидации', errors: errors})
-            }  
             try {
-                const updateUser = await db.query(`UPDATE users SET email = $1, password = $2, role = $3 where id = $4 RETURNING *`, [email, password, role, id])
+                const updateUser = await db.query(`UPDATE users SET name = $1 email = $2, password = $3, role = $4 where id = $5 RETURNING *`, [name, email, password, role, id])
                 res.status(201).json(updateUser.rows[0])
 
                 const message = {
@@ -164,6 +166,7 @@ class AuthController {
                     subject: 'Ваши новые данные в качестве администратора',
                     html: `
                         <h1>Ваши данные:</h1>
+                        <>имя: <b>${name}</b>,</p>
                         <p>login: <b>${email}</b>,</p>
                         <p>пароль: <b>${req.body.password}</b></p>
 
