@@ -4,10 +4,10 @@ const userController = require('./../controller/user.controller')
 
 
 
-userRouter.get('/user', userController.getUsers)
-userRouter.get('/user/:id', userController.getOneUser) // через слеш
-userRouter.put('/user/', userController.updateUser)
-userRouter.delete('/user', userController.deleteUser)
+userRouter.get('/users', userController.getUsers)
+userRouter.get('/users/:id', userController.getOneUser) // через слеш
+userRouter.put('/users', userController.updateUser)
+userRouter.delete('/users', userController.deleteUser)
 
  
 

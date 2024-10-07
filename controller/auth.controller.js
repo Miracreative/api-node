@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const keys = require('../config/keys')
-const crypto = require('crypto')
+const crypto = require('crypto') 
 
 const mailer = require('../utils/nodemailer')
 const errorHandler = require('../utils/errorHandler')
@@ -48,7 +48,7 @@ class AuthController {
                     subject: 'Вас зарегистрированы в качестве администратора',
                     html: `
                         <h1>Ваши данные:</h1>
-                         <p>имя: <b>${name}</b>,</p>
+                        <p>имя: <b>${name}</b>,</p>
                         <p>login: <b>${email}</b>,</p>
                         <p>пароль: <b>${req.body.password}/b></p>
 
@@ -77,7 +77,6 @@ class AuthController {
                 const candidate = await db.query(`SELECT * FROM users WHERE email = $1::text`, [email]);
                 if(candidate.rowCount !== 0) {
                     const user_id = candidate.rows[0].id
-                    console.log(user_id)
                     const newUserReset = await db.query(`INSERT INTO reset (resetToken, resetTokenExp, user_id) values ($1, $2, $3) RETURNING *`, [token, resetTokenExp, user_id])
                     res.status(201).json(newUserReset.rows[0])
                     const message = {
@@ -135,23 +134,11 @@ class AuthController {
         
     }
 
-    async getAllUsers(req, res) {
- 
-        try {
-            const users = await db.query(`SELECT * FROM users`);
-            return res.status(200).json(users.rows)
-            
-        } catch(e) {
-            errorHandler(res, e)
-        }
-             
-    }
-
     async updateUser(req, res) {
  
         const salt = bcrypt.genSaltSync(10);
         const password = bcrypt.hashSync(req.body.password, salt)
-        const {id, name, email, role} = req.body;
+        const {id, name, email, role} = req.body.data;
     
         const candidate = await db.query(`SELECT * FROM users WHERE id = $1::int`, [id]);
         if(candidate.rowCount == 0) {
@@ -166,7 +153,7 @@ class AuthController {
                     subject: 'Ваши новые данные в качестве администратора',
                     html: `
                         <h1>Ваши данные:</h1>
-                        <>имя: <b>${name}</b>,</p>
+                        <p>имя: <b>${name}</b>,</p>
                         <p>login: <b>${email}</b>,</p>
                         <p>пароль: <b>${req.body.password}</b></p>
 
@@ -182,11 +169,6 @@ class AuthController {
         }
     }
 
-    async deleteUser(req, res) {
-        const {id} = req.body
-        const user = await db.query(`DELETE FROM users where id = $1`, [id])
-        res.json(user.rows[0])
-    }
 }
 
 module.exports = new AuthController();
