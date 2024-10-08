@@ -32,7 +32,7 @@ class GoodsController {
         }
 
         try {
-            const newGood = await db.query(`INSERT INTO goods (material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, goodsPersonalImages, goodsIndustrialImages, imageUrl, pdfUrl, typeGlue) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23) RETURNING *`, [material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, goodsPersonalImages, goodsIndustrialImages, imageUrl, pdfUrl, typeGlue, advantages])
+            const newGood = await db.query(`INSERT INTO goods (material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, goodsPersonalImages, goodsIndustrialImages, imageUrl, pdfUrl, typeGlue, advantages) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23) RETURNING *`, [material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, goodsPersonalImages, goodsIndustrialImages, imageUrl, pdfUrl, typeGlue, advantages])
 
             return res.json(newGood.rows[0])
 
@@ -103,8 +103,8 @@ class GoodsController {
     async deleteGood(req, res) {
         const {id} = req.body;
         try {
-            const news = await db.query(`DELETE FROM news where id = $1`, [id])
-            res.json(news.rows[0])
+            const goods = await db.query(`DELETE FROM goods where id = $1`, [id])
+            res.json(goods.rows[0])
         } catch(e) {
             errorHandler(res, e)
         }
@@ -119,6 +119,7 @@ class GoodsController {
             goods.rows.forEach((row, i) => {
                 for(let j=0; j < row.mainparameter.length; j++) {
                     row.mainparameter[j] == main[j]
+                    console.log(row.mainparameter[j])
                     if((row.mainparameter[j] == main[j]) && (main[j] == 1)) {
                        return searchIndexes.push(i)
                     } 
@@ -159,7 +160,7 @@ class GoodsController {
                     } 
                 }
             })
-        }
+        } 
         getIndexesArray()
 
         let filteredGoods = [];
