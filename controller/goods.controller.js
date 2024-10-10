@@ -46,7 +46,7 @@ class GoodsController {
             const goods = await db.query(`SELECT * FROM goods`,)
             res.json(goods.rows)
         } catch(e) {
-            errorHandler(res, e)
+            return res.status(404).json({message: e.message})
         }
     } 
     async getOneGood(req, res) {
@@ -56,7 +56,7 @@ class GoodsController {
       
             res.json(good.rows[0])
         } catch(e) {
-            errorHandler(res, e)
+            return res.status(404).json({message: e.message})
         }
         
     }
@@ -95,7 +95,7 @@ class GoodsController {
                     const goods = await db.query(`UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, pdfUrl = $18, typeGlue = $19, advantages = $20 where id = $21 RETURNING *`, [ material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, pdfUrl, typeGlue, advantages, id])
                     res.json(goods.rows[0])
                 } catch (e) {
-                    errorHandler(res, e)
+                    return res.status(404).json({message: e.message})
                 }
             }
         }
@@ -106,21 +106,25 @@ class GoodsController {
             const goods = await db.query(`DELETE FROM goods where id = $1`, [id])
             res.json(goods.rows[0])
         } catch(e) {
-            errorHandler(res, e)
+            return res.status(404).json({message: e.message})
         }
         
     }
     async sortGoodsOnMainParameters(req, res) {
-        const {main} = req.body;
+        const {main} = req.params;
+        const mainInt = main.replaceAll(',', '')
+        let mainArray = [];
+        for(let i=0; i < mainInt.length; i++) {
+            mainArray.push(mainInt[i])
+        }
         try {
         const goods = await db.query(`SELECT * FROM goods`)
         let searchIndexes = []
         const getIndexesArray = () => {
             goods.rows.forEach((row, i) => {
                 for(let j=0; j < row.mainparameter.length; j++) {
-                    row.mainparameter[j] == main[j]
-                    console.log(row.mainparameter[j])
-                    if((row.mainparameter[j] == main[j]) && (main[j] == 1)) {
+                    row.mainparameter[j] == mainArray[j]
+                    if((row.mainparameter[j] == mainArray[j]) && (mainArray[j] == 1)) {
                        return searchIndexes.push(i)
                     } 
                 }
@@ -142,20 +146,25 @@ class GoodsController {
                 res.json({message: "Ничего не найдено по Вашему запросу"})
             }
         } catch(e) {
-            errorHandler(res, e)
+            return res.status(404).json({message: e.message})
         }
         
     }
     async sortGoodsOnAllParameters(req, res) {
-        const {parameters} = req.body;
+        const {parameters} = req.params;
+        const parametersInt = parameters.replaceAll(',', '')
+        let parametersArray = [];
+        for(let i=0; i < parametersInt.length; i++) {
+            parametersArray.push(parametersInt[i])
+        }
         try {
         const goods = await db.query(`SELECT * FROM goods`)
         let searchIndexes = []
         const getIndexesArray = () => {
             goods.rows.forEach((row, i) => {
                 for(let j=0; j < row.parameter.length; j++) {
-                    row.parameter[j] == parameters[j]
-                    if((row.parameter[j] == parameters[j]) && (parameters[j] == 1)) {
+                    row.parameter[j] == parametersArray[j]
+                    if((row.parameter[j] == parametersArray[j]) && (parametersArray[j] == 1)) {
                        return searchIndexes.push(i)
                     } 
                 }
@@ -177,7 +186,7 @@ class GoodsController {
                 res.json({message: "Ничего не найдено по Вашему запросу"})
             }
         } catch(e) {
-            errorHandler(res, e)
+            return res.status(404).json({message: e.message})
         }
         
     } 

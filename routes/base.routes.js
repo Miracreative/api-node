@@ -10,6 +10,7 @@ baseRouter.post('/base', upload.single('file'), baseController.createKnowledge)
 baseRouter.get('/base', baseController.getAllKnowledge)
 baseRouter.get('/base/:id', baseController.getOneKnowledge) 
 baseRouter.get('/base-admin/:page', baseController.getPaginationKnowledge)
+baseRouter.get('/base-search/:string', baseController.getSearchKnowledge)
 baseRouter.put('/base', upload.single('file'), baseController.updateKnowledge)
 baseRouter.delete('/base', baseController.deleteKnowledge)
 

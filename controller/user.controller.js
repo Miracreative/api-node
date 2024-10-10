@@ -12,6 +12,7 @@ class UserController {
         }
         
     } 
+
     async getOneUser(req, res) {
         const id = req.params.id
         try {
@@ -21,6 +22,7 @@ class UserController {
             return res.status(404).json({message: 'Что-то пошло не так'})
         }
     }
+
     async updateUser(req, res) {
  
         const {id, name, email, role} = req.body.data.admin;
@@ -33,7 +35,6 @@ class UserController {
             
             res.status(409).json({message: 'Пользователя нет'})
         } else {
-            // console.log(candidate)
             try {
                 const updateUser = await db.query(`UPDATE users SET name = $1, email = $2, password = $3, role = $4 where id = $5 RETURNING *`, [name, email, password, role, id])
                 
