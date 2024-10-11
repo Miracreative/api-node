@@ -77,10 +77,11 @@ class BaseController {
       
     }
 
-    async updateKnowledge(req, res) { 
+    async updateKnowledge(req, res) {  
         const {title, content, id} = req.body;
      
         const file = req.file; 
+        
         if (!file) {
             try {
                 const knowledge = await db.query(`UPDATE knowledge SET title = $1, content = $2 where id = $3 RETURNING *`, [ title, content, id])
@@ -90,6 +91,7 @@ class BaseController {
             }
            
         } else {
+            console.log(req.file.originalname)
             try {
 
                 const knowledgeFile = await db.query(`SELECT * FROM knowledge where id = $1`, [id])

@@ -8,7 +8,8 @@ const storage = multer.diskStorage({
     },
     filename(req, file, cb) {
         const date = moment().format('DDMMYYYY-HHmmss_SSS')
-        cb(null, `${date}-${file.originalname}`)
+        console.log(Buffer.from(file.originalname, 'latin1').toString('utf8'))
+        cb(null, `${date}-${Buffer.from(file.originalname, 'latin1').toString('utf8')}`)
     }
 
 })

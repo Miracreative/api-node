@@ -14,7 +14,9 @@ create TABLE post(
 
 create TABLE sertificates(
     id SERIAL PRIMARY KEY,
-    imageSrc VARCHAR(255)
+    imageSrc VARCHAR(255),
+    type VARCHAR(255),
+    title VARCHAR(255)
 );
 
 create TABLE news(

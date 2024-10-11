@@ -5,7 +5,9 @@ const upload = require('../middleware/upload')
 const sertificateRouter = new Router();
 
 sertificateRouter.post('/sertificate', upload.single('imageSrc'), sertificateController.createSertificate)
+sertificateRouter.get('/sertificate/:page', sertificateController.getPaginationSertificates)
 sertificateRouter.get('/sertificate', sertificateController.getAllSertificates)
+sertificateRouter.get('/sertificate-search/:string', sertificateController.getSearchSertificates)
 sertificateRouter.delete('/sertificate', sertificateController.deleteSertificate)
 
 
