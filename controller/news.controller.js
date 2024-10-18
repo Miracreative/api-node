@@ -99,13 +99,11 @@ class NewsController {
     async updateNews(req, res) { 
         const {title, descr, content, id} = req.body;
         
-     
         const files = req.files;
         if (!files) {
             try {
                 console.log(req.body)
                 const news = await db.query(`UPDATE news SET  title = $1, descr = $2, content = $3 where id = $4 RETURNING *`, [ title, descr, content, id])
-            // console.log(news.rows[0])
                 res.json(news.rows[0])
             } catch(e) {
                 return res.status(400).json({message: e.message})

@@ -1,7 +1,7 @@
 const db = require('../db');
 const keys = require('./../config/keys');
 const fs = require('fs');
-
+ 
 class BaseController {
     async createKnowledge(req, res) {
         const {title, content} = req.body;
@@ -78,7 +78,6 @@ class BaseController {
 
     async updateKnowledge(req, res) {  
         const {title, content, id} = req.body;
-     
         const file = req.file; 
         
         if (!file) {
