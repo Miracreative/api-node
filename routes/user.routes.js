@@ -7,7 +7,7 @@ const userController = require('./../controller/user.controller')
 userRouter.get('/users', userController.getUsers)
 userRouter.get('/users/:id', userController.getOneUser) // через слеш
 userRouter.put('/users', userController.updateUser)
-userRouter.delete('/users', userController.deleteUser)
+userRouter.delete('/users/:id', userController.deleteUser)
 
  
 

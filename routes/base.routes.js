@@ -12,7 +12,7 @@ baseRouter.get('/base/:id', baseController.getOneKnowledge)
 baseRouter.get('/base-admin/:page', baseController.getPaginationKnowledge)
 baseRouter.get('/base-search/:string', baseController.getSearchKnowledge)
 baseRouter.put('/base', upload.single('file'), baseController.updateKnowledge)
-baseRouter.delete('/base', baseController.deleteKnowledge)
+baseRouter.delete('/base/:id', baseController.deleteKnowledge)
 
 
 module.exports = baseRouter;  

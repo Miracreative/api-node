@@ -143,7 +143,7 @@ class GoodsController {
             if(filteredGoods.length > 0) {
                 res.json(filteredGoods)
             } else {
-                res.json({message: "Ничего не найдено по Вашему запросу"})
+                res.json([])
             }
         } catch(e) {
             return res.status(404).json({message: e.message})
@@ -183,7 +183,7 @@ class GoodsController {
             if(filteredGoods.length > 0) {
                 res.json(filteredGoods)
             } else {
-                res.json({message: "Ничего не найдено по Вашему запросу"})
+                res.json([])
             }
         } catch(e) {
             return res.status(404).json({message: e.message})

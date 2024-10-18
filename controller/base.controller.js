@@ -1,7 +1,6 @@
 const db = require('../db');
 const keys = require('./../config/keys');
 const fs = require('fs');
-const errorHandler = require('../utils/errorHandler')
 
 class BaseController {
     async createKnowledge(req, res) {
@@ -111,7 +110,7 @@ class BaseController {
     } 
 
     async deleteKnowledge(req, res) {
-        const {id} = req.body;
+        const id = req.params.id;
         try {
             const knowledgeFile = await db.query(`SELECT * FROM knowledge where id = $1`, [id])
            

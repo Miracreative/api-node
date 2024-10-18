@@ -1,4 +1,6 @@
 const db = require('../db');
+const keys = require('./../config/keys');
+const fs = require('fs');
 
 class SertificateController {
     async createSertificate(req, res) {
@@ -59,9 +61,55 @@ class SertificateController {
       
     } 
 
+    async getOneSertificate(req, res) {
+        const id = req.params.id
+        try {
+            const sertificate = await db.query(`SELECT * FROM sertificates where id = $1`, [id])
+      
+            res.json(sertificate.rows[0])
+        } catch(e) {
+            return res.status(404).json({message: e.message})
+        }
+        
+    }
+
+    async updateSertificate(req, res) {  
+        const {title, type, id} = req.body;
+     
+        const file = req.file; 
+        if (!file) {
+            try {
+                const sertificate = await db.query(`UPDATE sertificates SET title = $1, type = $2 where id = $3 RETURNING *`, [ title, type, id])
+                res.json(sertificate.rows[0])
+            } catch(e) {
+                return res.status(404).json({message: e.message})
+            }
+            
+        } else {
+            try {
+                // console.log(req.file)
+                const sertificateFile = await db.query(`SELECT * FROM sertificates where id = $1`, [id])
+                console.log(sertificateFile.rows[0].imagesrc)
+                fs.unlink(`${keys.del_url}${sertificateFile.rows[0].imagesrc}`,function(err){
+                    if(err) return console.log(err);
+                });  
+                const imageSrc = `${req.file.destination}${req.file.filename}`; 
+                const sertificate = await db.query(`UPDATE sertificates SET imageSrc = $1, type = $2, title = $3 where id = $4 RETURNING *`, [imageSrc, type, title, id])
+                res.json(sertificate.rows[0])
+            } catch (e) {
+                return res.status(404).json({message: e.message})
+            } 
+        } 
+    }  
+   
     async deleteSertificate(req, res) {
-        const {id} = req.body;
+        const id = req.params.id;
         try  {
+            const sertificateFile = await db.query(`SELECT * FROM sertificates where id = $1`, [id])
+            console.log(sertificateFile.rows[0].imagesrc)
+            fs.unlink(`${keys.del_url}${sertificateFile.rows[0].imagesrc}`,function(err){
+                if(err) return console.log(err);
+            });  
             const sertificate = await db.query(`DELETE FROM sertificates where id = $1`, [id])
             res.json(sertificate.rows[0])
         }  catch (e) {

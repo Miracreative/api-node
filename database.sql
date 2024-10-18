@@ -4,6 +4,8 @@ create TABLE person(
     surname VARCHAR(255)
 );
 
+
+
 create TABLE post(
     id SERIAL PRIMARY KEY,
     title VARCHAR(255),
@@ -18,6 +20,8 @@ create TABLE sertificates(
     type VARCHAR(255),
     title VARCHAR(255)
 );
+
+-- ALTER TABLE goods ALTER COLUMN description TYPE VARCHAR(2000);
 
 create TABLE news(
     id SERIAL PRIMARY KEY,
@@ -69,7 +73,7 @@ create TABLE goods(
     color VARCHAR(255),
     heatResistance VARCHAR(255),
     name VARCHAR(255),
-    description VARCHAR(255),
+    description VARCHAR(2000),
     type VARCHAR(255),
     size VARCHAR(255),
     brand VARCHAR(255),
@@ -78,3 +82,10 @@ create TABLE goods(
     typeGlue VARCHAR(255),
     dencity VARCHAR(255)
 );
+
+create TABLE favorites(
+    id SERIAL PRIMARY KEY,
+    good_id INTEGER,
+    FOREIGN KEY (good_id) REFERENCES goods (id)
+);
+
