@@ -1,5 +1,5 @@
 const Router = require('express')
-const personController = require('../controller/person.controller');
+const personController = require('../controller/persons.controller');
 const upload = require('../middleware/upload')
 
 const personRouter = new Router();
