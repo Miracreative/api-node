@@ -1,5 +1,6 @@
 const db = require('../db');
-const errorHandler = require('../utils/errorHandler')
+const keys = require('./../config/keys');
+const fs = require('fs');
 
 class NewsController {
     async createNews(req, res) {
@@ -78,10 +79,8 @@ class NewsController {
             const news = await db.query(`SELECT * FROM news`,)
             res.json((news.rows.slice(news.rows.length-3, news.rows.length)))
         } catch(e) {
-            errorHandler(res, e)
+            return res.status(404).json({message: e.message})
         }
-        
-    
     } 
 
     async getOneNews(req, res) {
@@ -93,7 +92,6 @@ class NewsController {
         } catch(e) {
             return res.status(400).json({message: e.message})
         }
-         
     }
 
     async updateNews(req, res) { 
@@ -102,7 +100,6 @@ class NewsController {
         const files = req.files;
         if (!files) {
             try {
-                console.log(req.body)
                 const news = await db.query(`UPDATE news SET  title = $1, descr = $2, content = $3 where id = $4 RETURNING *`, [ title, descr, content, id])
                 res.json(news.rows[0])
             } catch(e) {
@@ -116,21 +113,36 @@ class NewsController {
                 imagesSrc.push(`${file.destination}${file.filename}`)
             })
             try {
-                // const newsFiles = await db.query(`SELECT * FROM news where id = $1`, [id])
-                // console.log(newsFiles)
+                const imageFiles = await db.query(`SELECT * FROM news where id = $1`, [id])
 
+                imageFiles.rows[0].imagesSrc.forEach(item => {
+                    fs.unlink(`${keys.del_url}${item}`,function(err){
+                        if(err) return console.log(err);
+                        console.log('file deleted successfully');
+                    }); 
+                })
+                // проверить удаление файлов
 
                 const news = await db.query(`UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4 where id = $5 RETURNING *`, [imagesSrc, title, descr, content, id])
                 res.json(news.rows[0])
             } catch(e) {
-                errorHandler(res, e)
+                return res.status(404).json({message: e.message})
             }
-           
         }
     } 
 
     async deleteNews(req, res) {
         const id = req.params.id;
+
+        const imageFiles = await db.query(`SELECT * FROM news where id = $1`, [id])
+
+        imageFiles.rows[0].imagesSrc.forEach(item => {
+            fs.unlink(`${keys.del_url}${item}`,function(err){
+                if(err) return console.log(err);
+                console.log('file deleted successfully');
+            }); 
+        })
+
         try {
             const news = await db.query(`DELETE FROM news where id = $1`, [id])
             res.json(news.rows[0])

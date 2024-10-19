@@ -89,3 +89,42 @@ create TABLE favorites(
     FOREIGN KEY (good_id) REFERENCES goods (id)
 );
 
+create TABLE sout(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    fileType VARCHAR(255),
+    fileSize VARCHAR(255), 
+    url VARCHAR(255)
+)
+-- узнать тип fileSize
+
+create TABLE company(
+    id SERIAL PRIMARY KEY,
+    fullName VARCHAR(255),
+    shortName VARCHAR(255),
+    actualAddress VARCHAR(255),
+    postalAddress VARCHAR(255),
+    legalAddress VARCHAR(255),
+    director VARCHAR(255),
+    phone VARCHAR(255),
+    email VARCHAR(255),
+    website VARCHAR(255),
+    INN VARCHAR(255),
+    KPP VARCHAR(255),
+    OKPO VARCHAR(255),
+    OGRN VARCHAR(255),
+    OKVED VARCHAR(255),
+    bankName VARCHAR(255),
+    accountNumber VARCHAR(255),
+    correspondentAccount VARCHAR(255),
+    BIC VARCHAR(255)
+)
+
+create TABLE persons(
+    id SERIAL PRIMARY KEY,
+    imageSrc VARCHAR(255),
+    name VARCHAR(255),
+    descr VARCHAR(255),
+    watsapp VARCHAR(255),
+    email VARCHAR(255)
+)

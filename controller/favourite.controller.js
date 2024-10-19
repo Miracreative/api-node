@@ -2,7 +2,7 @@ const db = require('../db');
 
 class FavouriteController {
     async createFavourite(req, res) {
-        const {good_id} = req.body;
+        const {good_id} = req.body.data;
         try {
             const newFavourite = await db.query(`INSERT INTO favorites (good_id) values ($1) RETURNING *`, [good_id])
             res.json(newFavourite.rows[0])

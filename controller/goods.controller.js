@@ -48,7 +48,7 @@ class GoodsController {
         } catch(e) {
             return res.status(404).json({message: e.message})
         }
-    } 
+    }  
     async getOneGood(req, res) {
         const id = req.params.id
         try {
@@ -60,6 +60,42 @@ class GoodsController {
         }
         
     }
+    async getPaginationGoods(req, res) {
+        const page = req.params.page;
+        const limit = 5;
+
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+
+        try {   
+            const goods = await db.query(`SELECT * FROM goods`)
+            const result = goods.rows.slice(startIndex, endIndex)
+            const totalPages = Math.ceil(news.rows.length / limit)
+            res.json({result: result, pages: totalPages})
+        } catch(e) {
+            return res.status(404).json({message: e.message})
+        }
+      
+    } 
+
+    async getSearchGoods(req, res) {
+        const string = req.params.string;
+       
+        try {   
+            const news = await db.query(`SELECT * FROM goods`)
+            
+            let result = [];
+            news.rows.forEach(item => {
+                if (item.name.toLowerCase().includes(string.toLowerCase()) || item.description.toLowerCase().includes(string.toLowerCase())) {
+                    result.push(item)
+                }
+            })
+            res.json(result)
+        } catch(e) {
+            return res.status(404).json({message: e.message})
+        }
+      
+    } 
     async updateGoods(req, res) { 
         const {material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, typeGlue, id} = req.body;
      
@@ -101,7 +137,7 @@ class GoodsController {
         }
     } 
     async deleteGood(req, res) {
-        const {id} = req.body;
+        const {id} = req.params;
         try {
             const goods = await db.query(`DELETE FROM goods where id = $1`, [id])
             res.json(goods.rows[0])

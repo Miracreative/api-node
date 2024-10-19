@@ -11,7 +11,9 @@ const newsRouter = require('./routes/news.routes.js')
 const authRouter = require('./routes/auth.routes.js')
 const baseRouter = require('./routes/base.routes.js')
 const goodsRouter = require('./routes/goods.routes.js')
-
+const soutRouter = require('./routes/sout.routes.js')
+const personsRouter = require('./routes/persons.routes.js')
+const companyRouter = require('./routes/company.routes.js')
 
 
 const PORT =  5000;
@@ -41,5 +43,10 @@ app.use('/api', newsRouter)
 app.use('/api/auth', authRouter)
 app.use('/api', baseRouter)
 app.use('/api', goodsRouter)
+app.use('/api', soutRouter)
+app.use('/api', personsRouter)
+app.use('/api', companyRouter)
+
+
 app.listen(PORT, () => console.log(PORT))
 
