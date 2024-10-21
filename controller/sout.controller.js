@@ -6,12 +6,15 @@ class SoutController {
     async createSout(req, res) {
         const {name} = req.body;
         const file = req.file;
+        
         if (!file) {
            return res.status(400).json({message: 'Пожалуйста, загрузите файл'})
         }
         try {
-            const fileSize = req.file.size; //проверить
-            const fileType = req.type //проверить
+            const fileSize = req.file.size;
+            const index = req.file.originalname.lastIndexOf('.');
+            const fileType = req.file.originalname.slice(index, req.file.originalname.length)
+        
             const url = `${req.file.destination}${req.file.filename}`;
             const newSout = await db.query(`INSERT INTO sout (name, fileSize, fileType, url) values ($1, $2, $3, $4) RETURNING *`, [name, fileSize, fileType, url])
             res.json(newSout.rows[0])

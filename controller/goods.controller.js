@@ -61,16 +61,17 @@ class GoodsController {
         
     }
     async getPaginationGoods(req, res) {
-        const page = req.params.page;
+        const {page} = req.params;
         const limit = 5;
 
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
+    
 
         try {   
             const goods = await db.query(`SELECT * FROM goods`)
             const result = goods.rows.slice(startIndex, endIndex)
-            const totalPages = Math.ceil(news.rows.length / limit)
+            const totalPages = Math.ceil(goods.rows.length / limit)
             res.json({result: result, pages: totalPages})
         } catch(e) {
             return res.status(404).json({message: e.message})

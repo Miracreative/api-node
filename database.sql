@@ -21,7 +21,7 @@ create TABLE sertificates(
     title VARCHAR(255)
 );
 
--- ALTER TABLE goods ALTER COLUMN description TYPE VARCHAR(2000);
+-- ALTER TABLE sout ALTER COLUMN fileSize TYPE INTEGER;
 
 create TABLE news(
     id SERIAL PRIMARY KEY,
@@ -85,17 +85,16 @@ create TABLE goods(
 
 create TABLE favorites(
     id SERIAL PRIMARY KEY,
-    good_id INTEGER,
-    FOREIGN KEY (good_id) REFERENCES goods (id)
+    good_id INTEGER
 );
 
 create TABLE sout(
     id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     fileType VARCHAR(255),
-    fileSize VARCHAR(255), 
+    fileSize INTEGER, 
     url VARCHAR(255)
-)
+);
 -- узнать тип fileSize
 
 create TABLE company(
@@ -118,7 +117,7 @@ create TABLE company(
     accountNumber VARCHAR(255),
     correspondentAccount VARCHAR(255),
     BIC VARCHAR(255)
-)
+);
 
 create TABLE persons(
     id SERIAL PRIMARY KEY,
@@ -127,4 +126,4 @@ create TABLE persons(
     descr VARCHAR(255),
     watsapp VARCHAR(255),
     email VARCHAR(255)
-)
+);

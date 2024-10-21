@@ -24,15 +24,15 @@ class FavouriteController {
     async getFavouriteGoods(req, res) {
         try {
             const favouriteGoods = await db.query(`SELECT * FROM favorites`)
-
             let favouriteGoodsId = []
-
             favouriteGoods.rows.forEach(item => {
                 favouriteGoodsId.push(item.good_id)
             })
             try {
                 const goodList = await db.query(`SELECT * FROM goods WHERE id IN (${favouriteGoodsId.join(',')})`)
-                res.json(goodList.rows)
+                // console.log(favouriteGoods.rows)
+                
+                res.json({goodsList: goodList.rows, favourite: favouriteGoods.rows})
             } catch(e) {
                 return res.status(400).json({message: e.message})
             }
