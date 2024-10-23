@@ -30,7 +30,7 @@ class NewsController {
             const news = await db.query(`SELECT * FROM news`,)
             res.json(news.rows)
         } catch(e) {
-            return res.status(400).json({message: 'ytn ,l'})
+            return res.status(400).json({message: 'не достучался до бд'})
         }
         
     } 
@@ -78,7 +78,6 @@ class NewsController {
             const news = await db.query(`SELECT * FROM news`,)
             res.json((news.rows.slice(news.rows.length-3, news.rows.length)))
         } catch(e) {
-            console.log('ulr ,s')
             return res.status(404).json({message: e.message})
         }
     } 
