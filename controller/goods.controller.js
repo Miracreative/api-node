@@ -126,7 +126,7 @@ class GoodsController {
 
             }
 
-            const pdfUrl = `${req.files.pdfUrl[0]?.destination}${req.files.pdfUrl[0]?.filename}`;
+            const pdfUrl = `${req.files.pdfUrl[0].destination}${req.files.pdfUrl[0].filename}`;
             if(pdfUrl) {
                 try {
                     const goods = await db.query(`UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, pdfUrl = $18, typeGlue = $19, advantages = $20 where id = $21 RETURNING *`, [ material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, pdfUrl, typeGlue, advantages, id])
