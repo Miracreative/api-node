@@ -30,7 +30,7 @@ class NewsController {
             const news = await db.query(`SELECT * FROM news`,)
             res.json(news.rows)
         } catch(e) {
-            return res.status(400).json({message: 'не достучался до бд'})
+            return res.json({message: e.message})
         }
         
     } 
