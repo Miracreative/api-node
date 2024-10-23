@@ -26,13 +26,12 @@ class NewsController {
     }
 
     async getAllNews(req, res) {
-        // try {
-        //     const news = await db.query(`SELECT * FROM news`,)
-        //     res.json(news.rows)
-        // } catch(e) {
-        //     return res.status(400).json({message: e.message})
-        // }
-        console.log('sdfsdf')
+        try {
+            const news = await db.query(`SELECT * FROM news`,)
+            res.json(news.rows)
+        } catch(e) {
+            return res.status(400).json({message: 'ytn ,l'})
+        }
         
     } 
 
