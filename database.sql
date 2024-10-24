@@ -1,19 +1,3 @@
-create TABLE person(
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255),
-    surname VARCHAR(255)
-);
-
-
-
-create TABLE post(
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(255),
-    content VARCHAR(255),
-    user_id INTEGER,
-    FOREIGN KEY (user_id) REFERENCES person (id)
-);
-
 create TABLE sertificates(
     id SERIAL PRIMARY KEY,
     imageSrc VARCHAR(255),
@@ -21,16 +5,14 @@ create TABLE sertificates(
     title VARCHAR(255)
 );
 
--- ALTER TABLE sout ALTER COLUMN fileSize TYPE INTEGER;
 
 create TABLE news(
     id SERIAL PRIMARY KEY,
     imagesSrc text Array,
     title VARCHAR(255),
     descr VARCHAR(255),
-    content VARCHAR(255) 
+    content VARCHAR(2000) 
 );
--- Настя, измени поле
 
 create TABLE users(
     id SERIAL PRIMARY KEY,
@@ -95,7 +77,6 @@ create TABLE sout(
     fileSize INTEGER, 
     url VARCHAR(255)
 );
--- узнать тип fileSize
 
 create TABLE company(
     id SERIAL PRIMARY KEY,
