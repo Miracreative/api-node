@@ -48,5 +48,5 @@ app.use('/api', personsRouter)
 app.use('/api', companyRouter)
 
 
-app.listen(PORT, '127.0.0.1', () => console.log(PORT))
+app.listen(PORT, () => console.log(PORT))
 
