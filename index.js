@@ -35,6 +35,8 @@ const corsOptions ={
  }
 app.use(cors(corsOptions))
 
+app.use(express.static('uploads'))
+
 app.use(express.json())
 app.use('/api', userRouter)
 app.use('/api', favouriteRouter)
