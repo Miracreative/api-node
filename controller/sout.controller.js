@@ -15,7 +15,7 @@ class SoutController {
             const index = req.file.originalname.lastIndexOf('.');
             const fileType = req.file.originalname.slice(index, req.file.originalname.length)
         
-            const url = `${req.file.destination}${req.file.filename}`;
+            const url = `${req.file.filename}`;
             const newSout = await db.query(`INSERT INTO sout (name, fileSize, fileType, url) values ($1, $2, $3, $4) RETURNING *`, [name, fileSize, fileType, url])
             res.json(newSout.rows[0])
         } catch(e) {

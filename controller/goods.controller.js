@@ -11,22 +11,22 @@ class GoodsController {
 
         let goodsPersonalImages = [];
         personalImages.map((file, index) => {
-            goodsPersonalImages.push(`${file.destination}${file.filename}`)
+            goodsPersonalImages.push(`${file.filename}`)
         })
         
         const industrialImages = req.files.goodsIndustrialImages;
 
         let goodsIndustrialImages = [];
         industrialImages.map((file, index) => {
-            goodsIndustrialImages.push(`${file.destination}${file.filename}`)
+            goodsIndustrialImages.push(`${file.filename}`)
         })
         
-        const imageUrl = `${req.files.imageUrl[0].destination}${req.files.imageUrl[0].filename}`;
+        const imageUrl = `${req.files.imageUrl[0].filename}`;
         if (!imageUrl) {
             return res.status(400).json({message: "Пожалуйста, загрузите картинку"})
         } 
 
-        const pdfUrl = `${req.files.pdfUrl[0].destination}${req.files.pdfUrl[0].filename}`;
+        const pdfUrl = `${req.files.pdfUrl[0].filename}`;
         if (!pdfUrl) {
             return res.status(400).json({message: "Пожалуйста, загрузите файл"})
         }
