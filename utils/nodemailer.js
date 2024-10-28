@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-  
+
 const transporter = nodemailer.createTransport(
     {
         host: 'smtp.yandex.ru',
@@ -7,22 +7,22 @@ const transporter = nodemailer.createTransport(
         secure: true,
         auth: {
             user: 'nanalitvinova16@yandex.ru',
-            pass: 'jeweqsadhybmqvck'
-        }
+            pass: 'jeweqsadhybmqvck',
+        },
     },
     {
         from: 'Mailer test <nanalitvinova16@yandex.ru>',
-    }
-)
+    },
+);
 
-const mailer = message => {
+const mailer = (message) => {
     transporter.sendMail(message, (err, info) => {
-        if(err) return console.log(err);
-        console.log('Email sent: ', info)
-    })
-}
+        if (err) return console.log(err);
+        console.log('Email sent: ', info);
+    });
+};
 
 module.exports = mailer;
 
-    //   user: 'nanalitvinova16@yandex.ru',
-    //         pass: 'jeweqsadhybmqvck'
+//   user: 'nanalitvinova16@yandex.ru',
+//         pass: 'jeweqsadhybmqvck'
