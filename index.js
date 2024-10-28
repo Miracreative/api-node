@@ -13,6 +13,7 @@ const goodsRouter = require('./routes/goods.routes.js');
 const soutRouter = require('./routes/sout.routes.js');
 const personsRouter = require('./routes/persons.routes.js');
 const companyRouter = require('./routes/company.routes.js');
+const afoamRouter = require('./routes/afoam.routes.js');
 
 const PORT = 5000;
 
@@ -43,5 +44,6 @@ app.use('/api', goodsRouter);
 app.use('/api', soutRouter);
 app.use('/api', personsRouter);
 app.use('/api', companyRouter);
+app.use('/api', afoamRouter);
 
-app.listen(PORT, () => console.log(PORT));
+app.listen(PORT, () => console.log(`Server started on port: ${PORT}`));

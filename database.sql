@@ -5,7 +5,6 @@ create TABLE sertificates(
     title VARCHAR(255)
 );
 
-
 create TABLE news(
     id SERIAL PRIMARY KEY,
     imagesSrc text Array,
