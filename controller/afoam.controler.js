@@ -5,10 +5,10 @@ const db = require('../db');
 class AfoamController {
     async getAllAfoam(req, res) {
         try {
-            const goods = await db.query(
+            const recomendedGoods = await db.query(
                 `SELECT id, advantages, name, description FROM goods ORDER BY id DESC LIMIT 5`,
             );
-            res.json(goods.rows);
+            res.json(recomendedGoods.rows);
         } catch (e) {
             return res.status(404).json({ message: e.message });
         }
@@ -17,11 +17,12 @@ class AfoamController {
     async getOneAfoam(req, res) {
         const id = req.params.id;
         try {
-            const good = await db.query(`SELECT * FROM goods where id = $1`, [
-                id,
-            ]);
+            const oneRecomendedGood = await db.query(
+                `SELECT id, advantages, name, description FROM goods where id = $1`,
+                [id],
+            );
 
-            res.json(good.rows[0]);
+            res.json(oneRecomendedGood.rows[0]);
         } catch (e) {
             return res.status(404).json({ message: e.message });
         }
