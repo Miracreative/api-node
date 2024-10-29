@@ -276,24 +276,11 @@ class GoodsController {
 
     async sortGoodsOnMainParameters(req, res) {
         const { main } = req.params;
-
-        console.log('Выясняем тип main', typeof main, main);
-
-        // Проверяем, что main - это строка
-        if (typeof main !== 'string') {
-            return res
-                .status(400)
-                .json({ message: 'Неверный формат параметра main' });
-        }
-
-        // const mainInt = main.replaceAll(',', '');
-        const mainInt = String(main).replaceAll(',', '');
-
+        const mainInt = main.replaceAll(',', '');
         let mainArray = [];
         for (let i = 0; i < mainInt.length; i++) {
             mainArray.push(mainInt[i]);
         }
-
         try {
             const goods = await db.query(`SELECT * FROM goods`);
             let searchIndexes = [];
@@ -333,12 +320,10 @@ class GoodsController {
     async sortGoodsOnAllParameters(req, res) {
         const { parameters } = req.params;
         const parametersInt = parameters.replaceAll(',', '');
-
         let parametersArray = [];
         for (let i = 0; i < parametersInt.length; i++) {
             parametersArray.push(parametersInt[i]);
         }
-
         try {
             const goods = await db.query(`SELECT * FROM goods`);
             let searchIndexes = [];
@@ -374,6 +359,107 @@ class GoodsController {
             return res.status(404).json({ message: e.message });
         }
     }
+
+    // async sortGoodsOnMainParameters(req, res) {
+    //     const { main } = req.params;
+
+    //     console.log('Выясняем тип main', typeof main, main);
+
+    //     // Проверяем, что main - это строка
+    //     if (typeof main !== 'string') {
+    //         return res
+    //             .status(400)
+    //             .json({ message: 'Неверный формат параметра main' });
+    //     }
+
+    //     // const mainInt = main.replaceAll(',', '');
+    //     const mainInt = String(main).replaceAll(',', '');
+
+    //     let mainArray = [];
+    //     for (let i = 0; i < mainInt.length; i++) {
+    //         mainArray.push(mainInt[i]);
+    //     }
+
+    //     try {
+    //         const goods = await db.query(`SELECT * FROM goods`);
+    //         let searchIndexes = [];
+    //         const getIndexesArray = () => {
+    //             goods.rows.forEach((row, i) => {
+    //                 for (let j = 0; j < row.mainparameter.length; j++) {
+    //                     row.mainparameter[j] == mainArray[j];
+    //                     if (
+    //                         row.mainparameter[j] == mainArray[j] &&
+    //                         mainArray[j] == 1
+    //                     ) {
+    //                         return searchIndexes.push(i);
+    //                     }
+    //                 }
+    //             });
+    //         };
+    //         getIndexesArray();
+
+    //         let filteredGoods = [];
+    //         const getFilteredGoods = () => {
+    //             searchIndexes.forEach((index) => {
+    //                 filteredGoods.push(goods.rows[index]);
+    //             });
+    //         };
+    //         getFilteredGoods();
+
+    //         if (filteredGoods.length > 0) {
+    //             res.json(filteredGoods);
+    //         } else {
+    //             res.json([]);
+    //         }
+    //     } catch (e) {
+    //         return res.status(404).json({ message: e.message });
+    //     }
+    // }
+
+    // async sortGoodsOnAllParameters(req, res) {
+    //     const { parameters } = req.params;
+    //     const parametersInt = parameters.replaceAll(',', '');
+
+    //     let parametersArray = [];
+    //     for (let i = 0; i < parametersInt.length; i++) {
+    //         parametersArray.push(parametersInt[i]);
+    //     }
+
+    //     try {
+    //         const goods = await db.query(`SELECT * FROM goods`);
+    //         let searchIndexes = [];
+    //         const getIndexesArray = () => {
+    //             goods.rows.forEach((row, i) => {
+    //                 for (let j = 0; j < row.parameter.length; j++) {
+    //                     row.parameter[j] == parametersArray[j];
+    //                     if (
+    //                         row.parameter[j] == parametersArray[j] &&
+    //                         parametersArray[j] == 1
+    //                     ) {
+    //                         return searchIndexes.push(i);
+    //                     }
+    //                 }
+    //             });
+    //         };
+    //         getIndexesArray();
+
+    //         let filteredGoods = [];
+    //         const getFilteredGoods = () => {
+    //             searchIndexes.forEach((index) => {
+    //                 filteredGoods.push(goods.rows[index]);
+    //             });
+    //         };
+    //         getFilteredGoods();
+
+    //         if (filteredGoods.length > 0) {
+    //             res.json(filteredGoods);
+    //         } else {
+    //             res.json([]);
+    //         }
+    //     } catch (e) {
+    //         return res.status(404).json({ message: e.message });
+    //     }
+    // }
 }
 
 module.exports = new GoodsController();
