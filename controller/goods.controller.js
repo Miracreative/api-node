@@ -90,6 +90,7 @@ class GoodsController {
             errorHandler(res, e);
         }
     }
+
     async getAllGoods(req, res) {
         try {
             const goods = await db.query(`SELECT * FROM goods`);
@@ -98,6 +99,7 @@ class GoodsController {
             return res.status(404).json({ message: e.message });
         }
     }
+
     async getOneGood(req, res) {
         const id = req.params.id;
         try {
@@ -110,6 +112,7 @@ class GoodsController {
             return res.status(404).json({ message: e.message });
         }
     }
+
     async getPaginationGoods(req, res) {
         const { page } = req.params;
         const limit = 5;
@@ -149,6 +152,7 @@ class GoodsController {
             return res.status(404).json({ message: e.message });
         }
     }
+
     async updateGoods(req, res) {
         const {
             material,
@@ -257,6 +261,7 @@ class GoodsController {
             }
         }
     }
+
     async deleteGood(req, res) {
         const { id } = req.params;
         try {
@@ -268,13 +273,20 @@ class GoodsController {
             return res.status(404).json({ message: e.message });
         }
     }
+
     async sortGoodsOnMainParameters(req, res) {
         const { main } = req.params;
-        const mainInt = main.replaceAll(',', '');
+
+        console.log('Выясняем тип main', typeof main, main);
+
+        // const mainInt = main.replaceAll(',', '');
+        const mainInt = String(main).replaceAll(',', '');
+
         let mainArray = [];
         for (let i = 0; i < mainInt.length; i++) {
             mainArray.push(mainInt[i]);
         }
+
         try {
             const goods = await db.query(`SELECT * FROM goods`);
             let searchIndexes = [];
@@ -310,13 +322,16 @@ class GoodsController {
             return res.status(404).json({ message: e.message });
         }
     }
+
     async sortGoodsOnAllParameters(req, res) {
         const { parameters } = req.params;
         const parametersInt = parameters.replaceAll(',', '');
+
         let parametersArray = [];
         for (let i = 0; i < parametersInt.length; i++) {
             parametersArray.push(parametersInt[i]);
         }
+
         try {
             const goods = await db.query(`SELECT * FROM goods`);
             let searchIndexes = [];
