@@ -279,6 +279,13 @@ class GoodsController {
 
         console.log('Выясняем тип main', typeof main, main);
 
+        // Проверяем, что main - это строка
+        if (typeof main !== 'string') {
+            return res
+                .status(400)
+                .json({ message: 'Неверный формат параметра main' });
+        }
+
         // const mainInt = main.replaceAll(',', '');
         const mainInt = String(main).replaceAll(',', '');
 
