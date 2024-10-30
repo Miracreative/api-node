@@ -15,7 +15,7 @@ class CompanyController {
 	async getAllCompany(req, res) {
 		try {
 			const company = await db.query(`SELECT * FROM company`)
-			res.json(company.rows[0])
+			res.json(company.rows)
 		} catch (e) {
 			return res.status(404).json({ message: e.message })
 		}
