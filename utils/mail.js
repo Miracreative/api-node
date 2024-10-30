@@ -10,7 +10,7 @@ const mailer = require('nodemailer');
 //     DESTINATION_EMAIL,
 // } = require('../utils/url.js');
 
-const config = require('../utils/url.js');
+const config = require('./config.js');
 
 const smtpTransport = mailer.createTransport(
     {
