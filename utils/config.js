@@ -39,10 +39,10 @@
 
 // module.exports = config;
 
-PORT = 5000
+PORT = 5000;
 
-EMAIL_HOST = "smtp.yandex.ru"
-EMAIL_PORT = 465
-EMAIL_USER = "radicall004@yandex.ru"
-EMAIL_PASS = "gdwemxtnbfrgyabd"
-DESTINATION_EMAIL = radicall004@yandex.ru
+EMAIL_HOST = 'smtp.yandex.ru';
+EMAIL_PORT = 465;
+EMAIL_USER = 'radicall004@yandex.ru';
+EMAIL_PASS = 'gdwemxtnbfrgyabd';
+// DESTINATION_EMAIL = radicall004@yandex.ru

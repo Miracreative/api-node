@@ -24,7 +24,7 @@ const smtpTransport = mailer.createTransport(
         tls: { rejectUnauthorized: false },
     },
     {
-        from: `Запрос на обратную связь <${DESTINATION_EMAIL}>`, // От кого
+        from: `Запрос на обратную связь <radicall004@yandex.ru>`, // От кого
     },
 );
 
