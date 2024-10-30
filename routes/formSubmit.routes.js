@@ -21,7 +21,6 @@ const {
     MAIL_SUCCESSED,
     MAIL_SUBMISSION_ERROR,
     UNKNOWN_ERROR,
-    MAIL_SUBMISSION_ERROR,
 } = require('../utils/informMessages.js');
 
 // const { METHOD_NOT_ALLOWED } = require('../utils/informMessages.js');
