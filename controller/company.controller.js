@@ -3,6 +3,8 @@ const db = require('../db');
 class CompanyController {
 	async createCompany(req, res) {
 		try {
+
+			console.log(req.body);
 			const { fullName, shortName, actualAddress, postalAddress, legalAddress, director, phone, email, website, INN, KPP, OKPO, OGRN, OKVED, bankName, accountNumber, correspondentAccount, BIC } = req.body;
 			const newCompany = await db.query(`INSERT INTO company (fullName,shortName, actualAddress, postalAddress, legalAddress, director, phone, email, website, INN, KPP, OKPO, OGRN, OKVED, bankName, accountNumber, correspondentAccount, BIC) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) RETURNING *`, [fullName, shortName, actualAddress, postalAddress, legalAddress, director, phone, email, website, INN, KPP, OKPO, OGRN, OKVED, bankName, accountNumber, correspondentAccount, BIC])
 			res.json(newCompany.rows[0])
