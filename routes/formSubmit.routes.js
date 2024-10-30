@@ -1,6 +1,6 @@
-require('dotenv').config();
+// require('dotenv').config();
 
-const config = require('../utils/config.js');
+// const config = require('../utils/config.js');
 
 const express = require('express');
 const multer = require('multer');
@@ -8,6 +8,14 @@ const multer = require('multer');
 const sendEmail = require('../utils/mail.js');
 
 // const { EMAIL_USER } = require('../utils/url.js');
+const {
+    PORT,
+    EMAIL_HOST,
+    EMAIL_PORT,
+    EMAIL_USER,
+    EMAIL_PASS,
+    DESTINATION_EMAIL,
+} = require('../utils/config.js');
 
 const {
     MAIL_SUCCESSED,
@@ -54,7 +62,7 @@ router.post('/formSubmit', upload.single('file'), async (req, res) => {
 
     // Формирование сообщения для электронной почты
     const message = {
-        to: config.EMAIL_USER, // Адрес получателя
+        to: EMAIL_USER, // Адрес получателя
         subject: `Письмо с сайта Atman Auto от ${firstName} ${lastName}`,
         text: `
     Имя: ${firstName}

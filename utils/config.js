@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 
 // //* HOST *//
 // const HOST = process.env.HOST;
@@ -19,22 +19,30 @@ require('dotenv').config();
 //     DESTINATION_EMAIL,
 // };
 
-const {
-    PORT,
-    EMAIL_HOST,
-    EMAIL_PORT,
-    EMAIL_USER,
-    EMAIL_PASS,
-    DESTINATION_EMAIL,
-} = process.env;
+// const {
+//     PORT,
+//     EMAIL_HOST,
+//     EMAIL_PORT,
+//     EMAIL_USER,
+//     EMAIL_PASS,
+//     DESTINATION_EMAIL,
+// } = process.env;
 
-const config = {
-    PORT: PORT || 5000,
-    EMAIL_HOST: EMAIL_HOST,
-    EMAIL_PORT: EMAIL_PORT,
-    EMAIL_USER: EMAIL_USER,
-    EMAIL_PASS: EMAIL_PASS,
-    DESTINATION_EMAIL: DESTINATION_EMAIL,
-};
+// const config = {
+//     PORT: PORT || 5000,
+//     EMAIL_HOST: EMAIL_HOST,
+//     EMAIL_PORT: EMAIL_PORT,
+//     EMAIL_USER: EMAIL_USER,
+//     EMAIL_PASS: EMAIL_PASS,
+//     DESTINATION_EMAIL: DESTINATION_EMAIL,
+// };
 
-module.exports = config;
+// module.exports = config;
+
+PORT = 5000
+
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_USER = "radicall004@yandex.ru"
+EMAIL_PASS = "gdwemxtnbfrgyabd"
+DESTINATION_EMAIL = radicall004@yandex.ru
