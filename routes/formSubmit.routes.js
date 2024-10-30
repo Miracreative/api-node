@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const config = require('../utils/url.js');
+const config = require('../utils/config.js');
 
 const express = require('express');
 const multer = require('multer');
