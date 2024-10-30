@@ -1,14 +1,19 @@
+require('dotenv').config();
+
+const config = require('../utils/url.js');
+
 const express = require('express');
 const multer = require('multer');
 
 const sendEmail = require('../utils/mail.js');
 
-const { EMAIL_USER } = require('../utils/url.js');
+// const { EMAIL_USER } = require('../utils/url.js');
 
 const {
     MAIL_SUCCESSED,
     MAIL_SUBMISSION_ERROR,
     UNKNOWN_ERROR,
+    MAIL_SUBMISSION_ERROR,
 } = require('../utils/informMessages.js');
 
 // const { METHOD_NOT_ALLOWED } = require('../utils/informMessages.js');
@@ -49,7 +54,7 @@ router.post('/formSubmit', upload.single('file'), async (req, res) => {
 
     // Формирование сообщения для электронной почты
     const message = {
-        to: EMAIL_USER, // Адрес получателя
+        to: config.EMAIL_USER, // Адрес получателя
         subject: `Письмо с сайта Atman Auto от ${firstName} ${lastName}`,
         text: `
     Имя: ${firstName}
@@ -89,7 +94,7 @@ router.post('/formSubmit', upload.single('file'), async (req, res) => {
         res.status(200).send(MAIL_SUCCESSED);
     } catch (error) {
         console.error(`${MAIL_SUBMISSION_ERROR}:`, error);
-        res.status(500).send(UNKNOWN_ERROR);
+        res.status(500).send(MAIL_SUBMISSION_ERROR, UNKNOWN_ERROR);
     }
 });
 

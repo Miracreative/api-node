@@ -19,7 +19,7 @@ const MIN_LENGTH_FIELD = 'Минимальное количество симво
 const REQUIRED_FIELD = 'Обязательное поле';
 const INCORRECT_EMAIL = 'Некорректный адрес электронной почты';
 const INCORRECT_PHONE = 'Некорректный номер телефона';
-const MAIL_SUBMISSION_ERROR = 'Ошибка при отправке письма';
+const MAIL_SUBMISSION_ERROR = 'Ошибка при отправке письма.';
 
 module.exports = {
     LOADING_INFO,
