@@ -349,6 +349,9 @@ class GoodsController {
         }
     }
 
+    //* Старая версия, не удалять! *//
+    //////////////////////////////////
+
     // async sortGoodsOnMainParameters(req, res) {
     //     const { main } = req.params;
     //     const mainInt = main.replaceAll(',', '');
@@ -542,6 +545,9 @@ class GoodsController {
     //         return res.status(404).json({ message: e.message });
     //     }
     // }
+
+    //////////////////////////////////
+    //* Старая версия, не удалять! *//
 }
 
 module.exports = new GoodsController();
