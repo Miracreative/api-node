@@ -33,6 +33,8 @@ const corsOptions = {
         'http://localhost:5173',
         'http://miracreative-atman-auto-6725.twc1.net',
         'https://miracreative-atman-auto-6725.twc1.net',
+        'http://miracreative-atman-auto-cff8.twc1.net',
+        'https://miracreative-atman-auto-cff8.twc1.net',
     ],
     credentials: true, //access-control-allow-credentials:true
     optionSuccessStatus: 200,
