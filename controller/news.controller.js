@@ -105,9 +105,10 @@ class NewsController {
     }
 
     async updateNews(req, res) {
-        console.log('hello world')
-        // const { title, descr, content, id } = req.body;
-
+       
+        const { title, descr, content, id } = req.body;
+        console.log(title, descr, content, id)
+        console.log(req)
         // const files = req.files;
         // console.lof(req.files)
         // if (!files) {
