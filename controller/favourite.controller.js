@@ -12,9 +12,9 @@ class FavouriteController {
     }
      
     async deleteFavourite(req, res) {
-        const {id} = req.params;
+        const {good_id} = req.params;
         try {
-            await db.query(`DELETE FROM favorites WHERE id = $1`, [id])
+            await db.query(`DELETE FROM favorites WHERE good_id = $1`, [good_id])
             res.json({message: 'Избранное удалено'})
         } catch (e) {
             return res.status(404).json({message: e.message})
