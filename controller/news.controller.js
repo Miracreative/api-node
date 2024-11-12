@@ -110,7 +110,6 @@ class NewsController {
       
         const files = req.files;
         if (req.files.length == 0) {
-            console.log(title, descr, content, id)
             try {
                 const news = await db.query(
                     `UPDATE news SET title = $1, descr = $2, content = $3 where id = $4 RETURNING *`,
