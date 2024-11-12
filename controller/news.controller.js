@@ -109,15 +109,16 @@ class NewsController {
 
         const files = req.files;
         if (!files) {
-            try {
-                const news = await db.query(
-                    `UPDATE news SET  title = $1, descr = $2, content = $3 where id = $4 RETURNING *`,
-                    [title, descr, content, id],
-                );
-                res.json(news.rows[0]);
-            } catch (e) {
-                return res.status(400).json({ message: e.message });
-            }
+            console.log('hello')
+            // try {
+            //     const news = await db.query(
+            //         `UPDATE news SET  title = $1, descr = $2, content = $3 where id = $4 RETURNING *`,
+            //         [title, descr, content, id],
+            //     );
+            //     res.json(news.rows[0]);
+            // } catch (e) {
+            //     return res.status(400).json({ message: e.message });
+            // }
         } else {
             let imagesSrc = [];
 
