@@ -140,7 +140,7 @@ class NewsController {
                 // });
                 // проверить удаление файлов
 
-                console.log('images')
+                console.log(imageFiles)
                 // const news = await db.query(
                 //     `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4 where id = $5 RETURNING *`,
                 //     [imagesSrc, title, descr, content, id],
