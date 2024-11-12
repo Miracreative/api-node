@@ -132,7 +132,7 @@ class NewsController {
                     [id],
                 );
 
-                // imageFiles.rows[0].imagesSrc.forEach((item) => {
+                // imageFiles.rows[0].imagessrc.forEach((item) => {
                 //     fs.unlink(`${keys.del_url}${item}`, function (err) {
                 //         if (err) return console.log(err);
                 //         console.log('file deleted successfully');
@@ -140,12 +140,12 @@ class NewsController {
                 // });
                 // проверить удаление файлов
 
-                console.log(imageFiles)
-                // const news = await db.query(
-                //     `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4 where id = $5 RETURNING *`,
-                //     [imagesSrc, title, descr, content, id],
-                // );
-                // res.json(news.rows[0]);
+                console.log(imagesSrc)
+                const news = await db.query(
+                    `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4 where id = $5 RETURNING *`,
+                    [imagesSrc, title, descr, content, id],
+                );
+                res.json(news.rows[0]);
             } catch (e) {
                 return res.status(404).json({ message: e.message });
             }
