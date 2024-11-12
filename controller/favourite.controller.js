@@ -14,7 +14,7 @@ class FavouriteController {
     async deleteFavourite(req, res) {
         const {good_id} = req.params;
         try {
-
+            console.log(good_id)
             const favorite = await db.query(
                 `SELECT * FROM favorites where good_id = $1`,
                 [good_id],
