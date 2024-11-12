@@ -108,46 +108,47 @@ class NewsController {
         const { title, descr, content, id } = req.body;
 
         const files = req.files;
-        if (!files) {
-            console.log('hello')
-            // try {
-            //     const news = await db.query(
-            //         `UPDATE news SET  title = $1, descr = $2, content = $3 where id = $4 RETURNING *`,
-            //         [title, descr, content, id],
-            //     );
-            //     res.json(news.rows[0]);
-            // } catch (e) {
-            //     return res.status(400).json({ message: e.message });
-            // }
-        } else {
-            let imagesSrc = [];
+        console.lof(req.files)
+        // if (!files) {
+        //     console.log('hello')
+        //     // try {
+        //     //     const news = await db.query(
+        //     //         `UPDATE news SET  title = $1, descr = $2, content = $3 where id = $4 RETURNING *`,
+        //     //         [title, descr, content, id],
+        //     //     );
+        //     //     res.json(news.rows[0]);
+        //     // } catch (e) {
+        //     //     return res.status(400).json({ message: e.message });
+        //     // }
+        // } else {
+        //     let imagesSrc = [];
 
-            files.map((file, index) => {
-                imagesSrc.push(file.filename);
-            });
-            try {
-                const imageFiles = await db.query(
-                    `SELECT * FROM news where id = $1`,
-                    [id],
-                );
+        //     files.map((file, index) => {
+        //         imagesSrc.push(file.filename);
+        //     });
+        //     try {
+        //         const imageFiles = await db.query(
+        //             `SELECT * FROM news where id = $1`,
+        //             [id],
+        //         );
 
-                imageFiles.rows[0].imagesSrc.forEach((item) => {
-                    fs.unlink(`${keys.del_url}${item}`, function (err) {
-                        if (err) return console.log(err);
-                        console.log('file deleted successfully');
-                    });
-                });
-                // проверить удаление файлов
+        //         imageFiles.rows[0].imagesSrc.forEach((item) => {
+        //             fs.unlink(`${keys.del_url}${item}`, function (err) {
+        //                 if (err) return console.log(err);
+        //                 console.log('file deleted successfully');
+        //             });
+        //         });
+        //         // проверить удаление файлов
 
-                const news = await db.query(
-                    `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4 where id = $5 RETURNING *`,
-                    [imagesSrc, title, descr, content, id],
-                );
-                res.json(news.rows[0]);
-            } catch (e) {
-                return res.status(404).json({ message: e.message });
-            }
-        }
+        //         const news = await db.query(
+        //             `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4 where id = $5 RETURNING *`,
+        //             [imagesSrc, title, descr, content, id],
+        //         );
+        //         res.json(news.rows[0]);
+        //     } catch (e) {
+        //         return res.status(404).json({ message: e.message });
+        //     }
+        // }
     }
 
     async deleteNews(req, res) {
