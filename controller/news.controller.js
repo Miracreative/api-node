@@ -125,29 +125,30 @@ class NewsController {
             files.map((file, index) => {
                 imagesSrc.push(file.filename);
             });
-            console.log('images')
-            // try {
-            //     const imageFiles = await db.query(
-            //         `SELECT * FROM news where id = $1`,
-            //         [id],
-            //     );
+            
+            try {
+                const imageFiles = await db.query(
+                    `SELECT * FROM news where id = $1`,
+                    [id],
+                );
 
-            //     imageFiles.rows[0].imagesSrc.forEach((item) => {
-            //         fs.unlink(`${keys.del_url}${item}`, function (err) {
-            //             if (err) return console.log(err);
-            //             console.log('file deleted successfully');
-            //         });
-            //     });
-            //     // проверить удаление файлов
+                imageFiles.rows[0].imagesSrc.forEach((item) => {
+                    fs.unlink(`${keys.del_url}${item}`, function (err) {
+                        if (err) return console.log(err);
+                        console.log('file deleted successfully');
+                    });
+                });
+                // проверить удаление файлов
 
-            //     const news = await db.query(
-            //         `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4 where id = $5 RETURNING *`,
-            //         [imagesSrc, title, descr, content, id],
-            //     );
-            //     res.json(news.rows[0]);
-            // } catch (e) {
-            //     return res.status(404).json({ message: e.message });
-            // }
+                console.log('images')
+                // const news = await db.query(
+                //     `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4 where id = $5 RETURNING *`,
+                //     [imagesSrc, title, descr, content, id],
+                // );
+                // res.json(news.rows[0]);
+            } catch (e) {
+                return res.status(404).json({ message: e.message });
+            }
         }
     }
 
