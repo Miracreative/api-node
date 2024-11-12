@@ -132,12 +132,12 @@ class NewsController {
                     [id],
                 );
 
-                imageFiles.rows[0].imagesSrc.forEach((item) => {
-                    fs.unlink(`${keys.del_url}${item}`, function (err) {
-                        if (err) return console.log(err);
-                        console.log('file deleted successfully');
-                    });
-                });
+                // imageFiles.rows[0].imagesSrc.forEach((item) => {
+                //     fs.unlink(`${keys.del_url}${item}`, function (err) {
+                //         if (err) return console.log(err);
+                //         console.log('file deleted successfully');
+                //     });
+                // });
                 // проверить удаление файлов
 
                 console.log('images')
