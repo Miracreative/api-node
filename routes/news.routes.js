@@ -19,7 +19,7 @@ newsRouter.get(
 newsRouter.get(
     '/news-last',
     //  auth,
-    newsController.getLastNews,
+    newsController.getLastNews
 );
 newsRouter.get('/news-pagination/:page', newsController.getPaginationNews);
 newsRouter.get('/news-search/:string', newsController.getSearchNews);
@@ -27,7 +27,7 @@ newsRouter.get('/news/:id', newsController.getOneNews);
 newsRouter.put(
     '/news',
     upload.array('imagesSrc', 10),
-    newsController.updateNews,
+    newsController.updateNews
 );
 newsRouter.delete('/news/:id', newsController.deleteNews);
 

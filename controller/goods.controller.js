@@ -277,6 +277,7 @@ class GoodsController {
     async sortGoodsOnMainParameters(req, res) {
         const { main } = req.params;
         const mainInt = main.replaceAll(',', '');
+
         let mainArray = [];
         for (let i = 0; i < mainInt.length; i++) {
             mainArray.push(mainInt[i]);
@@ -320,6 +321,7 @@ class GoodsController {
     async sortGoodsOnAllParameters(req, res) {
         const { parameters } = req.params;
         const parametersInt = parameters.replaceAll(',', '');
+
         let parametersArray = [];
         for (let i = 0; i < parametersInt.length; i++) {
             parametersArray.push(parametersInt[i]);
