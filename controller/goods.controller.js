@@ -174,6 +174,7 @@ class GoodsController {
             dencity,
             typeGlue,
             id,
+            advantages
         } = req.body;
 
         const files = req.files;
