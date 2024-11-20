@@ -207,7 +207,7 @@ class GoodsController {
             res.json(goods.rows[0]);
         } else {
             const personalImages = req.files.goodsPersonalImages;
-            if (personalImages) {
+            if (personalImages.length) {
                 let goodsPersonalImages = [];
                 personalImages.map((file, index) => {
                     goodsPersonalImages.push(file.filename);

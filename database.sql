@@ -96,7 +96,8 @@ create TABLE company(
     bankName VARCHAR(255),
     accountNumber VARCHAR(255),
     correspondentAccount VARCHAR(255),
-    BIC VARCHAR(255)
+    BIC VARCHAR(255),
+    file VARCHAR(255)
 );
 
 create TABLE persons(
