@@ -10,8 +10,9 @@ const db = require('../db');
 
 class AuthController {
     async login(req, res) {   
-        const {email, password} = req.body;
+        const {email, password} = req.body.data;
         const candidate = await db.query(`SELECT * FROM users WHERE email = $1::text`, [email]);
+        console.log(candidate)
         if(candidate.rowCount !== 0) {
             const passwordResult = bcrypt.compareSync(password, candidate.rows[0].password)
             if(passwordResult) {

@@ -93,7 +93,6 @@ class PersonController {
 					`SELECT * FROM persons where id = $1`,
 					[id],
 				);
-				console.log(personFile.rows[0].imagesrc);
 				fs.unlink(
 					`${keys.del_url}${personFile.rows[0].imagesrc}`,
 					function (err) {
