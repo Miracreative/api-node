@@ -37,6 +37,13 @@ create TABLE reset(
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
+create TABLE refresh(
+    id SERIAL PRIMARY KEY,
+    refresh_token VARCHAR(255),
+    user_id INTEGER,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
 create TABLE goods( 
     id SERIAL PRIMARY KEY,
     imageUrl VARCHAR(255),

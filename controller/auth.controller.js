@@ -9,26 +9,79 @@ const errorHandler = require('../utils/errorHandler')
 const db = require('../db');
 
 class AuthController {
-    async login(req, res) {   
-        const {email, password} = req.body.data;
-        const candidate = await db.query(`SELECT * FROM users WHERE email = $1::text`, [email]);
-        console.log(candidate)
-        if(candidate.rowCount !== 0) {
-            const passwordResult = bcrypt.compareSync(password, candidate.rows[0].password)
-            if(passwordResult) {
+    async login(req, res) { 
+        try {
+            const {email, password} = req.body.data;
+            const candidate = await db.query(`SELECT * FROM users WHERE email = $1::text`, [email]);
+            if(candidate.rowCount !== 0) {
+                const passwordResult = bcrypt.compareSync(password, candidate.rows[0].password)
+                if(passwordResult) {
+                    const token = jwt.sign({
+                        id: candidate.rows[0].id,
+                        email: candidate.rows[0].email,
+                        role: candidate.rows[0].email
+                    }, keys.jwt, {expiresIn: 60 * 60}) // 60 секунд * 60 минут
+    
+                    const refresh_token = jwt.sign({
+                        id: candidate.rows[0].id,
+                        email: candidate.rows[0].email,
+                        role: candidate.rows[0].email
+                    }, keys.refresh, {expiresIn: 60 * 60 * 24 * 5})
+
+                    const user_id = candidate.rows[0].id
+
+                    try {
+                        const newUserRefresh = await db.query(`INSERT INTO refresh (refresh_token, user_id) values ($1, $2) RETURNING *`, [refresh_token, user_id])
+                        
+                        res.cookie('refresh_token', refresh_token, {maxAge: 5 * 24 * 60 * 60 * 1000, httpOnly: true})
+                        return res.json({token: `Bearer ${token}`, refresh_token: refresh_token})
+    
+                    } catch(e) {
+                        return res.status(500).json({message: 'Ошибка сервера при создании рефреш токена'})
+                    }
+    
+                } else {
+                   return res.status(401).json({message: 'Пароли не совпали'})
+                }
+            } else {
+               return res.status(404).json({message: 'Пользователя нет, ошибка'})
+            }
+        }  catch(e) {
+            return res.status(500).json({message: 'Упс! Что-то пошло не так'});
+        }
+       
+    } 
+
+    async logout(req, res) {
+        try {
+            const {refresh_token} = req.cookies;
+            const remoovedToken = await db.query(`SELECT * FROM refresh WHERE refresh_token = $1::text`, [refresh_token]);
+            if(remoovedToken.rowCount !== 0) {
+                await db.query(`DELETE FROM refresh WHERE refresh_token = $1::text`, [refresh_token]);
+                res.clearCookie('refresh_token')
+                return res.json({message: 'Вы вышли из системы'})
+            }
+        } catch(e) {
+            return res.status(500).json({message: 'Упс! Что-то пошло не так'});
+        }
+    }
+
+    async refresh(req, res) {
+        try {
+            const {refresh_token} = req.cookies;
+            const refreshToken = await db.query(`SELECT * FROM refresh WHERE refresh_token = $1::text`, [refresh_token]);
+            if(refreshToken.rowCount !== 0) {
                 const token = jwt.sign({
                     id: candidate.rows[0].id,
                     email: candidate.rows[0].email,
                     role: candidate.rows[0].email
-                }, keys.jwt, {expiresIn: 60 * 60}) // 60 секунд * 60 минут
+                }, keys.jwt, {expiresIn: 60 * 60}) 
                 return res.json({token: `Bearer ${token}`})
-            } else {
-               return res.status(401).json({message: 'Пароли не совпали'})
             }
-        } else {
-           return res.status(404).json({message: 'Пользователя нет, ошибка'})
+        } catch(e) {
+            return res.status(500).json({message: 'Упс! Что-то пошло не так'});
         }
-    } 
+    }
 
     async register(req, res) {
         const salt = bcrypt.genSaltSync(10);

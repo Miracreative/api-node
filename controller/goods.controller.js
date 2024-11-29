@@ -206,52 +206,105 @@ class GoodsController {
             );
             res.json(goods.rows[0]);
         } else {
+            
             const personalImages = req.files.goodsPersonalImages;
-            if (personalImages.length) {
+            if (personalImages.length > 0) {
+                const personalImagesFiles = await db.query(
+                    `SELECT * FROM goods where id = $1`,
+                    [id],
+                );
+
+                personalImagesFiles.rows[0].goodspersonalimages.forEach((item) => {
+                    fs.unlink(`${keys.del_url}${item}`, function (err) {
+                        if (err) return console.log(err);
+                        console.log('file deleted successfully');
+                    });
+                });
                 let goodsPersonalImages = [];
                 personalImages.map((file, index) => {
                     goodsPersonalImages.push(file.filename);
                 });
+                const goods = await db.query(
+                    `UPDATE goods SET  goodsPersonalImages = $1 where id = $2 RETURNING *`,
+                    [
+                        goodsPersonalImages,
+                        id,
+                    ],
+                );
+                res.json(goods.rows[0]);
             }
 
             const industrialImages = req.files.goodsIndustrialImages;
-            if (industrialImages) {
+            if (industrialImages.length > 0) {
+
+                const industrialImagesFiles = await db.query(
+                    `SELECT * FROM goods where id = $1`,
+                    [id],
+                );
+
+                industrialImagesFiles.rows[0].goodsindustrialimages.forEach((item) => {
+                    fs.unlink(`${keys.del_url}${item}`, function (err) {
+                        if (err) return console.log(err);
+                        console.log('file deleted successfully');
+                    });
+                });
                 let goodsIndustrialImages = [];
                 industrialImages.map((file, index) => {
                     goodsIndustrialImages.push(file.filename);
                 });
+                const goods = await db.query(
+                    `UPDATE goods SET  goodsIndustrialImages = $1 where id = $2 RETURNING *`,
+                    [
+                        goodsIndustrialImages,
+                        id,
+                    ],
+                );
+                res.json(goods.rows[0]);
             }
 
             const imageUrl = `${req.files.imageUrl[0].filename}`;
             if (imageUrl) {
+                const imageUrlFiles = await db.query(
+                    `SELECT * FROM goods where id = $1`,
+                    [id],
+                );
+
+                fs.unlink(
+					`${keys.del_url}${imageUrlFiles.rows[0].imageurl}`,
+					function (err) {
+						if (err) return console.log(err);
+					},
+				);
+                const imageUrl = `${req.files.imageUrl[0].filename}`;
+                const goods = await db.query(
+                    `UPDATE goods SET  imageUrl = $1 where id = $2 RETURNING *`,
+                    [
+                        imageUrl,
+                        id,
+                    ],
+                );
+                res.json(goods.rows[0]);
             }
 
             const pdfUrl = `${req.files.pdfUrl[0].filename}`;
             if (pdfUrl) {
                 try {
+                    const pdfUrlFiles = await db.query(
+                        `SELECT * FROM goods where id = $1`,
+                        [id],
+                    );
+    
+                    fs.unlink(
+                        `${keys.del_url}${pdfUrlFiles.rows[0].pdfurl}`,
+                        function (err) {
+                            if (err) return console.log(err);
+                        },
+                    );
+                    const pdfUrl = `${req.files.pdfUrl[0].filename}`;
                     const goods = await db.query(
-                        `UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, pdfUrl = $18, typeGlue = $19, advantages = $20 where id = $21 RETURNING *`,
+                        `UPDATE goods SET pdfUrl = $1 where id = $2 RETURNING *`,
                         [
-                            material,
-                            parameter,
-                            mainParameter,
-                            article,
-                            thickness,
-                            volume,
-                            pcs,
-                            baseType,
-                            color,
-                            heatResistance,
-                            name,
-                            description,
-                            type,
-                            size,
-                            brand,
-                            linerType,
-                            dencity,
                             pdfUrl,
-                            typeGlue,
-                            advantages,
                             id,
                         ],
                     );
@@ -260,6 +313,32 @@ class GoodsController {
                     return res.status(404).json({ message: e.message });
                 }
             }
+            const goods = await db.query(
+                `UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19 where id = $20 RETURNING *`,
+                [
+                    material,
+                    parameter,
+                    mainParameter,
+                    article,
+                    thickness,
+                    volume,
+                    pcs,
+                    baseType,
+                    color,
+                    heatResistance,
+                    name,
+                    description,
+                    type,
+                    size,
+                    brand,
+                    linerType,
+                    dencity,
+                    typeGlue,
+                    advantages,
+                    id,
+                ],
+            );
+            res.json(goods.rows[0]);
         }
     }
 
