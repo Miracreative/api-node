@@ -29,12 +29,13 @@ class AuthController {
                     }, keys.refresh, {expiresIn: 60 * 60 * 24 * 5})
 
                     const user_id = candidate.rows[0].id
+                    const user_name = candidate.rows[0].name
 
                     try {
                         const newUserRefresh = await db.query(`INSERT INTO refresh (refresh_token, user_id) values ($1, $2) RETURNING *`, [refresh_token, user_id])
                         
                         res.cookie('refresh_token', refresh_token, {maxAge: 5 * 24 * 60 * 60 * 1000, httpOnly: true})
-                        return res.json({token: `Bearer ${token}`, refresh_token: refresh_token})
+                        return res.status(200).json({token: `Bearer ${token}`, refresh_token: refresh_token, user_name: user_name})
     
                     } catch(e) {
                         return res.status(500).json({message: 'Ошибка сервера при создании рефреш токена'})
