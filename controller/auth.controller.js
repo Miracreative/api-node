@@ -19,13 +19,13 @@ class AuthController {
                     const token = jwt.sign({
                         id: candidate.rows[0].id,
                         email: candidate.rows[0].email,
-                        role: candidate.rows[0].email
+                        role: candidate.rows[0].role
                     }, keys.jwt, {expiresIn: 60 * 60}) // 60 секунд * 60 минут
     
                     const refresh_token = jwt.sign({
                         id: candidate.rows[0].id,
                         email: candidate.rows[0].email,
-                        role: candidate.rows[0].email
+                        role: candidate.rows[0].role
                     }, keys.refresh, {expiresIn: 60 * 60 * 24 * 5})
 
                     const user_id = candidate.rows[0].id
@@ -71,13 +71,16 @@ class AuthController {
         try {
             const {refresh_token} = req.cookies;
             const refreshToken = await db.query(`SELECT * FROM refresh WHERE refresh_token = $1::text`, [refresh_token]);
+            const user_id = refreshToken.rows[0].user_id;
+            const candidate = await db.query(`SELECT * FROM users WHERE id = $1::int`, [user_id]);
+            const user_name = candidate.rows[0].name
             if(refreshToken.rowCount !== 0) {
                 const token = jwt.sign({
                     id: candidate.rows[0].id,
                     email: candidate.rows[0].email,
-                    role: candidate.rows[0].email
+                    role: candidate.rows[0].role
                 }, keys.jwt, {expiresIn: 60 * 60}) 
-                return res.json({token: `Bearer ${token}`})
+                return res.json({token: `Bearer ${token}`, user_name: user_name})
             }
         } catch(e) {
             return res.status(500).json({message: 'Упс! Что-то пошло не так'});
