@@ -125,7 +125,7 @@ class AuthController {
                 if(err) {
                     return res.json({message: 'Попробуйте позже', err})
                 }
-                const {email} = req.body;
+                const {email} = req.body.data;
                 const token = buffer.toString('hex')
                 const resetTokenExp = Date.now() + 60 * 60 * 1000
                 const candidate = await db.query(`SELECT * FROM users WHERE email = $1::text`, [email]);
@@ -133,6 +133,8 @@ class AuthController {
                     const user_id = candidate.rows[0].id
                     const newUserReset = await db.query(`INSERT INTO reset (resetToken, resetTokenExp, user_id) values ($1, $2, $3) RETURNING *`, [token, resetTokenExp, user_id])
                     res.status(201).json(newUserReset.rows[0])
+                    // <p><a href="${keys.base_url}/auth/password/${token}">Восстановить доступ</a></p>
+
                     const message = {
                         to: email,
                         subject: 'Восстановление доступа',
@@ -140,7 +142,7 @@ class AuthController {
                             <h1>Вы забыли пароль?</h1>
                             <p>Если нет, то проигнорируйте это письмо</p>
                             <p>Иначе, нажмите ссылку ниже:</p>
-                            <p><a href="${keys.base_url}/auth/password/${token}">Восстановить доступ</a></p>
+                            <p><a href="${keys.front_url}/password/${token}">Восстановить доступ</a></p>
 
                             <i>Данное письмо не требует ответа</i>
                         `
