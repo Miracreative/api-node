@@ -17,13 +17,12 @@ const transporter = nodemailer.createTransport(
         logger: true,
         debug: true,
         auth: {
-            user: 'nanalitvinova16@yandex.ru',
-            pass: 'jeweqsadhybmqvck',
+            user: 'radicall004@yandex.ru',
+            pass: 'radicall004@yandex.ru',
         },
-        tls: { rejectUnauthorized: false },
     },
     {
-        from: 'Mailer test <nanalitvinova16@yandex.ru>',
+        from: 'Mailer test <radicall004@yandex.ru>',
     },
 );
 
