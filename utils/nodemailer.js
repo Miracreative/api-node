@@ -4,7 +4,7 @@ const transporter = nodemailer.createTransport(
     {
         host: 'smtp.yandex.ru',
         port: 465,
-        secure: false,
+        secure: true,
         requireTLS: true,
         logger: true,
         debug: true,
