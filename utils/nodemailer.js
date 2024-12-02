@@ -1,4 +1,12 @@
 const nodemailer = require('nodemailer');
+const {
+    EMAIL_HOST,
+    EMAIL_PORT,
+    EMAIL_USER,
+    EMAIL_PASS,
+    DESTINATION_EMAIL,
+} = require('../utils/config.js');
+
 
 const transporter = nodemailer.createTransport(
     {
@@ -9,6 +17,7 @@ const transporter = nodemailer.createTransport(
             user: 'nanalitvinova16@yandex.ru',
             pass: 'jeweqsadhybmqvck',
         },
+        tls: { rejectUnauthorized: false },
     },
     {
         from: 'Mailer test <nanalitvinova16@yandex.ru>',
