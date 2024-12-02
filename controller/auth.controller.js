@@ -136,7 +136,6 @@ class AuthController {
                     // <p><a href="${keys.base_url}/auth/password/${token}">Восстановить доступ</a></p>
                     console.log(email, newUserReset.rows[0])
                     const message = {
-                        from: 'nanalitvinova16@yandex.ru',
                         to: email,
                         subject: 'Восстановление доступа',
                         html: ` 
