@@ -34,7 +34,7 @@ class AuthController {
                     try {
                         const newUserRefresh = await db.query(`INSERT INTO refresh (refresh_token, user_id) values ($1, $2) RETURNING *`, [refresh_token, user_id])
                         
-                        res.cookie('refresh_token', refresh_token, {maxAge: 50 * 24 * 60 * 60 * 1000,  httpOnly: true,
+                        res.cookie('refresh_token', refresh_token, {maxAge: 50 * 24 * 60 * 60 * 1000,  httpOnly: false,
                             secure: false,                    // HTTPS не используется
                             sameSite: 'None',                 // Разрешить кросс-доменные запросы
                             domain: 'localhost',              // Явно указываем localhost
