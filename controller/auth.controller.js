@@ -35,6 +35,7 @@ class AuthController {
                         const newUserRefresh = await db.query(`INSERT INTO refresh (refresh_token, user_id) values ($1, $2) RETURNING *`, [refresh_token, user_id])
                         
                         res.cookie('refresh_token', refresh_token, {maxAge: 50 * 24 * 60 * 60 * 1000, httpOnly: false})
+                        
                         return res.status(200).json({token: `Bearer ${token}`, refresh_token: refresh_token, user_name: user_name})
     
                     } catch(e) {
@@ -68,7 +69,7 @@ class AuthController {
     }
 
     async refresh(req, res) {
-        console.log('refresh', req.cookies)
+        console.log('refresh', req.cookies.refresh_token)
         try {
             const {refresh_token} = req.cookies;
             const refreshToken = await db.query(`SELECT * FROM refresh WHERE refresh_token = $1::text`, [refresh_token]);
@@ -81,7 +82,7 @@ class AuthController {
                     email: candidate.rows[0].email,
                     role: candidate.rows[0].role
                 }, keys.jwt, {expiresIn: 60 * 60}) 
-                return res.json({token: `${token}`, user_name: user_name})
+                return res.json({token: `Bearer ${token}`, user_name: user_name})
             }
         } catch(e) {
             return res.status(500).json({message: 'Упс! Что-то пошло не так'});
