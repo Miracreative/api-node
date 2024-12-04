@@ -68,6 +68,7 @@ class AuthController {
     }
 
     async refresh(req, res) {
+        console.log('refresh', req.cookies)
         try {
             const {refresh_token} = req.cookies;
             const refreshToken = await db.query(`SELECT * FROM refresh WHERE refresh_token = $1::text`, [refresh_token]);
