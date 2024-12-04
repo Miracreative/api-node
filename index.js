@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const passport = require('passport');
+const cookies = require("cookie-parser");
 
 const userRouter = require('./routes/user.routes.js');
 const favouriteRouter = require('./routes/favourite.routes.js');
@@ -44,6 +45,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.static('uploads'));
+app.use(cookies());
 
 app.use(express.json());
 app.use('/api', userRouter);
