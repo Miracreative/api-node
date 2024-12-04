@@ -81,7 +81,7 @@ class AuthController {
                     email: candidate.rows[0].email,
                     role: candidate.rows[0].role
                 }, keys.jwt, {expiresIn: 60 * 60}) 
-                return res.json({token: `Bearer ${token}`, user_name: user_name})
+                return res.json({token: `${token}`, user_name: user_name})
             }
         } catch(e) {
             return res.status(500).json({message: 'Упс! Что-то пошло не так'});
