@@ -34,7 +34,7 @@ class AuthController {
                     try {
                         const newUserRefresh = await db.query(`INSERT INTO refresh (refresh_token, user_id) values ($1, $2) RETURNING *`, [refresh_token, user_id])
                         
-                        res.cookie('refresh_token', refresh_token, {maxAge: 50 * 24 * 60 * 60 * 1000, httpOnly: true, path: '/', secure: false, sameSite: 'None' })
+                        res.cookie('refresh_token', refresh_token, {maxAge: 50 * 24 * 60 * 60 * 1000, httpOnly: true, path: '/', secure: false, sameSite: 'None', domain: '/' })
                         
                         return res.status(200).json({token: `Bearer ${token}`, refresh_token: refresh_token, user_name: user_name})
     
