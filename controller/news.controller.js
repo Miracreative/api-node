@@ -12,14 +12,14 @@ class NewsController {
                 .status(400)
                 .json({ message: 'Пожалуйста, загрузите картинки' });
         }
-        const carouselImages = req.files.files[0];
-        let imagesSrc = [];
-        carouselImages.forEach((file, index) => {
-            // imagesSrc.push(`${file.filename}`);
-            console.log(file, index)
-        });
-      
-        const main = `${req.files.main[0].filename}`;
+        const carouselImages = req.files.files;
+        // let imagesSrc = [];
+        // carouselImages.map((file, index) => {
+        //     // imagesSrc.push(`${file.filename}`);
+        //     console.log(file, index)
+        // });
+      console.log(req.files.files, req.files.main)
+        // const main = `${req.files.main[0].filename}`;
         // if (!main.length) {
         //     return res
         //         .status(400)
