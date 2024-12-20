@@ -18,23 +18,23 @@ class NewsController {
         carouselImages.map((file, index) => {
             imagesSrc.push(`${file.filename}`);
         });
+        console.log(imagesSrc)
+        // const main = `${req.files.main[0].filename}`;
+        // if (!main) {
+        //     return res
+        //         .status(400)
+        //         .json({ message: 'Пожалуйста, загрузите картинку' });
+        // }
 
-        const main = `${req.files.main[0].filename}`;
-        if (!main) {
-            return res
-                .status(400)
-                .json({ message: 'Пожалуйста, загрузите картинку' });
-        }
-
-        try {
-            const newNews = await db.query(
-                `INSERT INTO news (imagesSrc, title, descr, content, main) values ($1, $2, $3, $4, $5) RETURNING *`,
-                [imagesSrc, title, descr, content, main],
-            );
-            res.json(newNews.rows[0]);
-        } catch (e) {
-            return res.status(400).json({ message: e.message });
-        }
+        // try {
+        //     const newNews = await db.query(
+        //         `INSERT INTO news (imagesSrc, title, descr, content, main) values ($1, $2, $3, $4, $5) RETURNING *`,
+        //         [imagesSrc, title, descr, content, main],
+        //     );
+        //     res.json(newNews.rows[0]);
+        // } catch (e) {
+        //     return res.status(400).json({ message: e.message });
+        // }
     }
 
     async getAllNews(req, res) {
