@@ -14,7 +14,7 @@ class NewsController {
         }
         const carouselImages = req.files.files;
         let imagesSrc = [];
-        carouselImages.map((file, index) => {
+        carouselImages.forEach((file, index) => {
             imagesSrc.push(`${file.filename}`);
         });
       
