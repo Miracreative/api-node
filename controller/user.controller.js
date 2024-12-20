@@ -6,6 +6,7 @@ class UserController {
     async getUsers(req, res) {
         try {
             const users = await db.query(`SELECT * FROM users`)
+            console.log(JSON.stringify(users))
             res.json(users.rows)
         } catch (err) {
             return res.status(401).json({message: 'Что-то пошло не так'})

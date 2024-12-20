@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport(
         },
     },
     {
-        from: 'Mailer test <nanalitvinova16@yandex.ru>',
+        from: 'Письмо от сервиса Atman Auto Admin Panel <nanalitvinova16@yandex.ru>',
     },
 );
 

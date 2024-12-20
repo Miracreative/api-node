@@ -388,6 +388,40 @@ class GoodsController {
         }
     }
 
+    async sortGoodsOnRecommendParameters(req, res) {
+        const { recommend } = req.params;
+        try {
+            const recommendInt = (recommend || '').replace(/,/g, ''); // Handles undefined
+            let recommendArray = recommendInt.split('');
+
+            const goods = await db.query(`SELECT * FROM goods`);
+            let searchIndexes = [];
+
+            goods.rows.forEach((row, i) => {
+                if (
+                    row.recommendparameter &&
+                    row.recommendparameter.length >= recommendArray.length
+                ) {
+                    for (let j = 0; j < row.recommendparameter.length; j++) {
+                        if (
+                            row.recommendparameter[j] == recommendArray[j] &&
+                            recommendArray[j] == '1'
+                        ) {
+                            searchIndexes.push(i);
+                            break; // Stop further searching once a match is found
+                        }
+                    }
+                }
+            });
+
+            let filteredGoods = searchIndexes.map((index) => goods.rows[index]);
+
+            res.json(filteredGoods);
+        } catch (e) {
+            return res.status(404).json({ message: e.message });
+        }
+    }
+
     async sortGoodsOnAllParameters(req, res) {
         const { parameters } = req.params;
 

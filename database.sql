@@ -7,10 +7,11 @@ create TABLE sertificates(
 
 create TABLE news(
     id SERIAL PRIMARY KEY,
+    main VARCHAR(255),
     imagesSrc text Array,
     title VARCHAR(255),
-    descr VARCHAR(255),
-    content VARCHAR(2000) 
+    descr VARCHAR(1000),
+    content text 
 );
 
 create TABLE users(
@@ -52,6 +53,7 @@ create TABLE goods(
     goodsIndustrialImages text Array,
     parameter integer Array,
     mainParameter integer Array,
+    recommendparameter integer Array,
     article VARCHAR(255),
     advantages text Array,
     thickness VARCHAR(255),
@@ -61,7 +63,7 @@ create TABLE goods(
     color VARCHAR(255),
     heatResistance VARCHAR(255),
     name VARCHAR(255),
-    description VARCHAR(2000),
+    description text,
     type VARCHAR(255),
     size VARCHAR(255),
     brand VARCHAR(255),

@@ -32,6 +32,7 @@ goodsRouter.put(
 );
 goodsRouter.delete('/goods/:id', goodsController.deleteGood);
 goodsRouter.get('/goods-main/:main', goodsController.sortGoodsOnMainParameters);
+goodsRouter.get('/goods-recommend/:recommend', goodsController.sortGoodsOnRecommendParameters);
 goodsRouter.get(
     '/goods-parameters/:parameters',
     goodsController.sortGoodsOnAllParameters,

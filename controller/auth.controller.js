@@ -114,7 +114,7 @@ class AuthController {
                         <h1>Ваши данные:</h1>
                         <p>имя: <b>${name}</b>,</p>
                         <p>login: <b>${email}</b>,</p>
-                        <p>пароль: <b>${req.body.password}/b></p>
+                        <p>пароль: <b>${req.body.data.admin.password}</b></p>
 
                         <i>Данное письмо не требует ответа</i>
                     `

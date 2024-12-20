@@ -2,26 +2,34 @@ const db = require('../db');
 const keys = require('./../config/keys');
 const fs = require('fs');
 
-class NewsController {
+class NewsController { 
     async createNews(req, res) {
         const { title, descr, content } = req.body;
 
         const files = req.files;
-        console.log(files);
+        
         if (!files.length) {
             return res
                 .status(400)
                 .json({ message: 'Пожалуйста, загрузите картинки' });
         }
-
+        const carouselImages = req.files.carousel;
         let imagesSrc = [];
-        files.map((file, index) => {
-            imagesSrc.push(file.filename);
+        carouselImages.map((file, index) => {
+            imagesSrc.push(`${file.filename}`);
         });
+
+        const main = `${req.files.main[0].filename}`;
+        if (!main) {
+            return res
+                .status(400)
+                .json({ message: 'Пожалуйста, загрузите картинку' });
+        }
+
         try {
             const newNews = await db.query(
-                `INSERT INTO news (imagesSrc, title, descr, content) values ($1, $2, $3, $4) RETURNING *`,
-                [imagesSrc, title, descr, content],
+                `INSERT INTO news (imagesSrc, title, descr, content, main) values ($1, $2, $3, $4, $5) RETURNING *`,
+                [imagesSrc, title, descr, content, main],
             );
             res.json(newNews.rows[0]);
         } catch (e) {
@@ -159,7 +167,7 @@ class NewsController {
             id,
         ]);
 
-        imageFiles.rows[0].imagesSrc.forEach((item) => {
+        imageFiles.rows[0].imagessrc.forEach((item) => {
             fs.unlink(`${keys.del_url}${item}`, function (err) {
                 if (err) return console.log(err);
                 console.log('file deleted successfully');
