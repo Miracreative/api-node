@@ -17,7 +17,7 @@ class NewsController {
         // carouselImages.map((file, index) => {
         //     imagesSrc.push(`${file.filename}`);
         // });
-        console.log(carouselImages)
+        console.log('карусель', carouselImages)
         // const main = `${req.files.main[0].filename}`;
         // if (!main) {
         //     return res
