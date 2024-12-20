@@ -18,7 +18,7 @@ class NewsController {
         //     // imagesSrc.push(`${file.filename}`);
         //     console.log(file, index)
         // });
-      console.log(req.files.files, req.files.main)
+      console.log(req.files)
         // const main = `${req.files.main[0].filename}`;
         // if (!main.length) {
         //     return res
