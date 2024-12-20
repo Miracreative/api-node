@@ -12,7 +12,7 @@ class NewsController {
                 .status(400)
                 .json({ message: 'Пожалуйста, загрузите картинки' });
         }
-        const carouselImages = req.files.files;
+        const carouselImages = req.files;
         let imagesSrc = [];
         // carouselImages.map((file, index) => {
         //     imagesSrc.push(`${file.filename}`);
