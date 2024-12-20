@@ -13,11 +13,11 @@ class NewsController {
         //         .json({ message: 'Пожалуйста, загрузите картинки' });
         // }
         const carouselImages = req.files.files;
-        // let imagesSrc = [];
-        // carouselImages.map((file, index) => {
-        //     // imagesSrc.push(`${file.filename}`);
-        //     console.log(file, index)
-        // });
+        let imagesSrc = [];
+        carouselImages.map((file, index) => {
+            imagesSrc.push(`${file.filename}`);
+            console.log(file, index)
+        });
       console.log(req.files)
         // const main = `${req.files.main[0].filename}`;
         // if (!main.length) {
