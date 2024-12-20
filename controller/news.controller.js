@@ -13,13 +13,13 @@ class NewsController {
                 .status(400)
                 .json({ message: 'Пожалуйста, загрузите картинки' });
         }
-        const carouselImages = req.files.carousel;
+        const carouselImages = req.files.files;
         let imagesSrc = [];
         carouselImages.map((file, index) => {
             imagesSrc.push(`${file.filename}`);
         });
 
-        const main = `${req.files.main[0].filename}`;
+        const main = `${req.files.mainimge[0].filename}`;
         if (!main) {
             return res
                 .status(400)
@@ -166,6 +166,7 @@ class NewsController {
         const imageFiles = await db.query(`SELECT * FROM news where id = $1`, [
             id,
         ]);
+        console.log(imageFiles.rows[0].imagessrc.split(','))
 
         imageFiles.rows[0].imagessrc.forEach((item) => {
             fs.unlink(`${keys.del_url}${item}`, function (err) {
