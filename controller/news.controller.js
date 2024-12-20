@@ -13,13 +13,13 @@ class NewsController {
                 .status(400)
                 .json({ message: 'Пожалуйста, загрузите картинки' });
         }
-        const carouselImages = req.files.files;
+        const carouselImages = req.files;
         let imagesSrc = [];
         carouselImages.map((file, index) => {
             imagesSrc.push(`${file.filename}`);
         });
 
-        const main = `${req.files.main[0].filename}`;
+        const main = `${req.main[0].filename}`;
         if (!main) {
             return res
                 .status(400)

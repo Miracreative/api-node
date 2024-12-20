@@ -30,9 +30,9 @@ app.use(morgan('dev'));
 
 const corsOptions = {
 	origin: [
-		'https://front-next.atman-auto.ru/',
-		'https://admin-panel.atman-auto.ru/',
-		'http://localhost:3000/'
+		'https://front-next.atman-auto.ru',
+		'https://admin-panel.atman-auto.ru',
+		'http://localhost:3000'
 	],
 	credentials: true, //access-control-allow-credentials:true
 	optionSuccessStatus: 200,
