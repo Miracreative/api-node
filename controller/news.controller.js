@@ -6,14 +6,14 @@ class NewsController {
     async createNews(req, res) {
         const { title, descr, content } = req.body;
 
-        const files = req.files;
-        if (!files.length) {
-            return res
-                .status(400)
-                .json({ message: 'Пожалуйста, загрузите картинки' });
-        }
-        const carouselImages = req.files;
-        let imagesSrc = [];
+        // const files = req.files;
+        // if (!files.length) {
+        //     return res
+        //         .status(400)
+        //         .json({ message: 'Пожалуйста, загрузите картинки' });
+        // }
+        // const carouselImages = req.files;
+        // let imagesSrc = [];
         // carouselImages.map((file, index) => {
         //     imagesSrc.push(`${file.filename}`);
         // });
