@@ -19,7 +19,7 @@ class NewsController {
             imagesSrc.push(`${file.filename}`);
         });
 
-        const main = `${req.files.mainimge[0].filename}`;
+        const main = `${req.files.main[0].filename}`;
         if (!main) {
             return res
                 .status(400)
