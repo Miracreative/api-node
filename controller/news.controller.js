@@ -12,10 +12,11 @@ class NewsController {
                 .status(400)
                 .json({ message: 'Пожалуйста, загрузите картинки' });
         }
-        const carouselImages = req.files.files;
+        const carouselImages = req.files.files[0];
         let imagesSrc = [];
         carouselImages.forEach((file, index) => {
-            imagesSrc.push(`${file.filename}`);
+            // imagesSrc.push(`${file.filename}`);
+            console.log(file, index)
         });
       
         const main = `${req.files.main[0].filename}`;
@@ -24,7 +25,7 @@ class NewsController {
         //         .status(400)
         //         .json({ message: 'Пожалуйста, загрузите картинку' });
         // }
-        console.log('карусель', imagesSrc, 'ша', main)
+        // console.log('карусель', imagesSrc, 'ша', main)
         // try {
         //     const newNews = await db.query(
         //         `INSERT INTO news (imagesSrc, title, descr, content, main) values ($1, $2, $3, $4, $5) RETURNING *`,
