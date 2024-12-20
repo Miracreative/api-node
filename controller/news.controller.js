@@ -6,25 +6,25 @@ class NewsController {
     async createNews(req, res) {
         const { title, descr, content } = req.body;
 
-        // const files = req.files;
-        // if (!files.length) {
-        //     return res
-        //         .status(400)
-        //         .json({ message: 'Пожалуйста, загрузите картинки' });
-        // }
-        // const carouselImages = req.files;
-        // let imagesSrc = [];
-        // carouselImages.map((file, index) => {
-        //     imagesSrc.push(`${file.filename}`);
-        // });
-        console.log('карусель', req.files.files, 'ша', req.files.main)
-        // const main = `${req.files.main[0].filename}`;
-        // if (!main) {
-        //     return res
-        //         .status(400)
-        //         .json({ message: 'Пожалуйста, загрузите картинку' });
-        // }
-
+        const files = req.files;
+        if (!files.length) {
+            return res
+                .status(400)
+                .json({ message: 'Пожалуйста, загрузите картинки' });
+        }
+        const carouselImages = req.files;
+        let imagesSrc = [];
+        carouselImages.map((file, index) => {
+            imagesSrc.push(`${file.filename}`);
+        });
+      
+        const main = `${req.files.main[0].filename}`;
+        if (!main.length) {
+            return res
+                .status(400)
+                .json({ message: 'Пожалуйста, загрузите картинку' });
+        }
+        console.log('карусель', imagesSrc, 'ша', main)
         // try {
         //     const newNews = await db.query(
         //         `INSERT INTO news (imagesSrc, title, descr, content, main) values ($1, $2, $3, $4, $5) RETURNING *`,
