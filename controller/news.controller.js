@@ -7,11 +7,11 @@ class NewsController {
         const { title, descr, content } = req.body;
 
         const files = req.files;
-        // if (!files.length) {
-        //     return res
-        //         .status(400)
-        //         .json({ message: 'Пожалуйста, загрузите картинки' });
-        // }
+        if (!files.files.length) {
+            return res
+                .status(400)
+                .json({ message: 'Пожалуйста, загрузите картинки' });
+        }
         const carouselImages = req.files.files;
         let imagesSrc = [];
         carouselImages.map((file, index) => {
