@@ -7,7 +7,6 @@ class NewsController {
         const { title, descr, content } = req.body;
 
         const files = req.files;
-        console.log(files)
         if (!files.length) {
             return res
                 .status(400)
@@ -15,10 +14,10 @@ class NewsController {
         }
         const carouselImages = req.files.files;
         let imagesSrc = [];
-        carouselImages.map((file, index) => {
-            imagesSrc.push(`${file.filename}`);
-        });
-        console.log(imagesSrc)
+        // carouselImages.map((file, index) => {
+        //     imagesSrc.push(`${file.filename}`);
+        // });
+        console.log(carouselImages)
         // const main = `${req.files.main[0].filename}`;
         // if (!main) {
         //     return res
