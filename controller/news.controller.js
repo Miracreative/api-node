@@ -7,6 +7,7 @@ class NewsController {
         const { title, descr, content } = req.body;
 
         const files = req.files;
+        console.log(content)
         if (!files.files.length) {
             return res
                 .status(400)
@@ -112,53 +113,59 @@ class NewsController {
     }
 
     async updateNews(req, res) {
-       
         const { title, descr, content, id } = req.body;
-      
         const files = req.files;
-        if (req.files.length == 0) {
-            try {
+    
+        try {
+            // Проверка наличия загруженных файлов
+            if (!files || files.length === 0) {
+                // Если файлов нет, просто обновляем остальные поля
                 const news = await db.query(
-                    `UPDATE news SET title = $1, descr = $2, content = $3 where id = $4 RETURNING *`,
-                    [title, descr, content, id],
+                    `UPDATE news SET title = $1, descr = $2, content = $3 WHERE id = $4 RETURNING *`,
+                    [title, descr, content, id]
                 );
-                res.json(news.rows[0]);
-            } catch (e) {
-                return res.status(400).json({ message: e.message });
+                return res.json(news.rows[0]);
             }
-        } else {
+    
+            // Если файлы загружены, обрабатываем их
             let imagesSrc = [];
-
-            files.map((file, index) => {
+            
+            // Извлечение имен загруженных файлов
+            files.forEach(file => {
                 imagesSrc.push(file.filename);
             });
-            
-            try {
-                const imageFiles = await db.query(
-                    `SELECT * FROM news where id = $1`,
-                    [id],
-                );
-
-                imageFiles.rows[0].imagessrc.forEach((item) => {
-                    fs.unlink(`${keys.del_url}${item}`, function (err) {
-                        if (err) return console.log(err);
-                        console.log('file deleted successfully');
+    
+            // Получаем старые изображения из базы данных для их удаления
+            const imageFiles = await db.query(
+                `SELECT imagesSrc FROM news WHERE id = $1`,
+                [id]
+            );
+    
+            // Удаляем старые файлы с диска
+            if (imageFiles.rows.length > 0) {
+                const oldImages = imageFiles.rows[0].imagessrc;
+                oldImages.forEach(item => {
+                    fs.unlink(`${keys.del_url}${item}`, (err) => {
+                        if (err) {
+                            console.error(`Ошибка при удалении файла ${item}:`, err);
+                        } else {
+                            console.log(`Файл ${item} успешно удален`);
+                        }
                     });
                 });
-                // проверить удаление файлов
-
-                console.log(imagesSrc)
-                const news = await db.query(
-                    `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4 where id = $5 RETURNING *`,
-                    [imagesSrc, title, descr, content, id],
-                );
-                res.json(news.rows[0]);
-            } catch (e) {
-                return res.status(404).json({ message: e.message });
             }
+    
+            // Обновляем запись в базе данных с новыми изображениями
+            const updatedNews = await db.query(
+                `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4 WHERE id = $5 RETURNING *`,
+                [imagesSrc, title, descr, content, id]
+            );
+    
+            return res.json(updatedNews.rows[0]);
+        } catch (e) {
+            return res.status(400).json({ message: e.message });
         }
     }
-
     async deleteNews(req, res) {
         const id = req.params.id;
 
