@@ -7,7 +7,6 @@ class NewsController {
         const { title, descr, content } = req.body;
 
         const files = req.files;
-        console.log(content)
         if (!files.files.length) {
             return res
                 .status(400)
@@ -117,49 +116,6 @@ class NewsController {
         const files = req.files;
     
         try {
-            // Проверка наличия загруженных файлов
-            // if (!files || files.length === 0) {
-            //     // Если файлов нет, просто обновляем остальные поля
-            //     const news = await db.query(
-            //         `UPDATE news SET title = $1, descr = $2, content = $3 WHERE id = $4 RETURNING *`,
-            //         [title, descr, content, id]
-            //     );
-            //     return res.json(news.rows[0]);
-            // }
-    
-            // // Если файлы загружены, обрабатываем их
-            // let imagesSrc = [];
-            
-            // // Извлечение имен загруженных файлов
-            // files.forEach(file => {
-            //     imagesSrc.push(file.filename);
-            // });
-    
-            // // Получаем старые изображения из базы данных для их удаления
-            // const imageFiles = await db.query(
-            //     `SELECT imagesSrc FROM news WHERE id = $1`,
-            //     [id]
-            // );
-    
-            // // Удаляем старые файлы с диска
-            // if (imageFiles.rows.length > 0) {
-            //     const oldImages = imageFiles.rows[0].imagessrc;
-            //     oldImages.forEach(item => {
-            //         fs.unlink(`${keys.del_url}${item}`, (err) => {
-            //             if (err) {
-            //                 console.error(`Ошибка при удалении файла ${item}:`, err);
-            //             } else {
-            //                 console.log(`Файл ${item} успешно удален`);
-            //             }
-            //         });
-            //     });
-            // }
-    
-            // Обновляем запись в базе данных с новыми изображениями
-            // const updatedNews = await db.query(
-            //     `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4 WHERE id = $5 RETURNING *`,
-            //     [imagesSrc, title, descr, content, id]
-            // );
             const updatedNews = await db.query(
                 `UPDATE news SET title = $1, descr = $2, content = $3 WHERE id = $4 RETURNING *`,
                 [ title, descr, content, id]
