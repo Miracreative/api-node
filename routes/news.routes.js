@@ -15,7 +15,7 @@ newsRouter.post(
     '/news',
     upload.fields([
     { name: 'files', maxCount: 10 },
-    { name: 'main', maxCount: 1 },
+    { name: 'mainimage', maxCount: 1 },
     ]), 
     newsController.createNews);
 newsRouter.get(

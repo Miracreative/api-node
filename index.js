@@ -34,8 +34,8 @@ const corsOptions = {
 		'https://admin-panel.atman-auto.ru',
 		'http://localhost:3000'
 	],
-	credentials: true, //access-control-allow-credentials:true
-	optionSuccessStatus: 200,
+	// credentials: true, //access-control-allow-credentials:true
+	// optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 

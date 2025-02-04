@@ -18,7 +18,7 @@ class NewsController {
             imagesSrc.push(`${file.filename}`);
         });
       console.log('карусель', imagesSrc)
-        const main = `${req.files.main[0].filename}`;
+        const main = `${req.files.mainimage[0].filename}`;
         if (!main.length) {
             return res
                 .status(400)
