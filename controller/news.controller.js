@@ -117,22 +117,24 @@ class NewsController {
 
             const carouselImages = req.files?.files;
             console.log(req.files)
-        //     if(carouselImages) {
-        //         let imagesSrc = [];
-        //             carouselImages.map((file, index) => {
-        //                 imagesSrc.push(`${file.filename}`);
-        //             });
-        //         await db.query(
-        //             `UPDATE news SET imagesSrc = $1 WHERE id = $2 RETURNING *`,
-        //             [imagesSrc, id])
-        //     }
+            if(carouselImages) {
+                let imagesSrc = [];
+                    carouselImages.map((file, index) => {
+                        imagesSrc.push(`${file.filename}`);
+                    });
+                await db.query(
+                    `UPDATE news SET imagesSrc = $1 WHERE id = $2 RETURNING *`,
+                    [imagesSrc, id])
+            }
 
-        //     const main = `${req.files?.mainimage[0]?.filename}`;
-        //     if(main) {
-        //         await db.query(
-        //             `UPDATE news SET main = $1 WHERE id = $2 RETURNING *`,
-        //             [main, id])
-        //     }
+            const main = `${req.files?.mainimage[0]?.filename}`;
+            console.log(main)
+            if(main) {
+                await db.query(
+                    `UPDATE news SET main = $1 WHERE id = $2 RETURNING *`,
+                    [main, id])
+            }
+            console.log('rfhnbyjr ytn')
         //     // Выполняем обновление в базе данных
         //     const updatedNews = await db.query(
         //         `UPDATE news SET title = $2, descr = $3, content = $4 WHERE id = $6 RETURNING *`,
