@@ -124,8 +124,8 @@ class NewsController {
             // }
 
             // const mainFile = `${req.files?.mainimage}`;
-            console.log(req.files?.file)
-            if(req.files?.mainimage &&  req.files?.file) {
+            console.log(req.files)
+            if(req.files?.mainimage &&  req.files?.files) {
                 console.log('туу карусель и главна')
                 const main = `${req.files?.mainimage[0].filename}`;
                 const carouselImages = req.files?.files;
@@ -139,7 +139,7 @@ class NewsController {
                     );
             
                    return  res.json(updatedNews.rows);
-            } else if( req.files?.mainimage && !req.files?.file) {
+            } else if( req.files?.mainimage && !req.files?.files) {
                  console.log('туу главна')
 
                 const main = `${req.files?.mainimage[0].filename}`;
@@ -148,7 +148,7 @@ class NewsController {
                         [title, descr, content, main, id]
                     );
                     return  res.json(updatedNews.rows);
-                } else if(req.files.file && !req.files?.mainimage) {
+                } else if(req.files.files && !req.files?.mainimage) {
                     console.log('туу карусель')
                     const carouselImages = req.files?.files;
                     let imagesSrc = [];
