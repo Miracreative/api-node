@@ -147,7 +147,7 @@ class NewsController {
                         [title, descr, content, main, id]
                     );
                     return  res.json(updatedNews.rows);
-                } else if(!req.files?.mainimage && req.files?.file) {
+                } else if(req.files.file && !req.files?.mainimage) {
                     console.log('туу карусель')
                     const carouselImages = req.files?.files;
                     let imagesSrc = [];
