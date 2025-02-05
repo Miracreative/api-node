@@ -143,12 +143,11 @@ class NewsController {
                         `UPDATE news SET title = $1, descr = $2, content = $3, main = $4 WHERE id = $5 RETURNING *`,
                         [title, descr, content, main, id]
                     );
-            
-                   return  res.json(updatedNews.rows);
-            } else if(!req.files?.mainimage && req.files?.file) {
-               
-                const carouselImages = req.files?.files;
-                let imagesSrc = [];
+                    return  res.json(updatedNews.rows);
+                } else if(!req.files?.mainimage && req.files?.file) {
+                    
+                    const carouselImages = req.files?.files;
+                    let imagesSrc = [];
                     carouselImages.map((file, index) => {
                         imagesSrc.push(`${file.filename}`);
                     });
@@ -156,6 +155,7 @@ class NewsController {
                         `UPDATE news SET title = $1, descr = $2, content = $3, imagesSrc = $4 WHERE id = $5 RETURNING *`,
                         [title, descr, content, imagesSrc, id]
                     );
+                    console.log(res.json(updatedNews.rows))
             
                    return  res.json(updatedNews.rows);
             } else {
