@@ -127,8 +127,8 @@ class NewsController {
                     [imagesSrc, id])
             }
 
-            const mainFile = `${req.files?.mainimage}`;
-            if(mainFile) {
+            // const mainFile = `${req.files?.mainimage}`;
+            if(req.files?.mainimage) {
                 const main = `${req.files?.mainimage[0].filename}`
                 console.log(main)
                 await db.query(
