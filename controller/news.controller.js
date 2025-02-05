@@ -127,14 +127,14 @@ class NewsController {
                     [imagesSrc, id])
             }
 
-            const mainFile = `${req.files?.mainimage[0]}`;
-            if(mainFile) {
-                const main = `${req.files?.mainimage[0].filename}`
-                console.log(main)
-                await db.query(
-                    `UPDATE news SET main = $1 WHERE id = $2 RETURNING *`,
-                    [main, id])
-            }
+            // const mainFile = `${req.files?.mainimage[0]}`;
+            // if(mainFile) {
+            //     const main = `${req.files?.mainimage[0].filename}`
+            //     console.log(main)
+            //     await db.query(
+            //         `UPDATE news SET main = $1 WHERE id = $2 RETURNING *`,
+            //         [main, id])
+            // }
             console.log('rfhnbyjr ytn')
         //     // Выполняем обновление в базе данных
         //     const updatedNews = await db.query(
