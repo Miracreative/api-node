@@ -120,7 +120,7 @@ class NewsController {
                 const imageFiles = await db.query(`SELECT * FROM news where id = $1`, [
                     id,
                 ]);
-                console.log(imageFiles.rows[0].imagessrc.split(','))
+                // console.log(imageFiles.rows[0].imagessrc.split(','))
         
                 imageFiles.rows[0].imagessrc.forEach((item) => {
                     fs.unlink(`${keys.del_url}${item}`, function (err) {
