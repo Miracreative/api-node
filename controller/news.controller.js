@@ -113,39 +113,30 @@ class NewsController {
 
     async updateNews(req, res) {
         const { title, descr, content, id } = req.body;
-        const files = req.files;
-        
-        console.log(id)
         try {
-            // Получаем текущие данные новости из базы данных
-            const currentNews = await db.query('SELECT * FROM news where id = $1', [id]);
-            if (currentNews.rows.length == 0) {
-                return res.status(404).json({ message: 'Новость не найдена' });
+
+            const carouselImages = req.files.files;
+
+            if(carouselImages) {
+                let imagesSrc = [];
+                    carouselImages.map((file, index) => {
+                        imagesSrc.push(`${file.filename}`);
+                    });
+                await db.query(
+                    `UPDATE news SET imagesSrc = $1 WHERE id = $2 RETURNING *`,
+                    [imagesSrc, id])
             }
-    
-            const existingNews = currentNews.rows[0];
-            console.log(currentNews.rows, currentNews.rows.length)
-            // Обновление заголовка, описания и контента
-            const updatedTitle = title || existingNews.title;
-            const updatedDescr = descr || existingNews.descr;
-            const updatedContent = content || existingNews.content;
-    
-            // Обработка изображений
-            let updatedImagesSrc = existingNews.imagesSrc; // По умолчанию оставляем старые изображения
-            let updatedMainImageSrc = existingNews.main; // По умолчанию оставляем старое главное изображение
-    
-            if (files && files.files && files.files.length) {
-                updatedImagesSrc = files.files.map(file => file.filename); // Обновляем карусельные изображения
+
+            const main = `${req.files.mainimage[0].filename}`;
+            if(main) {
+                await db.query(
+                    `UPDATE news SET main = $1 WHERE id = $2 RETURNING *`,
+                    [main, id])
             }
-    
-            if (files && files.mainimage && files.mainimage.length) {
-                updatedMainImageSrc = files.mainimage[0].filename; // Обновляем главное изображение
-            }
-    
             // Выполняем обновление в базе данных
             const updatedNews = await db.query(
-                `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4, main = $5 WHERE id = $6 RETURNING *`,
-                [updatedImagesSrc, updatedTitle, updatedDescr, updatedContent, updatedMainImageSrc, id]
+                `UPDATE news SET title = $2, descr = $3, content = $4 WHERE id = $6 RETURNING *`,
+                [title, descr, content, id]
             );
     
             res.json(updatedNews.rows[0]);
