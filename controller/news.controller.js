@@ -124,6 +124,7 @@ class NewsController {
             // }
 
             // const mainFile = `${req.files?.mainimage}`;
+            console.log(req.files?.file)
             if(req.files?.mainimage &&  req.files?.file) {
                 console.log('туу карусель и главна')
                 const main = `${req.files?.mainimage[0].filename}`;
