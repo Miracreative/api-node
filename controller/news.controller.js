@@ -124,31 +124,31 @@ class NewsController {
             }
     
             const existingNews = currentNews.rows[0];
-            
+            console.log(existingNews)
             // Обновление заголовка, описания и контента
-            const updatedTitle = title || existingNews.title;
-            const updatedDescr = descr || existingNews.descr;
-            const updatedContent = content || existingNews.content;
+            // const updatedTitle = title || existingNews.title;
+            // const updatedDescr = descr || existingNews.descr;
+            // const updatedContent = content || existingNews.content;
     
-            // Обработка изображений
-            let updatedImagesSrc = existingNews.imagesSrc; // По умолчанию оставляем старые изображения
-            let updatedMainImageSrc = existingNews.main; // По умолчанию оставляем старое главное изображение
+            // // Обработка изображений
+            // let updatedImagesSrc = existingNews.imagesSrc; // По умолчанию оставляем старые изображения
+            // let updatedMainImageSrc = existingNews.main; // По умолчанию оставляем старое главное изображение
     
-            if (files && files.files && files.files.length) {
-                updatedImagesSrc = files.files.map(file => file.filename); // Обновляем карусельные изображения
-            }
+            // if (files && files.files && files.files.length) {
+            //     updatedImagesSrc = files.files.map(file => file.filename); // Обновляем карусельные изображения
+            // }
     
-            if (files && files.mainimage && files.mainimage.length) {
-                updatedMainImageSrc = files.mainimage[0].filename; // Обновляем главное изображение
-            }
+            // if (files && files.mainimage && files.mainimage.length) {
+            //     updatedMainImageSrc = files.mainimage[0].filename; // Обновляем главное изображение
+            // }
     
-            // Выполняем обновление в базе данных
-            const updatedNews = await db.query(
-                `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4, main = $5 WHERE id = $6 RETURNING *`,
-                [updatedImagesSrc, updatedTitle, updatedDescr, updatedContent, updatedMainImageSrc, id]
-            );
+            // // Выполняем обновление в базе данных
+            // const updatedNews = await db.query(
+            //     `UPDATE news SET imagesSrc = $1, title = $2, descr = $3, content = $4, main = $5 WHERE id = $6 RETURNING *`,
+            //     [updatedImagesSrc, updatedTitle, updatedDescr, updatedContent, updatedMainImageSrc, id]
+            // );
     
-            res.json(updatedNews.rows[0]);
+            // res.json(updatedNews.rows[0]);
         } catch (e) {
             console.error('Ошибка при обновлении новости:', e.message);
             return res.status(500).json({ message: 'Ошибка при обновлении новости', error: e.message });
