@@ -140,7 +140,7 @@ class NewsController {
             } else if( req.files?.mainimage && !req.files?.file) {
                 const main = `${req.files?.mainimage[0].filename}`;
                     const updatedNews = await db.query(
-                        `UPDATE news SET title = $1, descr = $2, content = $3, main = $4, WHERE id = $5 RETURNING *`,
+                        `UPDATE news SET title = $1, descr = $2, content = $3, main = $4 WHERE id = $5 RETURNING *`,
                         [title, descr, content, main, id]
                     );
             
