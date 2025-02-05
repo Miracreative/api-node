@@ -125,6 +125,7 @@ class NewsController {
 
             // const mainFile = `${req.files?.mainimage}`;
             if(req.files?.mainimage &&  req.files?.file) {
+                console.log('туу карусель и главна')
                 const main = `${req.files?.mainimage[0].filename}`;
                 const carouselImages = req.files?.files;
                 let imagesSrc = [];
@@ -138,6 +139,8 @@ class NewsController {
             
                    return  res.json(updatedNews.rows);
             } else if( req.files?.mainimage && !req.files?.file) {
+                 console.log('туу главна')
+
                 const main = `${req.files?.mainimage[0].filename}`;
                     const updatedNews = await db.query(
                         `UPDATE news SET title = $1, descr = $2, content = $3, main = $4 WHERE id = $5 RETURNING *`,
@@ -145,20 +148,22 @@ class NewsController {
                     );
                     return  res.json(updatedNews.rows);
                 } else if(!req.files?.mainimage && req.files?.file) {
-                    
+                    console.log('туу карусель')
                     const carouselImages = req.files?.files;
                     let imagesSrc = [];
                     carouselImages.map((file, index) => {
                         imagesSrc.push(`${file.filename}`);
                     });
                     const updatedNews = await db.query(
-                        `UPDATE news SET title = $1, descr = $2, content = $3, imagessrc = $4 WHERE id = $5 RETURNING *`,
+                        `UPDATE news SET title = $1, descr = $2, content = $3, imagesSrc = $4 WHERE id = $5 RETURNING *`,
                         [title, descr, content, imagesSrc, id]
                     );
                     console.log(res.json(updatedNews.rows))
             
                    return  res.json(updatedNews.rows);
             } else {
+                console.log('нет картинок')
+
                 const updatedNews = await db.query(
                     `UPDATE news SET title = $1, descr = $2, content = $3 WHERE id = $4 RETURNING *`,
                     [title, descr, content, id]
