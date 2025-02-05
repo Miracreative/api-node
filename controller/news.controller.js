@@ -139,7 +139,7 @@ class NewsController {
                 [title, descr, content, id]
             );
     
-            res.json(updatedNews.rows[0]);
+           return  res.json(updatedNews.rows);
         } catch (e) {
             console.error('Ошибка при обновлении новости:', e.message);
             return res.status(500).json({ message: 'Ошибка при обновлении новости', error: e.message });
