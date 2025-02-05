@@ -138,7 +138,7 @@ class NewsController {
             console.log('rfhnbyjr ytn')
             // Выполняем обновление в базе данных
             const updatedNews = await db.query(
-                `UPDATE news SET title = $2, descr = $3, content = $4 WHERE id = $6 RETURNING *`,
+                `UPDATE news SET title = $1, descr = $2, content = $3 WHERE id = $4 RETURNING *`,
                 [title, descr, content, id]
             );
     
