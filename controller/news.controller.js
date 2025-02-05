@@ -112,10 +112,10 @@ class NewsController {
     }
 
     async updateNews(req, res) {
-        console.log(id)
         const { title, descr, content, id } = req.body;
         const files = req.files;
-    
+        
+        console.log(id)
         try {
             // Получаем текущие данные новости из базы данных
             const currentNews = await db.query('SELECT * FROM news where id = $1', [id]);
