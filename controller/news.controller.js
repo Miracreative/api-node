@@ -116,7 +116,7 @@ class NewsController {
         try {
 
             const carouselImages = req.files?.files;
-            console.log(req.files?.files)
+            console.log(req.files)
         //     if(carouselImages) {
         //         let imagesSrc = [];
         //             carouselImages.map((file, index) => {
