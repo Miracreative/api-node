@@ -152,7 +152,7 @@ class NewsController {
                         imagesSrc.push(`${file.filename}`);
                     });
                     const updatedNews = await db.query(
-                        `UPDATE news SET title = $1, descr = $2, content = $3, imagesSrc = $4 WHERE id = $5 RETURNING *`,
+                        `UPDATE news SET title = $1, descr = $2, content = $3, imagessrc = $4 WHERE id = $5 RETURNING *`,
                         [title, descr, content, imagesSrc, id]
                     );
                     console.log(res.json(updatedNews.rows))
