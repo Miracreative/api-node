@@ -112,16 +112,17 @@ class NewsController {
     }
 
     async updateNews(req, res) {
-        const { id } = req.params; // Предполагается, что ID новости передается в параметрах URL
+        const { id } = req.params; 
+        console.log(id)
         const { title, descr, content } = req.body;
         const files = req.files;
     
         try {
             // Получаем текущие данные новости из базы данных
             const currentNews = await db.query('SELECT * FROM news WHERE id = $1', [id]);
-            // if (currentNews.rows.length === 0) {
-            //     return res.status(404).json({ message: 'Новость не найдена' });
-            // }
+            if (currentNews.rows.length == 0) {
+                return res.status(404).json({ message: 'Новость не найдена' });
+            }
     
             // const existingNews = currentNews.rows[0];
             console.log(currentNews.rows, currentNews.rows.length)
