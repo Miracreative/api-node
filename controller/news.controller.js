@@ -115,34 +115,58 @@ class NewsController {
         const { title, descr, content, id } = req.body;
         try {
 
-            // console.log(req.files)
-            if(req.files?.file) {
+            // // console.log(req.files)
+            // if(req.files?.file) {
+               
+            //     await db.query(
+            //         `UPDATE news SET imagesSrc = $1 WHERE id = $2 RETURNING *`,
+            //         [imagesSrc, id])
+            // }
+
+            // const mainFile = `${req.files?.mainimage}`;
+            if(req.files?.mainimage &&  req.files?.file) {
+                const main = `${req.files?.mainimage[0].filename}`;
                 const carouselImages = req.files?.files;
                 let imagesSrc = [];
                     carouselImages.map((file, index) => {
                         imagesSrc.push(`${file.filename}`);
                     });
-                await db.query(
-                    `UPDATE news SET imagesSrc = $1 WHERE id = $2 RETURNING *`,
-                    [imagesSrc, id])
+                    const updatedNews = await db.query(
+                        `UPDATE news SET title = $1, descr = $2, content = $3, main = $4, imagesSrc = $5 WHERE id = $6 RETURNING *`,
+                        [title, descr, content, main, imagesSrc, id]
+                    );
+            
+                   return  res.json(updatedNews.rows);
+            } else if( req.files?.mainimage && !req.files?.file) {
+                const main = `${req.files?.mainimage[0].filename}`;
+                    const updatedNews = await db.query(
+                        `UPDATE news SET title = $1, descr = $2, content = $3, main = $4, WHERE id = $5 RETURNING *`,
+                        [title, descr, content, main, id]
+                    );
+            
+                   return  res.json(updatedNews.rows);
+            } else if(!req.files?.mainimage && req.files?.file) {
+               
+                const carouselImages = req.files?.files;
+                let imagesSrc = [];
+                    carouselImages.map((file, index) => {
+                        imagesSrc.push(`${file.filename}`);
+                    });
+                    const updatedNews = await db.query(
+                        `UPDATE news SET title = $1, descr = $2, content = $3, imagesSrc = $4 WHERE id = $5 RETURNING *`,
+                        [title, descr, content, imagesSrc, id]
+                    );
+            
+                   return  res.json(updatedNews.rows);
+            } else {
+                const updatedNews = await db.query(
+                    `UPDATE news SET title = $1, descr = $2, content = $3 WHERE id = $4 RETURNING *`,
+                    [title, descr, content, id]
+                );
+        
+               return  res.json(updatedNews.rows);
             }
-
-            // const mainFile = `${req.files?.mainimage}`;
-            if(req.files?.mainimage) {
-                const main = `${req.files?.mainimage[0].filename}`
-                console.log(main)
-                const  updImgMain = await db.query(
-                    `UPDATE news SET main = $1 WHERE id = $2 RETURNING *`,
-                    [main, id])
-                return  res.json(updImgMain.rows)
-            }
-            // Выполняем обновление в базе данных
-            const updatedNews = await db.query(
-                `UPDATE news SET title = $1, descr = $2, content = $3 WHERE id = $4 RETURNING *`,
-                [title, descr, content, id]
-            );
-    
-           return  res.json(updatedNews.rows);
+         
         } catch (e) {
             console.error('Ошибка при обновлении новости:', e.message);
             return res.status(500).json({ message: 'Ошибка при обновлении новости', error: e.message });
