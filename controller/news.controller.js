@@ -115,7 +115,7 @@ class NewsController {
         const { title, descr, content, id } = req.body;
         try {
 
-            const carouselImages = req.files.files;
+            const carouselImages = req.files?.files;
 
             if(carouselImages) {
                 let imagesSrc = [];
@@ -127,7 +127,7 @@ class NewsController {
                     [imagesSrc, id])
             }
 
-            const main = `${req.files.mainimage[0].filename}`;
+            const main = `${req.files?.mainimage[0]?.filename}`;
             if(main) {
                 await db.query(
                     `UPDATE news SET main = $1 WHERE id = $2 RETURNING *`,
