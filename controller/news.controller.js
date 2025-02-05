@@ -131,11 +131,11 @@ class NewsController {
             if(req.files?.mainimage) {
                 const main = `${req.files?.mainimage[0].filename}`
                 console.log(main)
-                await db.query(
+                const  updImgMain = await db.query(
                     `UPDATE news SET main = $1 WHERE id = $2 RETURNING *`,
                     [main, id])
+                return  res.json(updImgMain.rows)
             }
-            console.log('rfhnbyjr ytn')
             // Выполняем обновление в базе данных
             const updatedNews = await db.query(
                 `UPDATE news SET title = $1, descr = $2, content = $3 WHERE id = $4 RETURNING *`,
