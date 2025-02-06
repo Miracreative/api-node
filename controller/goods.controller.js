@@ -9,6 +9,7 @@ class GoodsController {
             material,
             parameter,
             mainParameter,
+            recommendparameter,
             article,
             thickness,
             volume,
@@ -57,7 +58,7 @@ class GoodsController {
 
         try {
             const newGood = await db.query(
-                `INSERT INTO goods (material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, goodsPersonalImages, goodsIndustrialImages, imageUrl, pdfUrl, typeGlue, advantages) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23) RETURNING *`,
+                `INSERT INTO goods (material, parameter, mainParameter, article, thickness, volume, pcs, baseType, color, heatResistance, name, description, type, size, brand, linerType, dencity, goodsPersonalImages, goodsIndustrialImages, imageUrl, pdfUrl, typeGlue, advantages, recommendparameter) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24) RETURNING *`,
                 [
                     material,
                     parameter,
@@ -82,6 +83,7 @@ class GoodsController {
                     pdfUrl,
                     typeGlue,
                     advantages,
+                    recommendparameter
                 ],
             );
 
@@ -174,13 +176,14 @@ class GoodsController {
             dencity,
             typeGlue,
             id,
-            advantages
+            advantages,
+            recommendparameter
         } = req.body;
 
         const files = req.files;
         if (!files[0]) {
             const goods = await db.query(
-                `UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19 where id = $20 RETURNING *`,
+                `UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19, recommendparameter = $20 where id = $21 RETURNING *`,
                 [
                     material,
                     parameter,
@@ -201,6 +204,7 @@ class GoodsController {
                     dencity,
                     typeGlue,
                     advantages,
+                    recommendparameter,
                     id,
                 ],
             );
@@ -314,7 +318,7 @@ class GoodsController {
                 }
             }
             const goods = await db.query(
-                `UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19 where id = $20 RETURNING *`,
+                `UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19, $recommendparameter = $20 where id = $21 RETURNING *`,
                 [
                     material,
                     parameter,
@@ -335,6 +339,7 @@ class GoodsController {
                     dencity,
                     typeGlue,
                     advantages,
+                    recommendparameter,
                     id,
                 ],
             );
