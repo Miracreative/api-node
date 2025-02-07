@@ -178,8 +178,8 @@ class AuthController {
         }
         try {
             const userReset = await db.query(`SELECT * FROM reset WHERE resetToken = $1::text`, [token]);
-            console.log(userReset)
             if(userReset.rowCount !== 0) {
+                console.log(userReset)
                 const user_id = userReset.rows[0].user_id;
                 const userData = await db.query(`SELECT * FROM users WHERE id = $1::int`, [user_id]);
                 const userEmail = userData.rows[0].email;
