@@ -12,11 +12,11 @@ module.exports = passport => {
         try {
             if(user.rows[0].role == 'admin') {
                 console.log('admin')
-                done(null, user)
             } else {
                 console.log('user')
                 done(null, false)
             }
+            done(null, user)
         } catch(e) {
             console.log(e)
         }
