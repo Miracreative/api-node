@@ -6,7 +6,7 @@ const authController = require('../controller/auth.controller');
 const authRouter = new Router();
 
 authRouter.post('/login',
-    [passport.authenticate('jwt', {session: false}), ], 
+    // [passport.authenticate('jwt', {session: false}), ], 
     authController.login)
 authRouter.post('/logout', authController.logout)
 authRouter.get('/refresh/:refresh_token', authController.refresh)
