@@ -78,7 +78,8 @@ class AuthController {
             const refreshToken = await db.query(`SELECT * FROM refresh WHERE refresh_token = $1::text`, [refresh_token]);
             const user_id = refreshToken.rows[0].user_id;
             const candidate = await db.query(`SELECT * FROM users WHERE id = $1::int`, [user_id]);
-            const user_name = candidate.rows[0].name
+            const user_name = candidate.rows[0].name;
+            console.log(user_name)
             if(refreshToken.rowCount !== 0) {
                 const token = jwt.sign({
                     id: candidate.rows[0].id,
