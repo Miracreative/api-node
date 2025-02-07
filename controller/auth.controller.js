@@ -34,11 +34,11 @@ class AuthController {
                     try {
                         const newUserRefresh = await db.query(`INSERT INTO refresh (refresh_token, user_id) values ($1, $2) RETURNING *`, [refresh_token, user_id])
                         
-                        res.cookie('refresh_token', refresh_token, {maxAge: 50 * 24 * 60 * 60 * 1000,  httpOnly: false,
-                            secure: false,                    // HTTPS не используется
-                            sameSite: 'None',                 // Разрешить кросс-доменные запросы
-                            domain: 'localhost',              // Явно указываем localhost
-                            path: '/'})
+                        // res.cookie('refresh_token', refresh_token, {maxAge: 50 * 24 * 60 * 60 * 1000,  httpOnly: false,
+                        //     secure: false,                    // HTTPS не используется
+                        //     sameSite: 'None',                 // Разрешить кросс-доменные запросы
+                        //     domain: 'localhost',              // Явно указываем localhost
+                        //     path: '/'})
                         
                         return res.status(200).json({token: `Bearer ${token}`, refresh_token: refresh_token, user_name: user_name})
     
@@ -73,9 +73,8 @@ class AuthController {
     }
 
     async refresh(req, res, next) {
-        console.log('refresh', req.cookies)
         try {
-            const {refresh_token} = req.cookies;
+            const {refresh_token} = req.params;
             const refreshToken = await db.query(`SELECT * FROM refresh WHERE refresh_token = $1::text`, [refresh_token]);
             const user_id = refreshToken.rows[0].user_id;
             const candidate = await db.query(`SELECT * FROM users WHERE id = $1::int`, [user_id]);

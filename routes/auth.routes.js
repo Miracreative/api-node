@@ -7,7 +7,7 @@ const authRouter = new Router();
 
 authRouter.post('/login', authController.login)
 authRouter.post('/logout', authController.logout)
-authRouter.get('/refresh', authController.refresh)
+authRouter.get('/refresh/:refresh_token', authController.refresh)
 authRouter.post('/registration' , 
     // [
     // passport.authenticate('jwt', {session: false}), // раскомментить при релизе
