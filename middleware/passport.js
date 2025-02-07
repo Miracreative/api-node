@@ -16,7 +16,7 @@ module.exports = passport => {
             //     console.log('user')
             //     done(null, false)
             // }
-            done(null, user)
+            done(null, true)
         } catch(e) {
             console.log(e)
         }
