@@ -11,8 +11,10 @@ module.exports = passport => {
         const user = await db.query(`SELECT * FROM users WHERE id = $1::int`, [payload.id])
         try {
             if(user.rows[0].role == 'admin') {
+                console.log('admin')
                 done(null, user)
             } else {
+                console.log('user')
                 done(null, false)
             }
         } catch(e) {
