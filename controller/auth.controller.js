@@ -179,15 +179,14 @@ class AuthController {
         try {
             const userReset = await db.query(`SELECT * FROM reset WHERE resetToken = $1::text`, [token]);
             if(userReset.rowCount !== 0) {
-                console.log(userReset)
                 const user_id = userReset.rows[0].user_id;
                 const userData = await db.query(`SELECT * FROM users WHERE id = $1::int`, [user_id]);
                 const userEmail = userData.rows[0].email;
                 const userRole = userData.rows[0].role;
                 const userName = userData.rows[0].name;
                 const liveTimeToken = +userReset.rows[0].resettokenexp;
-                console.log(liveTimeToken)
                 const liveTime = +Date.now();
+                console.log(liveTimeToken, liveTime)
                 if(liveTime > liveTimeToken) {
                     res.status(200).json({message: "Разрешаю ввести новый пароль", code: 1, id: user_id, email: userEmail, role: userRole, name: userName})
                     // return res.redirect('/auth/login') // в проде надо перекидывать
