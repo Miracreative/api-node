@@ -18,7 +18,7 @@ module.exports = passport => {
                 return done(null, false)
             }
         } catch(e) {
-            return done({message: 'sdff'}, false)
+            console.log(e)
         }
         
     }));
