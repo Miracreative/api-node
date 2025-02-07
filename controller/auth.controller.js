@@ -80,7 +80,7 @@ class AuthController {
             const candidate = await db.query(`SELECT * FROM users WHERE id = $1::int`, [user_id]);
             const user_name = candidate.rows[0].name;
             console.log(user_name)
-            if(refreshToken.rowCount !== 0) {
+            if(refreshToken.rowCount) {
                 const token = jwt.sign({
                     id: candidate.rows[0].id,
                     email: candidate.rows[0].email,
