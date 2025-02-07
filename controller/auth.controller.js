@@ -189,10 +189,8 @@ class AuthController {
                 console.log(liveTimeToken, liveTime)
                 if(liveTime < liveTimeToken) {
                     res.status(200).json({message: "Разрешаю ввести новый пароль", code: 1, id: user_id, email: userEmail, role: userRole, name: userName})
-                    // return res.redirect('/auth/login') // в проде надо перекидывать
                 } else {
                     res.status(404).json({message: 'Время истекло, запросите смену пароля', code: 0})
-                    // return res.redirect('/auth/login') // в проде надо перекидывать
                 }
             } else {
                 res.status(404).json({message: 'Запросите заново сброс пароля', code: 0})
