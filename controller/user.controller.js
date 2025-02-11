@@ -64,24 +64,19 @@ class UserController {
     async deleteUser(req, res) {
         const id = req.params.id;
         try {
-            // 1. Сначала проверяем, существует ли пользователь
             const userExists = await db.query(`SELECT id FROM users WHERE id = $1`, [id]);
     
             if (userExists.rows.length === 0) {
                 return res.status(404).json({ message: 'User not found' });
             }
     
-            // 2. Удаляем записи из таблицы refresh, связанные с пользователем
             await db.query(`DELETE FROM refresh WHERE user_id = $1`, [id]);
     
-            // 3. Удаляем пользователя из таблицы users
             const result = await db.query(`DELETE FROM users WHERE id = $1`, [id]);
     
-            // 4. Проверяем, было ли удалено какое-либо количество строк
             if (result.rowCount === 1) {
                 return res.status(200).json({ message: 'User deleted successfully' });
             } else {
-                // Этот случай маловероятен, но все же обрабатываем его
                 return res.status(500).json({ message: 'Failed to delete user (unknown error)' });
             }
     

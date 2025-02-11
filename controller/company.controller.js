@@ -60,6 +60,43 @@ class CompanyController {
 		
 	}
 
+	async deleteCompany(req, res) {
+		const id = req.params.id;  // Получаем ID компании из параметров запроса
+		const client = await db.connect(); // Получаем клиент для транзакции
+	
+		try {
+			await client.query('BEGIN'); // Начало транзакции
+	
+			// 1. Проверяем, существует ли компания
+			const companyExists = await client.query(`SELECT id FROM company WHERE id = $1`, [id]);
+	
+			if (companyExists.rows.length === 0) {
+				await client.query('ROLLBACK'); // Откат транзакции
+				return res.status(404).json({ message: 'Company not found' });
+			}
+	
+			// 2. Удаляем компанию
+			const result = await client.query(`DELETE FROM company WHERE id = $1`, [id]);
+	
+			// 3. Проверяем, было ли удалено какое-либо количество строк
+			if (result.rowCount === 1) {
+				await client.query('COMMIT'); // Подтверждаем транзакцию
+				return res.status(200).json({ message: 'Company deleted successfully' });
+			} else {
+				await client.query('ROLLBACK'); // Откат транзакции
+				return res.status(500).json({ message: 'Failed to delete company (unknown error)' });
+			}
+	
+		} catch (e) {
+			await client.query('ROLLBACK'); // Откат транзакции в случае ошибки
+			console.error("Error deleting company:", e);  // Логируем ошибку на сервере
+			return res.status(500).json({ message: 'Internal server error' }); // Сообщение для клиента
+		} finally {
+			client.release(); // Возвращаем клиент в пул
+		}
+	}
+	
+
 }
 
 module.exports = new CompanyController();
