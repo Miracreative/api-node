@@ -5,7 +5,7 @@ const passport = require('passport')
 
 
 userRouter.get('/users', 
-    // [passport.authenticate('jwt', {session: false}), ],
+    [passport.authenticate('jwt', {session: false}), ],
     userController.getUsers)
 userRouter.get('/users/:id',
     // [passport.authenticate('jwt', {session: false}), ], 
