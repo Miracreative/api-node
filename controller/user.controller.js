@@ -63,17 +63,32 @@ class UserController {
     }
     async deleteUser(req, res) {
         const id = req.params.id;
-        console.log("id", id)
         try {
-            // const user = await db.query(`DELETE FROM users where id = $1`, [id])
-            const candidate = await db.query(`DELETE FROM users WHERE id = $1::int`, [id]);
-            console.log('user', candidate)
-            return res.json(candidate.rows[0])
+            // Сначала проверяем, существует ли пользователь
+            const userExists = await db.query(`SELECT id FROM users WHERE id = $1`, [id]);
+    
+            if (userExists.rows.length === 0) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+    
+            // Теперь удаляем пользователя
+            const result = await db.query(`DELETE FROM users WHERE id = $1`, [id]);
+    
+            // Проверяем, было ли удалено какое-либо количество строк (хотя это всегда должно быть 1, если пользователь существует)
+            if (result.rowCount === 1) {
+                return res.status(200).json({ message: 'User deleted successfully' });
+            } else {
+                // Этот случай маловероятен, но все же обрабатываем его
+                return res.status(500).json({ message: 'Failed to delete user (unknown error)' });
+            }
+    
+    
         } catch (e) {
-            return res.status(404).json({message: 'Что-то пошло не так'})
+            console.error("Error deleting user:", e); // Логируем ошибку на сервере
+            return res.status(500).json({ message: 'Internal server error' }); // Сообщение для клиента
         }
-        
     }
+    
 }
 
 module.exports = new UserController();
