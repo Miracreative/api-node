@@ -92,7 +92,7 @@ class NewsController {
     async getLastNews(req, res) {
         try {
             const news = await db.query(`SELECT * FROM news`);
-            console.log(news, news.rows.slice(news.rows.length - 3, news.rows.length))
+            console.log(news.rows, news.rows.slice(news.rows.length - 3, news.rows.length))
             res.json(news.rows.slice(news.rows.length - 3, news.rows.length));
         } catch (e) {
             return res.status(404).json({ message: e.message });
