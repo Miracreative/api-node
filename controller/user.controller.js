@@ -66,7 +66,7 @@ class UserController {
         console.log(id)
         try {
             const user = await db.query(`DELETE FROM users where id = $1`, [id])
-            console.log(user)
+            console.log('user', user)
             return res.json(user.rows[0])
         } catch (e) {
             return res.status(404).json({message: 'Что-то пошло не так'})
