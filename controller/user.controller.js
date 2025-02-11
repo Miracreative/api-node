@@ -66,9 +66,9 @@ class UserController {
         console.log("id", id)
         try {
             // const user = await db.query(`DELETE FROM users where id = $1`, [id])
-            const candidate = await db.query(`SELECT * FROM users WHERE id = $1::int`, [id]);
+            const candidate = await db.query(`DELETE FROM users WHERE id = $1::int`, [id]);
             console.log('user', candidate)
-            return res.json(user.rows[0])
+            return res.json(candidate.rows[0])
         } catch (e) {
             return res.status(404).json({message: 'Что-то пошло не так'})
         }
