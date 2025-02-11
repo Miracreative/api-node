@@ -8,12 +8,12 @@ userRouter.get('/users',
     [passport.authenticate('jwt', {session: false}), ],
     userController.getUsers)
 userRouter.get('/users/:id',
-    // [passport.authenticate('jwt', {session: false}), ], 
+    [passport.authenticate('jwt', {session: false}), ], 
     userController.getOneUser) // через слеш
 userRouter.put('/users',
     // [passport.authenticate('jwt', {session: false}), ],
     userController.updateUser)
 userRouter.delete('/users/:id', 
-    // [passport.authenticate('jwt', {session: false}), ],
+    [passport.authenticate('jwt', {session: false}), ],
     userController.deleteUser)
 module.exports = userRouter;
