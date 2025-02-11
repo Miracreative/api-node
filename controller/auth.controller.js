@@ -145,7 +145,6 @@ class AuthController {
                     const user_id = candidate.rows[0].id
                     const newUserReset = await db.query(`INSERT INTO reset (resetToken, resetTokenExp, user_id) values ($1, $2, $3) RETURNING *`, [token, resetTokenExp, user_id])
                     res.status(201).json(newUserReset.rows[0])
-                    // <p><a href="${keys.base_url}/auth/password/${token}">Восстановить доступ</a></p>
                     console.log(email, newUserReset.rows[0])
                     const message = {
                         to: email,
