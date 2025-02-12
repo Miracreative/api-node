@@ -350,38 +350,14 @@ class GoodsController {
         const files = req.files;
     
         try {
-            // Обновление товара без новых изображений
-            if (!files || files.length === 0) {
-                const goods = await db.query(
-                    `UPDATE goods SET material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19, recommendparameter = $20 WHERE id = $21 RETURNING *`,
-                    [
-                        material,
-                        parameter,
-                        mainParameter,
-                        article,
-                        thickness,
-                        volume,
-                        pcs,
-                        baseType,
-                        color,
-                        heatResistance,
-                        name,
-                        description,
-                        type,
-                        size,
-                        brand,
-                        linerType,
-                        dencity,
-                        typeGlue,
-                        advantages,
-                        recommendparameter,
-                        id
-                    ]
-                );
-                return res.json(goods.rows[0]);
+            // Получаем текущие данные товара
+            const currentGoods = await db.query(`SELECT * FROM goods WHERE id = $1`, [id]);
+            
+            if (currentGoods.rows.length === 0) {
+                return res.status(404).json({ message: 'Goods not found' });
             }
     
-            // Функция для удаления файлов
+            // Удаляем старые изображения, если они есть
             const deleteFiles = (filesArray) => {
                 filesArray.forEach((item) => {
                     fs.unlink(`${keys.del_url}${item}`, (err) => {
@@ -390,56 +366,78 @@ class GoodsController {
                 });
             };
     
-            // Обработка личных изображений
             if (files.goodsPersonalImages && files.goodsPersonalImages.length > 0) {
-                const personalImagesFiles = await db.query(`SELECT * FROM goods WHERE id = $1`, [id]);
-                deleteFiles(personalImagesFiles.rows[0].goodspersonalimages);
-    
+                deleteFiles(currentGoods.rows[0].goodspersonalimages);
                 const goodsPersonalImages = files.goodsPersonalImages.map(file => file.filename);
-                await db.query(`UPDATE goods SET goodsPersonalImages = $1 WHERE id = $2 RETURNING *`, [goodsPersonalImages, id]);
+                await db.query(`UPDATE goods SET goodsPersonalImages = $1 WHERE id = $2`, [goodsPersonalImages, id]);
             }
     
-            // Обработка промышленных изображений
             if (files.goodsIndustrialImages && files.goodsIndustrialImages.length > 0) {
-                const industrialImagesFiles = await db.query(`SELECT * FROM goods WHERE id = $1`, [id]);
-                deleteFiles(industrialImagesFiles.rows[0].goodsindustrialimages);
-    
+                deleteFiles(currentGoods.rows[0].goodsindustrialimages);
                 const goodsIndustrialImages = files.goodsIndustrialImages.map(file => file.filename);
-                await db.query(`UPDATE goods SET goodsIndustrialImages = $1 WHERE id = $2 RETURNING *`, [goodsIndustrialImages, id]);
+                await db.query(`UPDATE goods SET goodsIndustrialImages = $1 WHERE id = $2`, [goodsIndustrialImages, id]);
             }
+    
+            // Обновляем основные параметры товара
+            const updates = [
+                material || currentGoods.rows[0].material,
+                parameter || currentGoods.rows[0].parameter,
+                mainParameter || currentGoods.rows[0].mainparameter,
+                article || currentGoods.rows[0].article,
+                thickness || currentGoods.rows[0].thickness,
+                volume || currentGoods.rows[0].volume,
+                pcs || currentGoods.rows[0].pcs,
+                baseType || currentGoods.rows[0].basetype,
+                color || currentGoods.rows[0].color,
+                heatResistance || currentGoods.rows[0].heatresistance,
+                name || currentGoods.rows[0].name,
+                description || currentGoods.rows[0].description,
+                type || currentGoods.rows[0].type,
+                size || currentGoods.rows[0].size,
+                brand || currentGoods.rows[0].brand,
+                linerType || currentGoods.rows[0].linertype,
+                dencity || currentGoods.rows[0].dencity,
+                typeGlue || currentGoods.rows[0].typeglue,
+                advantages || currentGoods.rows[0].advantages,
+                recommendparameter || currentGoods.rows[0].recommendparameter
+            ];
     
             // Обработка URL изображения
             if (files.imageUrl && files.imageUrl.length > 0) {
-                const imageUrlFiles = await db.query(`SELECT * FROM goods WHERE id = $1`, [id]);
-                fs.unlink(`${keys.del_url}${imageUrlFiles.rows[0].imageurl}`, (err) => {
+                fs.unlink(`${keys.del_url}${currentGoods.rows[0].imageurl}`, (err) => {
                     if (err) console.log(err);
+                    console.log('Image URL deleted successfully');
                 });
-    
-                const imageUrl = files.imageUrl[0].filename;
-                await db.query(`UPDATE goods SET imageUrl = $1 WHERE id = $2 RETURNING *`, [imageUrl, id]);
+                updates.push(files.imageUrl[0].filename);
+            } else {
+                updates.push(currentGoods.rows[0].imageurl); // Сохраняем старое значение
             }
     
             // Обработка URL PDF
             if (files.pdfUrl && files.pdfUrl.length > 0) {
-                const pdfUrlFiles = await db.query(`SELECT * FROM goods WHERE id = $1`, [id]);
-                fs.unlink(`${keys.del_url}${pdfUrlFiles.rows[0].pdfurl}`, (err) => {
+                fs.unlink(`${keys.del_url}${currentGoods.rows[0].pdfurl}`, (err) => {
                     if (err) console.log(err);
+                    console.log('PDF URL deleted successfully');
                 });
-    
-                const pdfUrl = files.pdfUrl[0].filename;
-                await db.query(`UPDATE goods SET pdfUrl = $1 WHERE id = $2 RETURNING *`, [pdfUrl, id]);
+                updates.push(files.pdfUrl[0].filename);
+            } else {
+                updates.push(currentGoods.rows[0].pdfurl); // Сохраняем старое значение
             }
     
-            // Получаем обновленный товар и возвращаем его
-            const updatedGoodsResult = await db.query(`SELECT * FROM goods WHERE id = $1`, [id]);
-            
-            return res.json(updatedGoodsResult.rows[0]);
+            // Обновляем товар в базе данных
+            const updatedGoods = await db.query(
+                `UPDATE goods SET material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19, recommendparameter = $20, imageUrl = $21, pdfUrl = $22 WHERE id = $23 RETURNING *`,
+                [...updates, id]
+            );
+    
+            return res.json(updatedGoods.rows[0]);
     
         } catch (e) {
             console.error("Error updating goods:", e); // Логируем ошибку на сервере
             return res.status(500).json({ message: 'Internal server error' });
         }
     }
+    
     
     async deleteGood(req, res) {
         const { id } = req.params;
