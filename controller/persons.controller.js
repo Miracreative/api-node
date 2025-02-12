@@ -85,12 +85,12 @@ class PersonController {
 			}
 	
 			// Удаляем старое изображение, если есть новое
-			if (file) {
-				fs.unlink(`${keys.del_url}${personFile.rows[0].imagesrc}`, (err) => {
-					if (err) console.log(err);
-					console.log('Old image deleted successfully');
-				});
-			}
+			// if (file) {
+			// 	fs.unlink(`${keys.del_url}${personFile.rows[0].imagesrc}`, (err) => {
+			// 		if (err) console.log(err);
+			// 		console.log('Old image deleted successfully');
+			// 	});
+			// }
 	
 			// Обновляем данные
 			const imageSrc = file ? req.file.filename : personFile.rows[0].imagesrc; // Используем новое изображение или сохраняем старое
