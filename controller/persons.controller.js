@@ -85,12 +85,12 @@ class PersonController {
 			}
 	
 			// Удаляем старое изображение, если есть новое
-			// if (file) {
-			// 	fs.unlink(`${keys.del_url}${personFile.rows[0].imagesrc}`, (err) => {
-			// 		if (err) console.log(err);
-			// 		console.log('Old image deleted successfully');
-			// 	});
-			// }
+			if (file) {
+				fs.unlink(`${keys.del_url}${personFile.rows[0].imagesrc}`, (err) => {
+					if (err) console.log(err);
+					console.log('Old image deleted successfully');
+				});
+			}
 	
 			// Обновляем данные
 			const imageSrc = file ? req.file.filename : personFile.rows[0].imagesrc; // Используем новое изображение или сохраняем старое
@@ -99,7 +99,7 @@ class PersonController {
 				`UPDATE persons SET imageSrc = $1, name = $2, descr = $3, watsapp = $4, email = $5 WHERE id = $6 RETURNING *`,
 				[imageSrc, name, descr, watsapp, email, id]
 			);
-	
+			
 			return res.json(updatedPerson.rows[0]);
 	
 		} catch (e) {
