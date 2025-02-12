@@ -179,23 +179,23 @@ class NewsController {
 
         try {
             
-            // const imageFiles = await db.query(`SELECT * FROM news where id = $1`, [
-            //     id,
-            // ]);
-            // // console.log(imageFiles.rows[0].imagessrc.split(','))
+            const imageFiles = await db.query(`SELECT * FROM news where id = $1`, [
+                id,
+            ]);
+            // console.log(imageFiles.rows[0].imagessrc.split(','))
     
-            // imageFiles.rows[0].imagessrc.forEach((item) => {
-            //     fs.unlink(`${keys.del_url}${item}`, function (err) {
-            //         if (err) return console.log(err);
-            //         console.log('file deleted successfully');
-            //     });
-            // });
+            imageFiles.rows[0].imagessrc.forEach((item) => {
+                fs.unlink(`${keys.del_url}${item}`, function (err) {
+                    if (err) return console.log(err);
+                    console.log('file deleted successfully');
+                });
+            });
 
             
-            // fs.unlink(`${keys.del_url}${imageFiles.rows[0].main}`, function (err) {
-            //     if (err) return console.log(err);
-            //     console.log('file deleted successfully');
-            // });
+            fs.unlink(`${keys.del_url}${imageFiles.rows[0].main}`, function (err) {
+                if (err) return console.log(err);
+                console.log('file deleted successfully');
+            });
             const news = await db.query(`DELETE FROM news where id = $1`, [id]);
             res.json(news.rows[0]);
         } catch (e) {
