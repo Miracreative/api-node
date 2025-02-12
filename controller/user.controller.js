@@ -71,6 +71,8 @@ class UserController {
             }
     
             await db.query(`DELETE FROM refresh WHERE user_id = $1`, [id]);
+            await db.query(`DELETE FROM reset WHERE user_id = $1`, [id]);
+
     
             const result = await db.query(`DELETE FROM users WHERE id = $1`, [id]);
     
