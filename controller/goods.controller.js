@@ -155,6 +155,171 @@ class GoodsController {
         }
     }
 
+    // async updateGoods(req, res) {
+    //     const {
+    //         material,
+    //         parameter,
+    //         mainParameter,
+    //         article,
+    //         thickness,
+    //         volume,
+    //         pcs,
+    //         baseType,
+    //         color,
+    //         heatResistance,
+    //         name,
+    //         description,
+    //         type,
+    //         size,
+    //         brand,
+    //         linerType,
+    //         dencity,
+    //         typeGlue,
+    //         id,
+    //         advantages,
+    //         recommendparameter
+    //     } = req.body;
+
+    //     const files = req.files;
+    //     if (!files[0]) {
+    //         const goods = await db.query(
+    //             `UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19, recommendparameter = $20 where id = $21 RETURNING *`,
+    //             [
+    //                 material,
+    //                 parameter,
+    //                 mainParameter,
+    //                 article,
+    //                 thickness,
+    //                 volume,
+    //                 pcs,
+    //                 baseType,
+    //                 color,
+    //                 heatResistance,
+    //                 name,
+    //                 description,
+    //                 type,
+    //                 size,
+    //                 brand,
+    //                 linerType,
+    //                 dencity,
+    //                 typeGlue,
+    //                 advantages,
+    //                 recommendparameter,
+    //                 id,
+    //             ],
+    //         );
+    //         res.json(goods.rows[0]);
+    //     } else {
+            
+    //         const personalImages = req.files.goodsPersonalImages;
+    //         if (personalImages.length > 0) {
+    //             const personalImagesFiles = await db.query(
+    //                 `SELECT * FROM goods where id = $1`,
+    //                 [id],
+    //             );
+
+    //             personalImagesFiles.rows[0].goodspersonalimages.forEach((item) => {
+    //                 fs.unlink(`${keys.del_url}${item}`, function (err) {
+    //                     if (err) return console.log(err);
+    //                     console.log('file deleted successfully');
+    //                 });
+    //             });
+    //             let goodsPersonalImages = [];
+    //             personalImages.map((file, index) => {
+    //                 goodsPersonalImages.push(file.filename);
+    //             });
+    //             const goods = await db.query(
+    //                 `UPDATE goods SET  goodsPersonalImages = $1 where id = $2 RETURNING *`,
+    //                 [
+    //                     goodsPersonalImages,
+    //                     id,
+    //                 ],
+    //             );
+    //             res.json(goods.rows[0]);
+    //         }
+
+    //         const industrialImages = req.files.goodsIndustrialImages;
+    //         if (industrialImages.length > 0) {
+
+    //             const industrialImagesFiles = await db.query(
+    //                 `SELECT * FROM goods where id = $1`,
+    //                 [id],
+    //             );
+
+    //             industrialImagesFiles.rows[0].goodsindustrialimages.forEach((item) => {
+    //                 fs.unlink(`${keys.del_url}${item}`, function (err) {
+    //                     if (err) return console.log(err);
+    //                     console.log('file deleted successfully');
+    //                 });
+    //             });
+    //             let goodsIndustrialImages = [];
+    //             industrialImages.map((file, index) => {
+    //                 goodsIndustrialImages.push(file.filename);
+    //             });
+    //             const goods = await db.query(
+    //                 `UPDATE goods SET  goodsIndustrialImages = $1 where id = $2 RETURNING *`,
+    //                 [
+    //                     goodsIndustrialImages,
+    //                     id,
+    //                 ],
+    //             );
+    //             res.json(goods.rows[0]);
+    //         }
+
+    //         const imageUrl = `${req.files.imageUrl[0].filename}`;
+    //         if (imageUrl) {
+    //             const imageUrlFiles = await db.query(
+    //                 `SELECT * FROM goods where id = $1`,
+    //                 [id],
+    //             );
+
+    //             fs.unlink(
+	// 				`${keys.del_url}${imageUrlFiles.rows[0].imageurl}`,
+	// 				function (err) {
+	// 					if (err) return console.log(err);
+	// 				},
+	// 			);
+    //             const imageUrl = `${req.files.imageUrl[0].filename}`;
+    //             const goods = await db.query(
+    //                 `UPDATE goods SET  imageUrl = $1 where id = $2 RETURNING *`,
+    //                 [
+    //                     imageUrl,
+    //                     id,
+    //                 ],
+    //             );
+    //             res.json(goods.rows[0]);
+    //         }
+
+    //         const pdfUrl = `${req.files.pdfUrl[0].filename}`;
+    //         if (pdfUrl) {
+    //             try {
+    //                 const pdfUrlFiles = await db.query(
+    //                     `SELECT * FROM goods where id = $1`,
+    //                     [id],
+    //                 );
+    
+    //                 fs.unlink(
+    //                     `${keys.del_url}${pdfUrlFiles.rows[0].pdfurl}`,
+    //                     function (err) {
+    //                         if (err) return console.log(err);
+    //                     },
+    //                 );
+    //                 const pdfUrl = `${req.files.pdfUrl[0].filename}`;
+    //                 const goods = await db.query(
+    //                     `UPDATE goods SET pdfUrl = $1 where id = $2 RETURNING *`,
+    //                     [
+    //                         pdfUrl,
+    //                         id,
+    //                     ],
+    //                 );
+    //                 res.json(goods.rows[0]);
+    //             } catch (e) {
+    //                 return res.status(404).json({ message: e.message });
+    //             }
+    //         }
+    //         res.json(goods.rows[0]);
+    //     }
+    // }
     async updateGoods(req, res) {
         const {
             material,
@@ -179,174 +344,101 @@ class GoodsController {
             advantages,
             recommendparameter
         } = req.body;
-
-        const files = req.files;
-        if (!files[0]) {
-            const goods = await db.query(
-                `UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19, recommendparameter = $20 where id = $21 RETURNING *`,
-                [
-                    material,
-                    parameter,
-                    mainParameter,
-                    article,
-                    thickness,
-                    volume,
-                    pcs,
-                    baseType,
-                    color,
-                    heatResistance,
-                    name,
-                    description,
-                    type,
-                    size,
-                    brand,
-                    linerType,
-                    dencity,
-                    typeGlue,
-                    advantages,
-                    recommendparameter,
-                    id,
-                ],
-            );
-            res.json(goods.rows[0]);
-        } else {
-            
-            const personalImages = req.files.goodsPersonalImages;
-            if (personalImages.length > 0) {
-                const personalImagesFiles = await db.query(
-                    `SELECT * FROM goods where id = $1`,
-                    [id],
-                );
-
-                personalImagesFiles.rows[0].goodspersonalimages.forEach((item) => {
-                    fs.unlink(`${keys.del_url}${item}`, function (err) {
-                        if (err) return console.log(err);
-                        console.log('file deleted successfully');
-                    });
-                });
-                let goodsPersonalImages = [];
-                personalImages.map((file, index) => {
-                    goodsPersonalImages.push(file.filename);
-                });
-                const goods = await db.query(
-                    `UPDATE goods SET  goodsPersonalImages = $1 where id = $2 RETURNING *`,
-                    [
-                        goodsPersonalImages,
-                        id,
-                    ],
-                );
-                res.json(goods.rows[0]);
-            }
-
-            const industrialImages = req.files.goodsIndustrialImages;
-            if (industrialImages.length > 0) {
-
-                const industrialImagesFiles = await db.query(
-                    `SELECT * FROM goods where id = $1`,
-                    [id],
-                );
-
-                industrialImagesFiles.rows[0].goodsindustrialimages.forEach((item) => {
-                    fs.unlink(`${keys.del_url}${item}`, function (err) {
-                        if (err) return console.log(err);
-                        console.log('file deleted successfully');
-                    });
-                });
-                let goodsIndustrialImages = [];
-                industrialImages.map((file, index) => {
-                    goodsIndustrialImages.push(file.filename);
-                });
-                const goods = await db.query(
-                    `UPDATE goods SET  goodsIndustrialImages = $1 where id = $2 RETURNING *`,
-                    [
-                        goodsIndustrialImages,
-                        id,
-                    ],
-                );
-                res.json(goods.rows[0]);
-            }
-
-            const imageUrl = `${req.files.imageUrl[0].filename}`;
-            if (imageUrl) {
-                const imageUrlFiles = await db.query(
-                    `SELECT * FROM goods where id = $1`,
-                    [id],
-                );
-
-                fs.unlink(
-					`${keys.del_url}${imageUrlFiles.rows[0].imageurl}`,
-					function (err) {
-						if (err) return console.log(err);
-					},
-				);
-                const imageUrl = `${req.files.imageUrl[0].filename}`;
-                const goods = await db.query(
-                    `UPDATE goods SET  imageUrl = $1 where id = $2 RETURNING *`,
-                    [
-                        imageUrl,
-                        id,
-                    ],
-                );
-                res.json(goods.rows[0]);
-            }
-
-            const pdfUrl = `${req.files.pdfUrl[0].filename}`;
-            if (pdfUrl) {
-                try {
-                    const pdfUrlFiles = await db.query(
-                        `SELECT * FROM goods where id = $1`,
-                        [id],
-                    );
     
-                    fs.unlink(
-                        `${keys.del_url}${pdfUrlFiles.rows[0].pdfurl}`,
-                        function (err) {
-                            if (err) return console.log(err);
-                        },
-                    );
-                    const pdfUrl = `${req.files.pdfUrl[0].filename}`;
-                    const goods = await db.query(
-                        `UPDATE goods SET pdfUrl = $1 where id = $2 RETURNING *`,
-                        [
-                            pdfUrl,
-                            id,
-                        ],
-                    );
-                    res.json(goods.rows[0]);
-                } catch (e) {
-                    return res.status(404).json({ message: e.message });
-                }
+        const files = req.files;
+    
+        try {
+            // Обновление товара без новых изображений
+            if (!files || files.length === 0) {
+                const goods = await db.query(
+                    `UPDATE goods SET material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19, recommendparameter = $20 WHERE id = $21 RETURNING *`,
+                    [
+                        material,
+                        parameter,
+                        mainParameter,
+                        article,
+                        thickness,
+                        volume,
+                        pcs,
+                        baseType,
+                        color,
+                        heatResistance,
+                        name,
+                        description,
+                        type,
+                        size,
+                        brand,
+                        linerType,
+                        dencity,
+                        typeGlue,
+                        advantages,
+                        recommendparameter,
+                        id
+                    ]
+                );
+                return res.json(goods.rows[0]);
             }
-            const goods = await db.query(
-                `UPDATE goods SET  material = $1, parameter = $2, mainParameter = $3, article = $4, thickness = $5, volume = $6, pcs = $7, baseType = $8, color = $9, heatResistance = $10, name = $11, description = $12, type = $13, size = $14, brand = $15, linerType = $16, dencity = $17, typeGlue = $18, advantages = $19, $recommendparameter = $20 where id = $21 RETURNING *`,
-                [
-                    material,
-                    parameter,
-                    mainParameter,
-                    article,
-                    thickness,
-                    volume,
-                    pcs,
-                    baseType,
-                    color,
-                    heatResistance,
-                    name,
-                    description,
-                    type,
-                    size,
-                    brand,
-                    linerType,
-                    dencity,
-                    typeGlue,
-                    advantages,
-                    recommendparameter,
-                    id,
-                ],
-            );
-            res.json(goods.rows[0]);
+    
+            // Функция для удаления файлов
+            const deleteFiles = (filesArray) => {
+                filesArray.forEach((item) => {
+                    fs.unlink(`${keys.del_url}${item}`, (err) => {
+                        if (err) console.log(err);
+                    });
+                });
+            };
+    
+            // Обработка личных изображений
+            if (files.goodsPersonalImages && files.goodsPersonalImages.length > 0) {
+                const personalImagesFiles = await db.query(`SELECT * FROM goods WHERE id = $1`, [id]);
+                deleteFiles(personalImagesFiles.rows[0].goodspersonalimages);
+    
+                const goodsPersonalImages = files.goodsPersonalImages.map(file => file.filename);
+                await db.query(`UPDATE goods SET goodsPersonalImages = $1 WHERE id = $2 RETURNING *`, [goodsPersonalImages, id]);
+            }
+    
+            // Обработка промышленных изображений
+            if (files.goodsIndustrialImages && files.goodsIndustrialImages.length > 0) {
+                const industrialImagesFiles = await db.query(`SELECT * FROM goods WHERE id = $1`, [id]);
+                deleteFiles(industrialImagesFiles.rows[0].goodsindustrialimages);
+    
+                const goodsIndustrialImages = files.goodsIndustrialImages.map(file => file.filename);
+                await db.query(`UPDATE goods SET goodsIndustrialImages = $1 WHERE id = $2 RETURNING *`, [goodsIndustrialImages, id]);
+            }
+    
+            // Обработка URL изображения
+            if (files.imageUrl && files.imageUrl.length > 0) {
+                const imageUrlFiles = await db.query(`SELECT * FROM goods WHERE id = $1`, [id]);
+                fs.unlink(`${keys.del_url}${imageUrlFiles.rows[0].imageurl}`, (err) => {
+                    if (err) console.log(err);
+                });
+    
+                const imageUrl = files.imageUrl[0].filename;
+                await db.query(`UPDATE goods SET imageUrl = $1 WHERE id = $2 RETURNING *`, [imageUrl, id]);
+            }
+    
+            // Обработка URL PDF
+            if (files.pdfUrl && files.pdfUrl.length > 0) {
+                const pdfUrlFiles = await db.query(`SELECT * FROM goods WHERE id = $1`, [id]);
+                fs.unlink(`${keys.del_url}${pdfUrlFiles.rows[0].pdfurl}`, (err) => {
+                    if (err) console.log(err);
+                });
+    
+                const pdfUrl = files.pdfUrl[0].filename;
+                await db.query(`UPDATE goods SET pdfUrl = $1 WHERE id = $2 RETURNING *`, [pdfUrl, id]);
+            }
+    
+            // Получаем обновленный товар и возвращаем его
+            const updatedGoodsResult = await db.query(`SELECT * FROM goods WHERE id = $1`, [id]);
+            
+            return res.json(updatedGoodsResult.rows[0]);
+    
+        } catch (e) {
+            console.error("Error updating goods:", e); // Логируем ошибку на сервере
+            return res.status(500).json({ message: 'Internal server error' });
         }
     }
-
+    
     async deleteGood(req, res) {
         const { id } = req.params;
         try {
