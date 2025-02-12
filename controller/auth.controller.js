@@ -144,28 +144,27 @@ class AuthController {
                 if(candidate.rowCount !== 0) {
                     const user_id = candidate.rows[0].id
                     const newUserReset = await db.query(`INSERT INTO reset (resetToken, resetTokenExp, user_id) values ($1, $2, $3) RETURNING *`, [token, resetTokenExp, user_id])
-                    res.status(201).json(newUserReset.rows[0])
-                    console.log(email, newUserReset.rows[0])
                     const message = {
                         to: email,
                         subject: 'Восстановление доступа',
                         html: ` 
-                            <h1>Вы забыли пароль?</h1>
-                            <p>Если нет, то проигнорируйте это письмо</p>
-                            <p>Иначе, нажмите ссылку ниже:</p>
-                            <p><a href="${keys.front_url}/password/${token}">Восстановить доступ</a></p>
-
-                            <i>Данное письмо не требует ответа</i>
+                        <h1>Вы забыли пароль?</h1>
+                        <p>Если нет, то проигнорируйте это письмо</p>
+                        <p>Иначе, нажмите ссылку ниже:</p>
+                        <p><a href="${keys.front_url}/password/${token}">Восстановить доступ</a></p>
+                        
+                        <i>Данное письмо не требует ответа</i>
                         `
                     }
                     mailer(message) 
+                    return res.status(201).json(newUserReset.rows[0])
                     // res.redirect('/auth/login') --- так вернуть на страницу ввода логина можно
                 } else {
-                    res.status(404).json({message: 'Tакого пользователя нет'})
+                    return res.status(404).json({message: 'Tакого пользователя нет'})
                 }
             })
         } catch(e) {
-            errorHandler(res, e)
+            return res.status(404).json({message: 'Что-то пошло не так'})
         }
     }
     
