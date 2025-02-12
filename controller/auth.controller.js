@@ -80,6 +80,7 @@ class AuthController {
             const user_id = refreshToken.rows[0].user_id;
             const candidate = await db.query(`SELECT * FROM users WHERE id = $1::int`, [user_id]);
             const user_name = candidate.rows[0].name;
+            const role = candidate.rows[0].role;
             console.log(user_name)
             if(refreshToken.rowCount >= 1) {
                 console.log(refreshToken.rowCount )
@@ -89,7 +90,7 @@ class AuthController {
                     role: candidate.rows[0].role
                 }, keys.jwt, {expiresIn: 60 * 60}) 
                 console.log({token: `Bearer ${token}`, user_name: user_name})
-                return res.json({token: `Bearer ${token}`, user_name: user_name})
+                return res.json({token: `Bearer ${token}`, user_name: user_name, role: role})
             }
         } catch(e) {
             return res.status(500).json({message: 'Упс! Что-то пошло не так'});
