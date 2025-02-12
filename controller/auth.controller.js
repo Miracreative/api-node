@@ -30,6 +30,7 @@ class AuthController {
 
                     const user_id = candidate.rows[0].id
                     const user_name = candidate.rows[0].name
+                    const role = candidate.rows[0].role
 
                     try {
                         const newUserRefresh = await db.query(`INSERT INTO refresh (refresh_token, user_id) values ($1, $2) RETURNING *`, [refresh_token, user_id])
@@ -40,7 +41,7 @@ class AuthController {
                         //     domain: 'localhost',              // Явно указываем localhost
                         //     path: '/'})
                         
-                        return res.status(200).json({token: `Bearer ${token}`, refresh_token: refresh_token, user_name: user_name})
+                        return res.status(200).json({token: `Bearer ${token}`, refresh_token: refresh_token, user_name: user_name, role: role})
     
                     } catch(e) {
                         return res.status(500).json({message: 'Ошибка сервера при создании рефреш токена'})
