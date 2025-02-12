@@ -114,96 +114,65 @@ class NewsController {
 
     async updateNews(req, res) {
         const { title, descr, content, id } = req.body;
+    
         try {
-            if(req.files?.mainimage &&  req.files?.files) {
-
-
-                const imageFiles = await db.query(`SELECT * FROM news where id = $1`, [
-                    id,
-                ]);
-                // console.log(imageFiles.rows[0].imagessrc.split(','))
-        
-                imageFiles.rows[0].imagessrc.forEach((item) => {
-                    fs.unlink(`${keys.del_url}${item}`, function (err) {
-                        if (err) return console.log(err);
-                        console.log('file deleted successfully');
-                    });
-                });
-
-                
-                fs.unlink(`${keys.del_url}${imageFiles.rows[0].main}`, function (err) {
-                    if (err) return console.log(err);
-                    console.log('file deleted successfully');
-                });
-                const main = `${req.files?.mainimage[0].filename}`;
-                const carouselImages = req.files?.files;
-                let imagesSrc = [];
-                    carouselImages.map((file, index) => {
-                        imagesSrc.push(`${file.filename}`);
-                    });
-                    const updatedNews = await db.query(
-                        `UPDATE news SET title = $1, descr = $2, content = $3, main = $4, imagesSrc = $5 WHERE id = $6 RETURNING *`,
-                        [title, descr, content, main, imagesSrc, id]
-                    );
-            
-                   return  res.json(updatedNews.rows);
-            } else if( req.files?.mainimage && !req.files?.files) {
-
-                
-                const imageFiles = await db.query(`SELECT * FROM news where id = $1`, [
-                    id,
-                ]);
-                
-                fs.unlink(`${keys.del_url}${imageFiles.rows[0].main}`, function (err) {
-                    if (err) return console.log(err);
-                    console.log('file deleted successfully');
-                });
-                const main = `${req.files?.mainimage[0].filename}`;
-                    const updatedNews = await db.query(
-                        `UPDATE news SET title = $1, descr = $2, content = $3, main = $4 WHERE id = $5 RETURNING *`,
-                        [title, descr, content, main, id]
-                    );
-                    return  res.json(updatedNews.rows);
-                } else if(req.files.files && !req.files?.mainimage) {
-
-                    
-                    const imageFiles = await db.query(`SELECT * FROM news where id = $1`, [
-                        id,
-                    ]);
-                    // console.log(imageFiles.rows[0].imagessrc.split(','))
-            
-                    imageFiles.rows[0].imagessrc.forEach((item) => {
-                        fs.unlink(`${keys.del_url}${item}`, function (err) {
-                            if (err) return console.log(err);
-                            console.log('file deleted successfully');
-                        });
-                    });
-                    const carouselImages = req.files?.files;
-                    let imagesSrc = [];
-                    carouselImages.map((file, index) => {
-                        imagesSrc.push(`${file.filename}`);
-                    });
-                    const updatedNews = await db.query(
-                        `UPDATE news SET title = $1, descr = $2, content = $3, imagesSrc = $4 WHERE id = $5 RETURNING *`,
-                        [title, descr, content, imagesSrc, id]
-                    );
-                    console.log(res.json(updatedNews.rows))
-            
-                   return  res.json(updatedNews.rows);
-            } else {
-                const updatedNews = await db.query(
-                    `UPDATE news SET title = $1, descr = $2, content = $3 WHERE id = $4 RETURNING *`,
-                    [title, descr, content, id]
-                );
-        
-               return  res.json(updatedNews.rows);
+            // Получаем текущие данные новости
+            const imageFiles = await db.query(`SELECT * FROM news WHERE id = $1`, [id]);
+            if (imageFiles.rows.length === 0) {
+                return res.status(404).json({ message: 'News not found' });
             }
-         
+    
+            // Удаляем старые изображения, если они есть
+            const currentNews = imageFiles.rows[0];
+            if (req.files?.mainimage) {
+                fs.unlink(`${keys.del_url}${currentNews.main}`, (err) => {
+                    if (err) console.log(err);
+                    console.log('Main image deleted successfully');
+                });
+            }
+    
+            if (req.files?.files) {
+                currentNews.imagessrc.forEach((item) => {
+                    fs.unlink(`${keys.del_url}${item}`, (err) => {
+                        if (err) console.log(err);
+                        console.log('Carousel image deleted successfully');
+                    });
+                });
+            }
+    
+            // Обновляем данные
+            const updates = [title, descr, content];
+            let mainImage = null;
+            let imagesSrc = [];
+    
+            if (req.files?.mainimage) {
+                mainImage = req.files.mainimage[0].filename;
+                updates.push(mainImage);
+            } else {
+                updates.push(currentNews.main); // Сохраняем старое значение
+            }
+    
+            if (req.files?.files) {
+                imagesSrc = req.files.files.map(file => file.filename);
+                updates.push(imagesSrc);
+            } else {
+                imagesSrc = currentNews.imagessrc; // Сохраняем старое значение
+                updates.push(imagesSrc);
+            }
+    
+            const updatedNews = await db.query(
+                `UPDATE news SET title = $1, descr = $2, content = $3, main = $4, imagesSrc = $5 WHERE id = $6 RETURNING *`,
+                [...updates, id]
+            );
+    
+            return res.json(updatedNews.rows[0]);
+    
         } catch (e) {
             console.error('Ошибка при обновлении новости:', e.message);
             return res.status(500).json({ message: 'Ошибка при обновлении новости', error: e.message });
         }
     }
+    
     
     async deleteNews(req, res) {
         const id = req.params.id;
