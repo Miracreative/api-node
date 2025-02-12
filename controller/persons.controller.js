@@ -74,42 +74,40 @@ class PersonController {
 
 	async updatePerson(req, res) {
 		const { name, descr, watsapp, email, id } = req.body;
-
 		const file = req.file;
-		if (!file) {
-			try {
-				const person = await db.query(
-					`UPDATE persons SET name = $1, descr = $2, watsapp = $3, email = $4 where id = $5 RETURNING *`,
-					[name, descr, watsapp, email, id],
-				);
-				res.json(person.rows[0]);
-			} catch (e) {
-				return res.status(404).json({ message: e.message });
+	
+		try {
+			// Получаем текущие данные человека
+			const personFile = await db.query(`SELECT * FROM persons WHERE id = $1`, [id]);
+			
+			if (personFile.rows.length === 0) {
+				return res.status(404).json({ message: 'Person not found' });
 			}
-		} else {
-			try {
-				// console.log(req.file)
-				const personFile = await db.query(
-					`SELECT * FROM persons where id = $1`,
-					[id],
-				);
-				fs.unlink(
-					`${keys.del_url}${personFile.rows[0].imagesrc}`,
-					function (err) {
-						if (err) return console.log(err);
-					},
-				);
-				const imageSrc = req.file.filename;
-				const person = await db.query(
-					`UPDATE persons SET imageSrc = $1, name = $2, descr = $3, watsapp = $4, email = $5 where id = $6 RETURNING *`,
-					[imageSrc, name, descr, watsapp, email, id],
-				);
-				res.json(person.rows[0]);
-			} catch (e) {
-				return res.status(404).json({ message: e.message });
+	
+			// Удаляем старое изображение, если есть новое
+			if (file) {
+				fs.unlink(`${keys.del_url}${personFile.rows[0].imagesrc}`, (err) => {
+					if (err) console.log(err);
+					console.log('Old image deleted successfully');
+				});
 			}
+	
+			// Обновляем данные
+			const imageSrc = file ? req.file.filename : personFile.rows[0].imagesrc; // Используем новое изображение или сохраняем старое
+	
+			const updatedPerson = await db.query(
+				`UPDATE persons SET imageSrc = $1, name = $2, descr = $3, watsapp = $4, email = $5 WHERE id = $6 RETURNING *`,
+				[imageSrc, name, descr, watsapp, email, id]
+			);
+	
+			return res.json(updatedPerson.rows[0]);
+	
+		} catch (e) {
+			console.error('Error updating person:', e.message);
+			return res.status(500).json({ message: 'Internal server error', error: e.message });
 		}
 	}
+	
 
 	async deletePerson(req, res) {
 		const id = req.params.id;
