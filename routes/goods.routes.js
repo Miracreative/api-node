@@ -9,8 +9,7 @@ const goodsRouter = new Router();
 goodsRouter.post(
     '/goods',
     upload.fields([
-        { name: 'goodsPersonalImages', maxCount: 10 },
-        { name: 'goodsIndustrialImages', maxCount: 10 },
+        { name: 'goodsCarouselImages', maxCount: 10 },
         { name: 'imageUrl', maxCount: 1 },
         { name: 'pdfUrl', maxCount: 1 },
     ]),
@@ -23,8 +22,7 @@ goodsRouter.get('/goods/:id', goodsController.getOneGood);
 goodsRouter.put(
     '/goods',
     upload.fields([
-        { name: 'goodsPersonalImages', maxCount: 10 },
-        { name: 'goodsIndustrialImages', maxCount: 10 },
+        { name: 'goodsCarouselImages', maxCount: 10 },
         { name: 'imageUrl', maxCount: 1 },
         { name: 'pdfUrl', maxCount: 1 },
     ]),
