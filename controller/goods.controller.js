@@ -194,7 +194,9 @@ class GoodsController {
                     });
                 });
             };
-    
+
+
+            console.log(currentGoods.rows[0].goodspersonalimages)
             if (files.goodsCarouselImages && files.goodsCarouselImages.length > 0) {
                 deleteFiles(currentGoods.rows[0].goodspersonalimages);
                 const goodsCarouselImages = files.goodsCarouselImages.map(file => file.filename);
