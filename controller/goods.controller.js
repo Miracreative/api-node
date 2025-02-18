@@ -196,9 +196,9 @@ class GoodsController {
             };
 
 
-            console.log(currentGoods.rows[0].goodspersonalimages)
+            console.log(currentGoods.rows[0].goodscrouselimages)
             if (files.goodsCarouselImages && files.goodsCarouselImages.length > 0) {
-                deleteFiles(currentGoods.rows[0].goodspersonalimages);
+                deleteFiles(currentGoods.rows[0].goodscarouselimages);
                 const goodsCarouselImages = files.goodsCarouselImages.map(file => file.filename);
                 await db.query(`UPDATE goods SET goodsCarouselImages = $1 WHERE id = $2`, [goodsCarouselImages, id]);
             }
