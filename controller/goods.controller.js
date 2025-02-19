@@ -139,6 +139,9 @@ class GoodsController {
                     item.name.toLowerCase().includes(string.toLowerCase()) ||
                     item.description
                         .toLowerCase()
+                        .includes(string.toLowerCase()) || 
+                    item.brand
+                        .toLowerCase()
                         .includes(string.toLowerCase())
                 ) {
                     result.push(item);
@@ -264,6 +267,25 @@ class GoodsController {
     async deleteGood(req, res) {
         const { id } = req.params;
         try {
+
+            const imageFiles = await db.query(`SELECT * FROM goods where id = $1`, [
+                id,
+            ]);
+
+            imageFiles.rows[0].goodscarouselimages.forEach((item) => {
+                fs.unlink(`${keys.del_url}${item}`, function (err) {
+                    if (err) return console.log(err);
+                    console.log('file deleted successfully');
+                });
+            });
+            fs.unlink(`${keys.del_url}${imageFiles.rows[0].imageurl}`, function (err) {
+                if (err) return console.log(err);
+                console.log('file deleted successfully');
+            });
+            fs.unlink(`${keys.del_url}${imageFiles.rows[0].pdfurl}`, function (err) {
+                if (err) return console.log(err);
+                console.log('file deleted successfully');
+            });
             const goods = await db.query(`DELETE FROM goods where id = $1`, [
                 id,
             ]);

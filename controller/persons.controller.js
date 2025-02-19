@@ -48,7 +48,7 @@ class PersonController {
 			const persons = await db.query(`SELECT * FROM persons`);
 			let result = [];
 			persons.rows.forEach((item) => {
-				if (item.title.toLowerCase().includes(string.toLowerCase())) {
+				if (item.name.toLowerCase().includes(string.toLowerCase())) {
 					result.push(item);
 				}
 			});
