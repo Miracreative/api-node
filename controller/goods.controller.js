@@ -202,26 +202,26 @@ class GoodsController {
     
             // Обновляем основные параметры товара
             const updates = [
-                material || currentGoods.rows[0].material,
-                parameter || currentGoods.rows[0].parameter,
-                mainParameter || currentGoods.rows[0].mainparameter,
-                article || currentGoods.rows[0].article,
-                thickness || currentGoods.rows[0].thickness,
-                volume || currentGoods.rows[0].volume,
-                pcs || currentGoods.rows[0].pcs,
-                baseType || currentGoods.rows[0].basetype,
-                color || currentGoods.rows[0].color,
-                heatResistance || currentGoods.rows[0].heatresistance,
-                name || currentGoods.rows[0].name,
-                description || currentGoods.rows[0].description,
-                type || currentGoods.rows[0].type,
-                size || currentGoods.rows[0].size,
-                brand || currentGoods.rows[0].brand,
-                linerType || currentGoods.rows[0].linertype,
-                dencity || currentGoods.rows[0].dencity,
-                typeGlue || currentGoods.rows[0].typeglue,
-                advantages || currentGoods.rows[0].advantages,
-                recommendparameter || currentGoods.rows[0].recommendparameter
+                material,
+                parameter,
+                mainParameter,
+                article,
+                thickness,
+                volume,
+                pcs,
+                baseType,
+                color,
+                heatResistance,
+                name,
+                description,
+                type,
+                size,
+                brand,
+                linerType,
+                dencity,
+                typeGlue,
+                advantages,
+                recommendparameter 
             ];
     
             // Обработка URL изображения
