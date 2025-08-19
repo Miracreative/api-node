@@ -38,7 +38,7 @@ class NewsController {
 
     async getAllNews(req, res) {
         try {
-            const news = await db.query(`SELECT * FROM news`);
+            const news = await db.query(`SELECT * FROM news ORDER BY id DESC`);
             res.json(news.rows);
         } catch (e) {
             return res.json({ message: e.message });
@@ -53,7 +53,7 @@ class NewsController {
         const endIndex = page * limit;
 
         try {
-            const news = await db.query(`SELECT * FROM news`);
+            const news = await db.query(`SELECT * FROM news ORDER BY id DESC`);
             const result = news.rows.slice(startIndex, endIndex);
             const totalPages = Math.ceil(news.rows.length / limit);
             res.json({ result: result, pages: totalPages });
@@ -91,7 +91,7 @@ class NewsController {
 
     async getLastNews(req, res) {
         try {
-            const news = await db.query(`SELECT * FROM news`);
+            const news = await db.query(`SELECT * FROM news ORDER BY id DESC`);
             console.log(news.rows, news.rows.slice(news.rows.length - 3, news.rows.length))
             res.json(news.rows.slice(news.rows.length - 3, news.rows.length));
         } catch (e) {

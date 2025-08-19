@@ -25,7 +25,7 @@ class BaseController {
 
     async getAllKnowledge(req, res) {
         try {
-            const knowledge = await db.query(`SELECT * FROM knowledge`);
+            const knowledge = await db.query(`SELECT * FROM knowledge ORDER BY id DESC`);
             res.json(knowledge.rows);
         } catch (e) {
             return res.status(404).json({ message: e.message });
@@ -40,7 +40,7 @@ class BaseController {
         const endIndex = page * limit;
 
         try {
-            const knowledge = await db.query(`SELECT * FROM knowledge`);
+            const knowledge = await db.query(`SELECT * FROM knowledge ORDER BY id DESC`);
             const result = knowledge.rows.slice(startIndex, endIndex);
             const totalPages = Math.ceil(knowledge.rows.length / limit);
             res.json({ result: result, pages: totalPages });
