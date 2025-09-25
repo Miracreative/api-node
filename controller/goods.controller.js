@@ -295,39 +295,64 @@ class GoodsController {
         }
     }
 
+    // async sortGoodsOnMainParameters(req, res) {
+    //     const { main } = req.params;
+    //     try {
+    //         const mainInt = (main || '').replace(/,/g, ''); // Handles undefined
+    //         let mainArray = mainInt.split('');
+
+    //         const goods = await db.query(`SELECT * FROM goods`);
+    //         let searchIndexes = [];
+
+    //         goods.rows.forEach((row, i) => {
+    //             if (
+    //                 row.mainparameter &&
+    //                 row.mainparameter.length >= mainArray.length
+    //             ) {
+    //                 for (let j = 0; j < row.mainparameter.length; j++) {
+    //                     if (
+    //                         row.mainparameter[j] == mainArray[j] &&
+    //                         mainArray[j] == '1'
+    //                     ) {
+    //                         searchIndexes.push(i);
+    //                         break; // Stop further searching once a match is found
+    //                     }
+    //                 }
+    //             }
+    //         });
+
+    //         let filteredGoods = searchIndexes.map((index) => goods.rows[index]);
+
+    //         res.json(filteredGoods);
+    //     } catch (e) {
+    //         return res.status(404).json({ message: e.message });
+    //     }
+    // }
     async sortGoodsOnMainParameters(req, res) {
         const { main } = req.params;
         try {
-            const mainInt = (main || '').replace(/,/g, ''); // Handles undefined
-            let mainArray = mainInt.split('');
+            // убираем запятые и приводим к массиву чисел
+            const mainInt = (main || '').replace(/,/g, '');
+            const mainArray = mainInt.split('').map(Number);
 
             const goods = await db.query(`SELECT * FROM goods`);
-            let searchIndexes = [];
 
-            goods.rows.forEach((row, i) => {
-                if (
-                    row.mainparameter &&
-                    row.mainparameter.length >= mainArray.length
-                ) {
-                    for (let j = 0; j < row.mainparameter.length; j++) {
-                        if (
-                            row.mainparameter[j] == mainArray[j] &&
-                            mainArray[j] == '1'
-                        ) {
-                            searchIndexes.push(i);
-                            break; // Stop further searching once a match is found
-                        }
-                    }
-                }
+            const filteredGoods = goods.rows.filter((row) => {
+            if (!row.mainparameter) return false;
+
+            // длина массива у товара может быть меньше запроса
+            if (row.mainparameter.length < mainArray.length) return false;
+
+            // проверка: хотя бы на одной позиции, где запрос = 1, у товара тоже 1
+            return mainArray.some((val, idx) => val === 1 && row.mainparameter[idx] === 1);
             });
-
-            let filteredGoods = searchIndexes.map((index) => goods.rows[index]);
 
             res.json(filteredGoods);
         } catch (e) {
-            return res.status(404).json({ message: e.message });
+            res.status(404).json({ message: e.message });
         }
     }
+
 
     // async sortGoodsOnRecommendParameters(req, res) {
     //     const { recommend } = req.params;
@@ -398,36 +423,71 @@ class GoodsController {
         );
 
         try {
+            // убираем запятые, превращаем в массив чисел
             const parametersInt = (parameters || '').replace(/,/g, '');
-            let parametersArray = parametersInt.split('');
+            const parametersArray = parametersInt.split('').map(Number);
 
             const goods = await db.query(`SELECT * FROM goods`);
-            let searchIndexes = [];
 
-            goods.rows.forEach((row, i) => {
-                if (
-                    row.parameter &&
-                    row.parameter.length >= parametersArray.length
-                ) {
-                    for (let j = 0; j < row.parameter.length; j++) {
-                        if (
-                            row.parameter[j] == parametersArray[j] &&
-                            parametersArray[j] == '1'
-                        ) {
-                            searchIndexes.push(i);
-                            break;
-                        }
-                    }
-                }
+            const filteredGoods = goods.rows.filter((row) => {
+            if (!row.parameter) return false;
+
+            // если у товара параметров меньше, чем в запросе
+            if (row.parameter.length < parametersArray.length) return false;
+
+            // проверка: где 1 — у товара тоже 1; где 0 — любое значение
+            return parametersArray.every((val, idx) => {
+                return val === 0 || row.parameter[idx] === 1;
             });
-
-            let filteredGoods = searchIndexes.map((index) => goods.rows[index]);
+            });
 
             res.json(filteredGoods);
         } catch (e) {
             return res.status(404).json({ message: e.message });
         }
     }
+
+
+    // async sortGoodsOnAllParameters(req, res) {
+    //     const { parameters } = req.params;
+
+    //     console.log(
+    //         'Тип входящих данных в sortGoodsOnAllParameters: ',
+    //         typeof parameters,
+    //         parameters,
+    //     );
+
+    //     try {
+    //         const parametersInt = (parameters || '').replace(/,/g, '');
+    //         let parametersArray = parametersInt.split('');
+
+    //         const goods = await db.query(`SELECT * FROM goods`);
+    //         let searchIndexes = [];
+
+    //         goods.rows.forEach((row, i) => {
+    //             if (
+    //                 row.parameter &&
+    //                 row.parameter.length >= parametersArray.length
+    //             ) {
+    //                 for (let j = 0; j < row.parameter.length; j++) {
+    //                     if (
+    //                         row.parameter[j] == parametersArray[j] &&
+    //                         parametersArray[j] == '1'
+    //                     ) {
+    //                         searchIndexes.push(i);
+    //                         break;
+    //                     }
+    //                 }
+    //             }
+    //         });
+
+    //         let filteredGoods = searchIndexes.map((index) => goods.rows[index]);
+
+    //         res.json(filteredGoods);
+    //     } catch (e) {
+    //         return res.status(404).json({ message: e.message });
+    //     }
+    // }
 }
 
 module.exports = new GoodsController();
